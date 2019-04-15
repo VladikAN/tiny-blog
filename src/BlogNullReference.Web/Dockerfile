@@ -1,7 +1,7 @@
 ﻿# Build
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS builder
-COPY . src
-WORKDIR src
+COPY . /src
+WORKDIR /src
 RUN dotnet restore -v=q
 RUN dotnet publish \
     -c=Release \
