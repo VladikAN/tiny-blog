@@ -19,6 +19,7 @@ namespace BlogNullReference.Web
         {
             services
                 .AddServices(_configuration)
+                .AddResponseCompression(options => options.EnableForHttps = false)
                 .AddMvcWithFilters();
         }
 
@@ -26,8 +27,8 @@ namespace BlogNullReference.Web
         {
             app
                 .UseForwardedHeaders()
+                .UseResponseCompression()
                 .UseCustomErrorHandling(env)
-                .UseHttpsRedirection()
                 .UseStaticFiles()
                 .UseMvcWithRoutes();
         }

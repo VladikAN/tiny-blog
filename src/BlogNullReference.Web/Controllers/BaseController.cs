@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogNullReference.Web.Controllers
 {
-    [AllowAnonymous, RequireHttps]
+    [AllowAnonymous]
     public abstract class BaseController : Controller
     {
     }
