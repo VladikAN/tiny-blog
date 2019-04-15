@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿using BlogNullReference.Web.Configuration;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Serilog;
 using System.IO;
 
 namespace BlogNullReference.Web
@@ -13,17 +12,8 @@ namespace BlogNullReference.Web
         {
             var host = WebHost
                 .CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config
-                        .AddJsonFile("appsettings.json", optional: false)
-                        .AddEnvironmentVariables("BNR_WEB_");
-                })
-                .UseSerilog((context, loggerConfiguration) =>
-                {
-                    loggerConfiguration
-                        .ReadFrom.Configuration(context.Configuration);
-                })
+                .UseCustomConfiguration()
+                .UseCustomSerilog()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>();

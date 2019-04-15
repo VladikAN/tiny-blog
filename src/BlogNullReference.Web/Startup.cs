@@ -25,6 +25,7 @@ namespace BlogNullReference.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app
+                .UseForwardedHeaders()
                 .UseCustomErrorHandling(env)
                 .UseHttpsRedirection()
                 .UseStaticFiles()
