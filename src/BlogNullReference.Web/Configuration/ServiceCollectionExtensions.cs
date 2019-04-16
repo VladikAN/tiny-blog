@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using BlogNullReference.DataServices.Settings;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -23,8 +24,12 @@ namespace BlogNullReference.Web.Configuration
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
+            /* Common */
             services
                 .AddSingleton(configuration);
+
+            /* DataServices */
+            services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
 
             return services;
         }
