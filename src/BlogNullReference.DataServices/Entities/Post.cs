@@ -8,16 +8,16 @@ namespace BlogNullReference.DataServices.Entities
         [BsonElement("title")]
         public string Title { get; set; }
 
-        [BsonElement("preview_text")]
+        [BsonElement("previewText")]
         public string PreviewText { get; set; }
 
-        [BsonElement("full_text")]
+        [BsonElement("fullText")]
         public string FullText { get; set; }
 
-        [BsonElement("published_at")]
+        [BsonElement("publishedAt")]
         public DateTime PublishedAt { get; set; }
 
-        [BsonElement("publish_at")]
+        [BsonElement("publishAt")]
         public DateTime? PublishAt { get; set; }
 
         [BsonElement("tags")]

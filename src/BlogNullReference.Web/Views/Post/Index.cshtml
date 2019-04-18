@@ -1,0 +1,19 @@
+﻿@model BlogNullReference.DataServices.Services.Dto.PostDto[]
+
+@{ ViewData["Title"] = "Home Page"; }
+
+@if (Model.Length != 0)
+{
+    foreach (var post in Model)
+    {
+        <div>
+            <h2>@post.Title</h2>
+            <div>
+                <span>
+                    @post.PublishedAt
+                </span>
+            </div>
+            <p>@post.PreviewText</p>
+        </div>
+    }
+}

@@ -38,4 +38,9 @@
     </Content>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlogNullReference.DataServices\BlogNullReference.DataServices.csproj" />
+  </ItemGroup>
+
 </Project>

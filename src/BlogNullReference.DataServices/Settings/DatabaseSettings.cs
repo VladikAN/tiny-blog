@@ -2,7 +2,7 @@
 
 namespace BlogNullReference.DataServices.Settings
 {
-    public sealed class DatabaseSettings : IDatabaseSettings
+    public class DatabaseSettings : IDatabaseSettings
     {
         public DatabaseSettings(IConfiguration configuration, string path = "blog")
         {

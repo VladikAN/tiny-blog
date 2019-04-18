@@ -1,4 +1,5 @@
-﻿using BlogNullReference.DataServices.Settings;
+﻿using BlogNullReference.DataServices.Services;
+using BlogNullReference.DataServices.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace BlogNullReference.Web.Configuration
 
             /* DataServices */
             services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
+            services.AddTransient<IPostDataService, PostDataService>();
 
             return services;
         }
