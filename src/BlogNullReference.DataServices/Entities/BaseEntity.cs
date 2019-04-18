@@ -7,7 +7,6 @@ namespace BlogNullReference.DataServices.Entities
     public abstract class BaseEntity
     {
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-        [BsonElement("entityId")]
         public ObjectId EntityId { get; set; }
     }
 }

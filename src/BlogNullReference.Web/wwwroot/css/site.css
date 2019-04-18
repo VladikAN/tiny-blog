@@ -1,1 +1,40 @@
-﻿
+﻿body {
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 120%;
+}
+
+.thread {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.thread .thread__post {
+    margin-bottom: 2em;
+}
+
+.thread .thread__post .thread__post_info {
+    font-size: 80%;
+    color: #666;
+}
+
+.thread .thread__post .thread__post_preview {
+}
+
+.tags {
+    font-size: 80%;
+}
+
+.tags a {
+    border: 1px #ccc solid;
+    display: inline-block;
+    margin: 2px;
+    padding: 4px;
+    text-align: center;
+}
