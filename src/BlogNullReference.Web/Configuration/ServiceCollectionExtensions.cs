@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using BlogNullReference.DataServices.Services;
+using BlogNullReference.DataServices.Settings;
+using BlogNullReference.Web.Configuration.Settings;
+using BlogNullReference.Web.Filters;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -23,8 +27,14 @@ namespace BlogNullReference.Web.Configuration
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
+            /* Common */
             services
-                .AddSingleton(configuration);
+                .AddSingleton(configuration)
+                .AddSingleton<ISiteSettings, SiteSettings>();
+
+            /* DataServices */
+            services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
+            services.AddTransient<IPostDataService, PostDataService>();
 
             return services;
         }
@@ -32,7 +42,10 @@ namespace BlogNullReference.Web.Configuration
         public static IServiceCollection AddMvcWithFilters(this IServiceCollection services)
         {
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    options.Filters.Add<SiteSettingsFilter>();
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             return services;

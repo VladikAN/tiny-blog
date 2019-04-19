@@ -1,0 +1,11 @@
+﻿@model BlogNullReference.DataServices.Services.Dto.TagDto[]
+
+@if (Model != null || Model.Length > 0)
+{
+    <div class="tags">
+        @foreach (var tag in Model)
+        {
+            <a>@tag.Name</a>
+        }
+    </div>
+}

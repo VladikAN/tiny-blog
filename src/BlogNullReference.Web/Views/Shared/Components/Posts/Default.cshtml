@@ -1,0 +1,23 @@
+﻿@model BlogNullReference.DataServices.Services.Dto.PostDto[]
+
+@if (Model != null && Model.Length > 0)
+{
+    <div class="thread">
+        @foreach (var post in Model)
+        {
+            <div class="thread__post">
+                <h2>@post.Title</h2>
+                <div class="thread__post_info">
+                    <span>
+                        @post.PublishedAt.ToString("dd/MM/yyyy HH:mm")
+                    </span>
+                </div>
+                <div class="thread__post_preview">
+                    <p>@post.PreviewText</p>
+                </div>
+            
+                @await Component.InvokeAsync(nameof(Tags), post.Tags)
+            </div>
+        }
+    </div>
+}
