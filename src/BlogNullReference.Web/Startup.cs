@@ -19,7 +19,7 @@ namespace BlogNullReference.Web
         {
             services
                 .AddServices(_configuration)
-                .AddResponseCompression(options => options.EnableForHttps = false)
+                .AddResponseCompression(options => options.EnableForHttps = true)
                 .AddMvcWithFilters();
         }
 
