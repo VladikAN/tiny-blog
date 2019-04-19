@@ -1,5 +1,3 @@
 ﻿@model BlogNullReference.DataServices.Services.Dto.PostDto[]
 
-@{ ViewData["Title"] = "Home Page"; }
-
 @await Component.InvokeAsync(nameof(Posts), Model);

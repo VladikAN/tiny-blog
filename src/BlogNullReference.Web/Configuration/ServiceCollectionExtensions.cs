@@ -1,6 +1,7 @@
 ﻿using BlogNullReference.DataServices.Services;
 using BlogNullReference.DataServices.Settings;
 using BlogNullReference.Web.Configuration.Settings;
+using BlogNullReference.Web.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,10 @@ namespace BlogNullReference.Web.Configuration
         public static IServiceCollection AddMvcWithFilters(this IServiceCollection services)
         {
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    options.Filters.Add<SiteSettingsFilter>();
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             return services;

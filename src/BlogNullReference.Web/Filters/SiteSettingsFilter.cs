@@ -1,5 +1,6 @@
 ﻿using BlogNullReference.Web.Configuration.Settings;
 using BlogNullReference.Web.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace BlogNullReference.Web.Filters
@@ -19,11 +20,13 @@ namespace BlogNullReference.Web.Filters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var controller = context.Controller as BaseController;
+            var controller = context.Controller as Controller;
             if (controller != null)
             {
                 controller.ViewData[nameof(ISiteSettings.Title)] = _settings.Title;
             }
+
+            // Did not expect anything else here
         }
     }
 }
