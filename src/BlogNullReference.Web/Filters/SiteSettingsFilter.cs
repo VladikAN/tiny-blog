@@ -1,4 +1,5 @@
 ﻿using BlogNullReference.Web.Configuration.Settings;
+using BlogNullReference.Web.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace BlogNullReference.Web.Filters
@@ -18,6 +19,11 @@ namespace BlogNullReference.Web.Filters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
+            var controller = context.Controller as BaseController;
+            if (controller != null)
+            {
+                controller.ViewData[nameof(ISiteSettings.Title)] = _settings.Title;
+            }
         }
     }
 }

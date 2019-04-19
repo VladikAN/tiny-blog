@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using BlogNullReference.Web.Configuration.Settings
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BlogNullReference.Web</title>
+    <title>@ViewData[nameof(ISiteSettings.Title)]</title>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
