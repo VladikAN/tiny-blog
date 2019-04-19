@@ -20,8 +20,9 @@ namespace BlogNullReference.DataServices.Services
         {
             var now = DateTime.UtcNow;
 
+            var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(x => x.PublishAt == null || x.PublishAt <= now);
+                .FindAsync(x => x.PublishAt == null || x.PublishAt <= now, options);
 
             var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
 
