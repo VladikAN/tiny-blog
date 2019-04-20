@@ -6,5 +6,7 @@ namespace BlogNullReference.DataServices.Services
     public interface IPostDataService
     {
         Task<PostDto[]> GetAll();
+        Task<PostDto[]> GetByTag(string name);
+        Task<PostDto> GetByLinkText(string linkText);
     }
 }
