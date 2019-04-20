@@ -22,9 +22,46 @@ namespace BlogNullReference.DataServices.Services
 
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(x => x.PublishAt == null || x.PublishAt <= now, options);
+                .FindAsync(pst => pst.PublishAt == null || pst.PublishAt <= now, options);
 
             var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
+
+            return result;
+        }
+
+        public async Task<PostDto[]> GetByTag(string name)
+        {
+            var now = DateTime.UtcNow;
+            var queryParam = name.ToLower();
+
+            var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
+            var data = await Repository.GetCollection<Post>(CollectionName)
+                .FindAsync(pst => 
+                    pst.Tags.Any(x => x.Name == queryParam)
+                    && (pst.PublishAt == null || pst.PublishAt <= now), options);
+
+            var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
+
+            return result;
+        }
+
+        public async Task<PostDto> GetByLinkText(string linkText)
+        {
+            var now = DateTime.UtcNow;
+            var queryParam = linkText.ToLower();
+
+            var data = await Repository.GetCollection<Post>(CollectionName)
+                .FindAsync(pst => 
+                    pst.LinkText == queryParam
+                    && (pst.PublishAt == null || pst.PublishAt <= now));
+
+            var post = data.FirstOrDefault();
+            if (post == null)
+            {
+                return null;
+            }
+
+            var result = PostDto.Build(post, includeText: true);
 
             return result;
         }
