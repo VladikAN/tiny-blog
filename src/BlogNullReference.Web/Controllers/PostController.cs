@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BlogNullReference.DataServices.Services;
+using BlogNullReference.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogNullReference.Web.Controllers
@@ -17,7 +18,21 @@ namespace BlogNullReference.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _postDataService.GetAll();
-            return View(posts);
+            var model = new ThreadViewModel(posts);
+            return View(model);
+        }
+
+        [HttpGet, Route("tag/{name}")]
+        public async Task<IActionResult> Tag(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var posts = await _postDataService.GetByTag(name);
+            var model = new ThreadViewModel(posts);
+            return View(nameof(Index), model);
         }
     }
 }

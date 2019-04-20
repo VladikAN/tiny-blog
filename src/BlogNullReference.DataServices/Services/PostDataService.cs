@@ -22,7 +22,23 @@ namespace BlogNullReference.DataServices.Services
 
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(x => x.PublishAt == null || x.PublishAt <= now, options);
+                .FindAsync(pst => pst.PublishAt == null || pst.PublishAt <= now, options);
+
+            var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
+
+            return result;
+        }
+
+        public async Task<PostDto[]> GetByTag(string name)
+        {
+            var now = DateTime.UtcNow;
+            var tagName = name.ToLower();
+
+            var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
+            var data = await Repository.GetCollection<Post>(CollectionName)
+                .FindAsync(pst => 
+                    pst.Tags.Any(x => x.Name == tagName)
+                    && (pst.PublishAt == null || pst.PublishAt <= now), options);
 
             var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
 
