@@ -1,0 +1,9 @@
+﻿@model BlogNullReference.Web.ViewModels.PostViewModel
+
+<h2>@Model.Post.Title</h2>
+
+<div>
+    @Model.Post.FullText
+</div>
+
+@await  Component.InvokeAsync(nameof(Tags), Model.Post.Tags)

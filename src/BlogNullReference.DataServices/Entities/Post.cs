@@ -8,6 +8,9 @@ namespace BlogNullReference.DataServices.Entities
         [BsonElement("title")]
         public string Title { get; set; }
 
+        [BsonElement("linkText")]
+        public string LinkText { get; set; }
+
         [BsonElement("previewText")]
         public string PreviewText { get; set; }
 

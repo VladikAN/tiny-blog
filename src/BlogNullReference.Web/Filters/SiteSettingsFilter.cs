@@ -1,5 +1,4 @@
 ﻿using BlogNullReference.Web.Configuration.Settings;
-using BlogNullReference.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

@@ -22,6 +22,19 @@ namespace BlogNullReference.Web.Controllers
             return View(model);
         }
 
+        [HttpGet, Route("/{linkText:required}")]
+        public async Task<IActionResult> Post(string linkText)
+        {
+            var post = await _postDataService.GetByLinkText(linkText);
+            if (post == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = new PostViewModel(post);
+            return View(model);
+        }
+
         [HttpGet, Route("tag/{name}")]
         public async Task<IActionResult> Tag(string name)
         {

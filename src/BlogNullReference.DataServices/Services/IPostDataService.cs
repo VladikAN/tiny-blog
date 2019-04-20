@@ -7,5 +7,6 @@ namespace BlogNullReference.DataServices.Services
     {
         Task<PostDto[]> GetAll();
         Task<PostDto[]> GetByTag(string name);
+        Task<PostDto> GetByLinkText(string linkText);
     }
 }
