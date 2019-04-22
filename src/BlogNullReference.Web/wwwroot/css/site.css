@@ -1,17 +1,28 @@
 ﻿body {
+    background-color: #fff;
+    color: #818181;
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 16px;
 }
 
-h1 {
-    font-size: 140%;
+h1, h2, h3, h4 {
+    color: #222;
 }
 
-h2 {
-    font-size: 120%;
+h1 { font-size: 150%; }
+h2 { font-size: 150%; }
+
+a {
+    color: #42b6f3;
+    text-decoration: none;
 }
 
-.thread {
-    width: 60%;
+a.link-header {
+    color: #222;
+}
+
+.content {
+    width: 50%;
     margin: 0 auto;
 }
 
@@ -22,6 +33,7 @@ h2 {
 .thread .thread__post .thread__post_info {
     font-size: 80%;
     color: #666;
+    text-transform: uppercase;
 }
 
 .thread .thread__post .thread__post_preview {
@@ -37,4 +49,5 @@ h2 {
     margin: 2px;
     padding: 4px;
     text-align: center;
+    text-decoration: none;
 }

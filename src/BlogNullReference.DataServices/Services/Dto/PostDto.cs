@@ -8,12 +8,14 @@ namespace BlogNullReference.DataServices.Services.Dto
     {
         public PostDto(
             string title,
+            string linkText,
             string previewText,
             string fullText,
             DateTime publishedAt,
             TagDto[] tags = null)
         {
             Title = title;
+            LinkText = linkText;
             PreviewText = previewText;
             FullText = fullText;
             PublishedAt = publishedAt;
@@ -21,6 +23,7 @@ namespace BlogNullReference.DataServices.Services.Dto
         }
 
         public string Title { get; }
+        public string LinkText { get; set; }
         public string PreviewText { get; }
         public string FullText { get; set; }
         public DateTime PublishedAt { get; }
@@ -31,7 +34,7 @@ namespace BlogNullReference.DataServices.Services.Dto
             var tags = (post.Tags?.Select(tg => TagDto.Build(tg)) ?? new TagDto[0]).ToArray();
             var fullText = includeText ? post.FullText : string.Empty;
 
-            return new PostDto(post.Title, post.PreviewText, fullText, post.PublishedAt, tags);
+            return new PostDto(post.Title, post.LinkText, post.PreviewText, fullText, post.PublishedAt, tags);
         }
     }
 }
