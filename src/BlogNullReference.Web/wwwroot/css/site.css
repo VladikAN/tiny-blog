@@ -37,6 +37,7 @@ a.link-header {
 }
 
 .thread .thread__post .thread__post_preview {
+    margin: 16px 0;
 }
 
 .tags {
@@ -47,7 +48,7 @@ a.link-header {
     border: 1px #ccc solid;
     display: inline-block;
     margin: 2px;
-    padding: 4px;
+    padding: 4px 6px;
     text-align: center;
     text-decoration: none;
 }

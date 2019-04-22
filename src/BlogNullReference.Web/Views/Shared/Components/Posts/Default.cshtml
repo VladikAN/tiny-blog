@@ -18,10 +18,8 @@
                 </span>
             </div>
             <div class="thread__post_preview">
-                <p>
-                    @post.PreviewText
-                    <a href="@href">[ read more ]</a>
-                </p>
+                @post.PreviewText
+                <a href="@href">[ read more ]</a>
             </div>
 
             @await Component.InvokeAsync(nameof(Tags), post.Tags)
