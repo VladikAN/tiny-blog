@@ -26,7 +26,7 @@ namespace BlogNullReference.Web.Configuration
                             keyVault.Vault,
                             keyVault.ClientId,
                             keyVault.ClientSecret,
-                            new KeyVaultManager());
+                            new KeyVaultManager(ConfigPrefix));
                 }
             });
 
