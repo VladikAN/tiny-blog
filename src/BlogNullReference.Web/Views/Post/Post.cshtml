@@ -3,7 +3,9 @@
 <h2>@Model.Post.Title</h2>
 
 <div>
-    @Model.Post.FullText
+    @Html.Markdown(Model.Post.FullText)
 </div>
 
-@await  Component.InvokeAsync(nameof(Tags), Model.Post.Tags)
+@await Component.InvokeAsync(nameof(Tags), Model.Post.Tags)
+
+<a href="@Url.Action("index", "post")">[ back to main ]</a>
