@@ -21,6 +21,11 @@ a.link-header {
     color: #222;
 }
 
+a.site-title {
+    font-size: 150%;
+    text-transform: uppercase;
+}
+
 .content {
     width: 50%;
     margin: 0 auto;
