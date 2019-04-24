@@ -30,6 +30,7 @@ namespace BlogNullReference.Web
                 .UseResponseCompression()
                 .UseCustomErrorHandling(env)
                 .UseStaticFiles()
+                .UseAtomFeed()
                 .UseMvcWithRoutes();
         }
     }

@@ -4,7 +4,7 @@
     {
         string Title { get; }
         string Description { get; }
-        string Url { get; }
+        string Uri { get; }
         string Author { get; }
         string GoogleTagsCode { get; }
     }

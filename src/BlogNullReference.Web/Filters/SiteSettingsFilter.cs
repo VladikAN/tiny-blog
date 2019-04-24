@@ -24,7 +24,7 @@ namespace BlogNullReference.Web.Filters
             {
                 controller.ViewData[nameof(ISiteSettings.Title)] = !string.IsNullOrWhiteSpace(_settings.Title) ? _settings.Title : null;
                 controller.ViewData[nameof(ISiteSettings.Description)] = !string.IsNullOrWhiteSpace(_settings.Description) ? _settings.Description : null;
-                controller.ViewData[nameof(ISiteSettings.Url)] = !string.IsNullOrWhiteSpace(_settings.Url) ? _settings.Url : null;
+                controller.ViewData[nameof(ISiteSettings.Uri)] = !string.IsNullOrWhiteSpace(_settings.Uri) ? _settings.Uri : null;
                 controller.ViewData[nameof(ISiteSettings.Author)] = !string.IsNullOrWhiteSpace(_settings.Author) ? _settings.Author : null;
                 controller.ViewData[nameof(ISiteSettings.GoogleTagsCode)] = !string.IsNullOrWhiteSpace(_settings.GoogleTagsCode) ? _settings.GoogleTagsCode: null;
             }

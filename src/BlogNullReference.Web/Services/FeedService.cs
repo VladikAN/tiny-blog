@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace BlogNullReference.Web.Services
 {
-    // https://docs.microsoft.com/en-us/dotnet/framework/wcf/feature-details/how-to-create-a-basic-atom-feed
     public class FeedService : IFeedService
     {
         private IPostDataService _postDataService;
@@ -26,7 +26,7 @@ namespace BlogNullReference.Web.Services
         {
             var posts = await _postDataService.GetAll();
 
-            var baseUri = new Uri(_siteSettings.Url);
+            var baseUri = new Uri(_siteSettings.Uri, UriKind.Absolute);
             var feed = new SyndicationFeed(_siteSettings.Title, _siteSettings.Description, baseUri);
             feed.Authors.Add(new SyndicationPerson(_siteSettings.Author));
             feed.Description = new TextSyndicationContent(_siteSettings.Description);
