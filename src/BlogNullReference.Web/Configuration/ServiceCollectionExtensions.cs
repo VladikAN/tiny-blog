@@ -2,6 +2,7 @@
 using BlogNullReference.DataServices.Settings;
 using BlogNullReference.Web.Configuration.Settings;
 using BlogNullReference.Web.Filters;
+using BlogNullReference.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +33,12 @@ namespace BlogNullReference.Web.Configuration
                 .AddSingleton(configuration)
                 .AddSingleton<ISiteSettings, SiteSettings>();
 
-            /* DataServices */
+            /* Data Services */
             services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
             services.AddTransient<IPostDataService, PostDataService>();
+
+            /* Web Services */
+            services.AddTransient<IFeedService, FeedService>();
 
             return services;
         }
