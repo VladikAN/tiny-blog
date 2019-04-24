@@ -22,7 +22,8 @@ namespace BlogNullReference.Web.Filters
             var controller = context.Controller as Controller;
             if (controller != null)
             {
-                controller.ViewData[nameof(ISiteSettings.Title)] = _settings.Title;
+                controller.ViewData[nameof(ISiteSettings.Title)] = !string.IsNullOrWhiteSpace(_settings.Title) ? _settings.Title : null;
+                controller.ViewData[nameof(ISiteSettings.GoogleTagsCode)] = !string.IsNullOrWhiteSpace(_settings.GoogleTagsCode) ? _settings.GoogleTagsCode: null;
             }
 
             // Did not expect anything else here

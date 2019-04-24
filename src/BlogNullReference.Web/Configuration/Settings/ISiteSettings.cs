@@ -3,5 +3,6 @@
     public interface ISiteSettings
     {
         string Title { get; }
+        string GoogleTagsCode { get; }
     }
 }

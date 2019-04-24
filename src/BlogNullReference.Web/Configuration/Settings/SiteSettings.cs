@@ -10,8 +10,10 @@ namespace BlogNullReference.Web.Configuration.Settings
         {
             var section = configuration.GetSection(SectionName);
             Title = section.GetValue<string>(nameof(Title));
+            GoogleTagsCode = section.GetValue<string>(nameof(GoogleTagsCode));
         }
 
         public string Title { get; }
+        public string GoogleTagsCode { get; }
     }
 }
