@@ -14,10 +14,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    @{await Html.RenderPartialAsync("_GoogleTagsHead", ViewData); }
+
     <title>@title</title>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    @{await Html.RenderPartialAsync("_GoogleTagsBody", ViewData); }
+
     <div class="content">
         @RenderBody()
     </div>
