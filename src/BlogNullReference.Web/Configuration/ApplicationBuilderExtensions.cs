@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Xml;
 
 namespace BlogNullReference.Web.Configuration
 {
@@ -30,7 +32,17 @@ namespace BlogNullReference.Web.Configuration
                 {
                     var service = builder.ApplicationServices.GetService(typeof(IFeedService)) as IFeedService;
                     var feed = await service.BuildFeed();
-                    await context.Response.WriteAsync(feed);
+
+                    using (var sw = new StringWriter())
+                    {
+                        using (var xw = XmlWriter.Create(sw))
+                        {
+                            feed.WriteTo(xw);
+                        }
+
+                        context.Response.Headers["content-type"] = "application/atom+xml;charset=utf-8";
+                        await context.Response.WriteAsync(sw.ToString());
+                    }
                 });
             });
 

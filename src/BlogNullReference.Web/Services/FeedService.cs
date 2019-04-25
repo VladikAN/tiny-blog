@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace BlogNullReference.Web.Services
 {
@@ -22,12 +21,13 @@ namespace BlogNullReference.Web.Services
             _siteSettings = siteSettings;
         }
 
-        public async Task<string> BuildFeed()
+        public async Task<Atom10FeedFormatter> BuildFeed()
         {
             var posts = await _postDataService.GetAll();
 
             var baseUri = new Uri(_siteSettings.Uri, UriKind.Absolute);
             var feed = new SyndicationFeed(_siteSettings.Title, _siteSettings.Description, baseUri);
+            feed.Language = _siteSettings.Language;
             feed.Authors.Add(new SyndicationPerson(_siteSettings.Author));
             feed.Description = new TextSyndicationContent(_siteSettings.Description);
 
@@ -52,12 +52,11 @@ namespace BlogNullReference.Web.Services
                     new Uri(baseUri, post.LinkText),
                     post.LinkText,
                     post.PublishedAt);
+                items.Add(item);
             }
 
             feed.Items = items;
-
-            var atom = new Atom10FeedFormatter(feed);
-            return atom.ToString();
+            return new Atom10FeedFormatter(feed);
         }
     }
 }

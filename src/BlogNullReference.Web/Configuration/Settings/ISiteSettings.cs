@@ -6,6 +6,7 @@
         string Description { get; }
         string Uri { get; }
         string Author { get; }
+        string Language { get; }
         string GoogleTagsCode { get; }
     }
 }

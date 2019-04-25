@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.ServiceModel.Syndication;
+using System.Threading.Tasks;
 
 namespace BlogNullReference.Web.Services
 {
     public interface IFeedService
     {
-        Task<string> BuildFeed();
+        Task<Atom10FeedFormatter> BuildFeed();
     }
 }

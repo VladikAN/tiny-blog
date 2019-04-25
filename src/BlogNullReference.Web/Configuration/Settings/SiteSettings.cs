@@ -13,6 +13,7 @@ namespace BlogNullReference.Web.Configuration.Settings
             Description = section.GetValue<string>(nameof(Description));
             Uri = section.GetValue<string>(nameof(Uri));
             Author = section.GetValue<string>(nameof(Author));
+            Language = section.GetValue<string>(nameof(Language));
             GoogleTagsCode = section.GetValue<string>(nameof(GoogleTagsCode));
         }
 
@@ -20,6 +21,7 @@ namespace BlogNullReference.Web.Configuration.Settings
         public string Description { get; }
         public string Uri { get; }
         public string Author { get; }
+        public string Language { get; }
         public string GoogleTagsCode { get; }
     }
 }
