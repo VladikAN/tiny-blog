@@ -33,14 +33,16 @@
             @RenderBody()
         </div>
 
-        @if (!string.IsNullOrWhiteSpace(footer))
-        {
-            <div class="footer">
-                <div class="footer__body">
-                    @Html.Markdown(footer)
-                </div>
+        
+        <div class="footer">
+            <div class="footer__body">
+                @if (!string.IsNullOrWhiteSpace(footer))
+                {
+                    <div>@Html.Markdown(footer)</div>
+                }
+                <div>Source code available at <a href="https://github.com/vladikan/tiny-blog">github.com</a></div>
             </div>
-        }
+        </div>
     </div>
 </body>
 </html>

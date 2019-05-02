@@ -1,6 +1,7 @@
 bin/
 obj/
 publish/
+*.csproj.user
 
 .vs/
 .idea/
