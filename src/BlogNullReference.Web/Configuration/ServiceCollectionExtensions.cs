@@ -54,5 +54,17 @@ namespace BlogNullReference.Web.Configuration
 
             return services;
         }
+
+        public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
+        {
+            var settings = new ApplicationInsightsSettings(configuration);
+            if (settings.Enabled)
+            {
+                services
+                    .AddApplicationInsightsTelemetry(settings.Key);
+            }
+
+            return services;
+        }
     }
 }
