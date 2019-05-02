@@ -4,6 +4,8 @@
     var siteTitle = ViewData[nameof(ISiteSettings.Title)]?.ToString() ?? string.Empty;
     var header = ViewData["header"]?.ToString() ?? string.Empty;
     var metaTitle = !string.IsNullOrWhiteSpace(header) ? $"{header} - {siteTitle}" : siteTitle;
+
+    var footer = ViewData[nameof(ISiteSettings.FooterContent)]?.ToString() ?? string.Empty;
 }
 
 <!DOCTYPE html>
@@ -20,10 +22,25 @@
 <body>
     @{await Html.RenderPartialAsync("_GoogleTagsBody", ViewData); }
 
-    <div class="content">
-        <a class="site-title" href="/">@siteTitle</a>
+    <div class="header">
+        <div class="header__body">
+            <a class="header__body_link" href="/">@siteTitle</a>
+        </div>
+    </div>
 
-        @RenderBody()
+    <div class="wrapper">
+        <div class="content">
+            @RenderBody()
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(footer))
+        {
+            <div class="footer">
+                <div class="footer__body">
+                    @Html.Markdown(footer)
+                </div>
+            </div>
+        }
     </div>
 </body>
 </html>
