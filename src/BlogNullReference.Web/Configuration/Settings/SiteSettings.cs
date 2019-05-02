@@ -15,6 +15,7 @@ namespace BlogNullReference.Web.Configuration.Settings
             Author = section.GetValue<string>(nameof(Author));
             Language = section.GetValue<string>(nameof(Language));
             GoogleTagsCode = section.GetValue<string>(nameof(GoogleTagsCode));
+            FooterContent = section.GetValue<string>(nameof(FooterContent));
         }
 
         public string Title { get; }
@@ -23,5 +24,6 @@ namespace BlogNullReference.Web.Configuration.Settings
         public string Author { get; }
         public string Language { get; }
         public string GoogleTagsCode { get; }
+        public string FooterContent { get; }
     }
 }
