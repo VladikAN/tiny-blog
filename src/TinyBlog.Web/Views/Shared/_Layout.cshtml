@@ -1,0 +1,48 @@
+﻿@using TinyBlog.Web.Configuration.Settings
+
+@{
+    var siteTitle = ViewData[nameof(ISiteSettings.Title)]?.ToString() ?? string.Empty;
+    var header = ViewData["header"]?.ToString() ?? string.Empty;
+    var metaTitle = !string.IsNullOrWhiteSpace(header) ? $"{header} - {siteTitle}" : siteTitle;
+
+    var footer = ViewData[nameof(ISiteSettings.FooterContent)]?.ToString() ?? string.Empty;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    @{await Html.RenderPartialAsync("_GoogleTagsHead", ViewData); }
+
+    <title>@metaTitle</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    @{await Html.RenderPartialAsync("_GoogleTagsBody", ViewData); }
+
+    <div class="header">
+        <div class="header__body">
+            <a class="header__body_link" href="/">@siteTitle</a>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="content">
+            @RenderBody()
+        </div>
+
+        
+        <div class="footer">
+            <div class="footer__body">
+                @if (!string.IsNullOrWhiteSpace(footer))
+                {
+                    <div>@Html.Markdown(footer)</div>
+                }
+                <div>Source code available at <a href="https://github.com/vladikan/tiny-blog">github.com</a></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
