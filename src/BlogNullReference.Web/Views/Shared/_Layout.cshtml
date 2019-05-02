@@ -1,12 +1,9 @@
 ﻿@using BlogNullReference.Web.Configuration.Settings
 
 @{
-    var title = ViewData[nameof(ISiteSettings.Title)];
+    var siteTitle = ViewData[nameof(ISiteSettings.Title)]?.ToString() ?? string.Empty;
     var header = ViewData["header"]?.ToString() ?? string.Empty;
-    if (!string.IsNullOrWhiteSpace(header))
-    {
-        title = $"{header} - {title}";
-    }
+    var metaTitle = !string.IsNullOrWhiteSpace(header) ? $"{header} - {siteTitle}" : siteTitle;
 }
 
 <!DOCTYPE html>
@@ -14,11 +11,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@title</title>
+    
+    @{await Html.RenderPartialAsync("_GoogleTagsHead", ViewData); }
+
+    <title>@metaTitle</title>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    @{await Html.RenderPartialAsync("_GoogleTagsBody", ViewData); }
+
     <div class="content">
+        <a class="site-title" href="/">@siteTitle</a>
+
         @RenderBody()
     </div>
 </body>
