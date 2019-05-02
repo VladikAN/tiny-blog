@@ -1,0 +1,29 @@
+﻿@model TinyBlog.DataServices.Services.Dto.PostDto[]
+
+@if (Model != null && Model.Length > 0)
+{
+    <div class="thread">
+        @foreach (var post in Model)
+        {
+            var href = Url.Action("post", "post", new { post.LinkText });
+
+        <div class="thread__post">
+            <a class="link-header"
+               href="@href">
+                <h2>@post.Title</h2>
+            </a>
+            <div class="thread__post_info">
+                <span>
+                    @post.PublishedAt.ToString("MMM yyyy")
+                </span>
+            </div>
+            <div class="thread__post_preview">
+                @Html.Markdown(post.PreviewText)
+                <a href="@href">[ read more ]</a>
+            </div>
+
+            @await Component.InvokeAsync(nameof(Tags), post.Tags)
+        </div>
+        }
+    </div>
+}

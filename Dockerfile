@@ -3,12 +3,12 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS builder
 WORKDIR /src
 COPY . .
 
-RUN dotnet restore -v=q src/BlogNullReference.Web/BlogNullReference.Web.csproj
+RUN dotnet restore -v=q src/TinyBlog.Web/TinyBlog.Web.csproj
 RUN dotnet publish \
     -c=Release \
     -o=$(pwd)/publish/web \
     -f=netcoreapp2.2 \
-    src/BlogNullReference.Web/BlogNullReference.Web.csproj
+    src/TinyBlog.Web/TinyBlog.Web.csproj
 
 # Runtime
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
@@ -21,4 +21,4 @@ ENV ASPNETCORE_ENVIRONMENT="Production" \
     ASPNETCORE_URLS="http://+:80"
 EXPOSE 80
 
-ENTRYPOINT ["dotnet", "BlogNullReference.Web.dll"]
+ENTRYPOINT ["dotnet", "TinyBlog.Web.dll"]
