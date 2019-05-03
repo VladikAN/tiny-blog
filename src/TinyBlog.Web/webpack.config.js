@@ -19,6 +19,12 @@ module.exports = {
         filename: '[name].js',
         path: path.resolve(__dirname, 'wwwroot/js')
     },
+    optimization: {
+        splitChunks: {
+          chunks: 'all',
+          minChunks: 2
+        }
+    },
     module: {
         rules: [
             {

@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --color --progress",
-    "dev:watch": "webpack --color --progress --watch"
+    "dev": "webpack --color --progress --mode development",
+    "dev:watch": "npm run dev -- --watch",
+    "release": "webpack --mode production"
   },
   "author": "https://github.com/vladikan/tiny-blog.git",
   "license": "ISC",
