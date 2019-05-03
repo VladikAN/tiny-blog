@@ -1,11 +1,16 @@
 const path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     devtool: 'cheap-module-source-map',
     resolve: {
-        modules: ["Content", 'Scripts', "node_modules"]
+        modules: [
+            path.resolve(__dirname, 'Content'),
+            path.resolve(__dirname, 'Scripts'),
+            'node_modules'
+        ]
     },
     entry: {
         index: './Scripts/index.ts'
@@ -18,14 +23,17 @@ module.exports = {
         rules: [
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader']
-                })
+                use: [
+                    'style-loader',
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ]
             }
         ]
     },
     plugins: [
-        new ExtractTextPlugin({ filename: '[name].css', allChunks: true })
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({ filename: '../css/main.css' })
     ]
 };

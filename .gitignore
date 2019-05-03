@@ -4,5 +4,8 @@ publish/
 node_modules/
 *.csproj.user
 
+**/wwwroot/js
+**/wwwroot/css
+
 .vs/
 .idea/

@@ -1,4 +1,4 @@
 /* styles */
-import './Content/Styles/main.scss';
+import 'Styles/main.scss';
 
 console.log('hello');
