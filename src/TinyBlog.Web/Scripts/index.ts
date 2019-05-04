@@ -1,4 +1,5 @@
 /* styles */
 import 'Styles/main.scss';
 
-console.log('hello');
+/* scripts */
+import 'app.tsx';

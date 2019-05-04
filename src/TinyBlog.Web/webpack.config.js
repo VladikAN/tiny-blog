@@ -6,6 +6,7 @@ module.exports = {
     mode: 'development',
     devtool: 'cheap-module-source-map',
     resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.json', 'css', 'scss'],
         modules: [
             path.resolve(__dirname, 'Content'),
             path.resolve(__dirname, 'Scripts'),
@@ -35,6 +36,10 @@ module.exports = {
                     'css-loader',
                     'sass-loader'
                 ]
+            },
+            { 
+                test: /\.tsx?$/, 
+                loader: 'awesome-typescript-loader'
             }
         ]
     },

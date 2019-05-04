@@ -33,7 +33,7 @@
             @RenderBody()
         </div>
 
-        
+
         <div class="footer">
             <div class="footer__body">
                 @if (!string.IsNullOrWhiteSpace(footer))
@@ -44,5 +44,7 @@
             </div>
         </div>
     </div>
+
+    @RenderSection("scripts", false)
 </body>
 </html>
