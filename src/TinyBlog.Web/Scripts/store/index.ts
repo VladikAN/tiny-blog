@@ -1,19 +1,23 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import { combineReducers } from 'redux';
 import { postReducer } from './post/reducers';
 import { threadReducer } from './thread/reducers';
 
 const rootReducer = combineReducers({
-    postReducer,
-    threadReducer
+    post: postReducer,
+    thread: threadReducer
 });
+
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+let middleware = [thunk]
 
 export default function configureStore(initialState={}) {
  return createStore(
     rootReducer,
     initialState,
-    applyMiddleware(thunk)
+    composeEnhancers(applyMiddleware(...middleware))
  );
 }
+
+export type AppState = ReturnType<typeof rootReducer>

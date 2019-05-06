@@ -1,13 +1,13 @@
-import { Thread, ThreadActionTypes, LOAD_THREAD_MESSAGE } from './types';
+import { ThreadState, ThreadActionTypes, LOAD_THREAD_MESSAGE } from './types';
 
-const initialState : Thread = {
+const initialState : ThreadState = {
     posts: []
 }
 
 export function threadReducer(
     state = initialState,
     action: ThreadActionTypes
-  ) : Thread {
+  ) : ThreadState {
     switch (action.type) {
       case LOAD_THREAD_MESSAGE:
         return {

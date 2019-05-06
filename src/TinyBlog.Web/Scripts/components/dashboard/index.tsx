@@ -1,7 +1,11 @@
 import * as React from "react";
+import Thread from './../thread';
 
 export default class Dashboard extends React.Component {
     render() {
-        return (<div>Hello</div>);
+        return (
+        <div>
+            <Thread />
+        </div>);
     };
 }

@@ -1,6 +1,6 @@
 import { Post } from './../post/types';
 
-export interface Thread {
+export interface ThreadState {
     posts: Post[]
 }
 
