@@ -9,5 +9,13 @@
     },
     "include": [
         "./Scripts/**/*"
+    ],
+    "typeRoots": [
+        "./node_modules/@types"
+    ],                                        
+    "types": [
+        "react",
+        "react-dom",
+        "react-redux"
     ]
 }

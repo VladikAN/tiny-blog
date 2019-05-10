@@ -23,7 +23,16 @@ module.exports = {
     optimization: {
         splitChunks: {
             chunks: 'all',
-            minChunks: 2
+            minChunks: 2,
+            cacheGroups: {
+                vendor: {
+					test: /node_modules/,
+					chunks: "initial",
+					name: "vendor",
+					priority: 10,
+					enforce: true
+				}
+            }
         }
     },
     module: {

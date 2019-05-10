@@ -2,7 +2,12 @@
     <script
         type="text/javascript"
         asp-append-version="true"
-        asp-src-include="~/js/*.js"></script>
+        asp-src-include="~/js/vendor.js"></script>
+    <script
+        type="text/javascript"
+        asp-append-version="true"
+        asp-src-include="~/js/*.js"
+        asp-src-exclude="~/js/vendor.js"></script>
 }
 
 <div id="root"></div>
