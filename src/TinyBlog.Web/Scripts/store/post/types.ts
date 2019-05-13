@@ -5,7 +5,7 @@ export interface Post {
 export const LOAD_POST_MESSAGE = 'LOAD_POST_MESSAGE';
 
 interface LoadPostAction {
-    type: typeof LOAD_POST_MESSAGE,
+    type: string,
     id: string
 }
 

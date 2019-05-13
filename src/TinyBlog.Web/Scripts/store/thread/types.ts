@@ -1,13 +1,7 @@
 import { Post } from './../post/types';
 
 export interface ThreadState {
-    posts: Post[]
+    posts: Post[],
+    isFetching: boolean,
+    isFetched: boolean
 }
-
-export const LOAD_THREAD_MESSAGE = 'LOAD_THREAD_MESSAGE';
-
-interface LoadThreadAction {
-    type: typeof LOAD_THREAD_MESSAGE
-}
-
-export type ThreadActionTypes = LoadThreadAction;
