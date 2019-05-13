@@ -4,12 +4,12 @@ export const LOAD_THREAD_MESSAGE = 'LOAD_THREAD';
 export const LOAD_THREAD_STARTED_MESSAGE = 'LOAD_THREAD_STARTED';
 
 interface LoadThreadAction {
-    type: string,
+    type: typeof LOAD_THREAD_MESSAGE,
     posts: Post[]
 }
 
 interface LoadThreadStartedAction {
-    type: string
+    type: typeof LOAD_THREAD_STARTED_MESSAGE
 }
 
 export type ThreadActionTypes = LoadThreadAction | LoadThreadStartedAction;

@@ -11,7 +11,7 @@ export function threadReducer(state = initialState, action: ThreadActionTypes) :
   switch (action.type) {
     case LOAD_THREAD_MESSAGE:
       return {
-        ...state,
+        posts: action.posts,
         isFetching: false,
         isFetched: true
       };
