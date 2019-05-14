@@ -1,0 +1,1 @@
+export const LoadThreadUrl : string = '/admin/thread';

@@ -1,23 +1,34 @@
+import { Dispatch, Action } from 'redux';
 import { Post } from './../post/types';
+import { http } from './../../api/http';
+import { LoadThreadUrl } from './../../api/urls';
 
-export const LOAD_THREAD_MESSAGE = 'LOAD_THREAD';
+export const LOAD_THREAD_COMPLETED_MESSAGE = 'LOAD_THREAD_COMPLETED';
 export const LOAD_THREAD_STARTED_MESSAGE = 'LOAD_THREAD_STARTED';
 
-interface LoadThreadAction {
-    type: typeof LOAD_THREAD_MESSAGE,
+/* Actions */
+interface LoadThreadStartedAction extends Action<typeof LOAD_THREAD_STARTED_MESSAGE> {
+}
+
+interface LoadThreadAction extends Action<typeof LOAD_THREAD_COMPLETED_MESSAGE> {
     posts: Post[]
 }
 
-interface LoadThreadStartedAction {
-    type: typeof LOAD_THREAD_STARTED_MESSAGE
-}
+export type ThreadActionTypes = LoadThreadStartedAction | LoadThreadAction;
 
-export type ThreadActionTypes = LoadThreadAction | LoadThreadStartedAction;
-
-export const loadThread = (posts: Post[]) : LoadThreadAction => {
-    return { type: LOAD_THREAD_MESSAGE, posts };
-}
-
-export const loadThreadStarted = () : LoadThreadStartedAction => {
+/* Action Creators */
+const loadThreadStartedActionCreator = () : LoadThreadStartedAction => {
     return { type: LOAD_THREAD_STARTED_MESSAGE };
+}
+
+const loadThreadActionCreator = (posts: Post[]) : LoadThreadAction => {
+    return { type: LOAD_THREAD_COMPLETED_MESSAGE, posts };
+}
+
+/* Dispatches */
+export const loadThread = () => async (dispatch : Dispatch) : Promise<void> => {
+    dispatch(loadThreadStartedActionCreator());
+    return http<Post[]>(LoadThreadUrl).then(response => {
+        dispatch(loadThreadActionCreator(response))
+    });
 }

@@ -1,15 +1,22 @@
 import * as React from "react";
 import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from "redux";
 import { AppState } from '../../store';
 import { ThreadState } from '../../store/thread/types';
 import { loadThread } from '../../store/thread/actions';
 
-interface OwnProps {
-    loadThread: typeof loadThread,
+interface StateProps {
     thread: ThreadState
 }
 
-type AllProps = OwnProps;
+interface DispatchProps {
+    loadThread: typeof loadThread
+}
+
+interface OwnProps {
+}
+
+type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {}
 
@@ -31,9 +38,12 @@ class Thread extends React.Component<AllProps, State> {
     };
 }
 
-const mapStateToProps = (state: AppState) => ({
-    loadThread: typeof loadThread,
+const mapStateToProps = (state: AppState) : StateProps => ({
     thread: state.thread
 })
 
-export default connect<OwnProps>(mapStateToProps)(Thread);
+const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
+    ...bindActionCreators({ loadThread }, dispatch)
+})
+
+export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Thread);

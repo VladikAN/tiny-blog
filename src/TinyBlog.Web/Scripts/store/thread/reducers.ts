@@ -1,5 +1,5 @@
 import { ThreadState } from './types';
-import { ThreadActionTypes, LOAD_THREAD_MESSAGE, LOAD_THREAD_STARTED_MESSAGE } from './actions';
+import { ThreadActionTypes, LOAD_THREAD_COMPLETED_MESSAGE, LOAD_THREAD_STARTED_MESSAGE } from './actions';
 
 const initialState : ThreadState = {
     posts: [],
@@ -9,7 +9,7 @@ const initialState : ThreadState = {
 
 export function threadReducer(state = initialState, action: ThreadActionTypes) : ThreadState {
   switch (action.type) {
-    case LOAD_THREAD_MESSAGE:
+    case LOAD_THREAD_COMPLETED_MESSAGE:
       return {
         posts: action.posts,
         isFetching: false,
