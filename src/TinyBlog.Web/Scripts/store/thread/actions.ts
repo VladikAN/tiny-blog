@@ -28,7 +28,7 @@ const loadThreadActionCreator = (posts: Post[]) : LoadThreadAction => {
 /* Dispatches */
 export const loadThread = () => async (dispatch : Dispatch) : Promise<void> => {
     dispatch(loadThreadStartedActionCreator());
-    return http<Post[]>(LoadThreadUrl).then(response => {
-        dispatch(loadThreadActionCreator(response))
+    return http<{ posts: Post[] }>(LoadThreadUrl).then(response => {
+        dispatch(loadThreadActionCreator(response.posts))
     });
 }

@@ -1,7 +1,17 @@
 import * as React from "react";
 
-export default class Post extends React.Component {
+interface OwnProps {
+    title: string
+}
+
+type AllProps = OwnProps;
+
+interface State {}
+
+class Post extends React.Component<AllProps, State> {
     render() {
-        return (<div>Hello</div>);
+        return (<div>{this.props.title}</div>);
     };
 }
+
+export default Post;

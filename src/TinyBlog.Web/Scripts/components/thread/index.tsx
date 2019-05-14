@@ -4,6 +4,7 @@ import { Dispatch, bindActionCreators } from "redux";
 import { AppState } from '../../store';
 import { ThreadState } from '../../store/thread/types';
 import { loadThread } from '../../store/thread/actions';
+import Post from './post';
 
 interface StateProps {
     thread: ThreadState
@@ -32,9 +33,13 @@ class Thread extends React.Component<AllProps, State> {
     render() {
         if (!this.props.thread.isFetched) {
             return (<div>loading</div>);
-        } 
+        }
 
-        return (<div>Hello</div>);
+        const posts = this.props.thread.posts.map(ps => (
+            <Post title={ps.title} />
+        ));
+
+        return (<div>{posts}</div>);
     };
 }
 
