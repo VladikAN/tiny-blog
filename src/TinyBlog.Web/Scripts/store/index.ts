@@ -2,9 +2,11 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import { threadReducer } from './thread/reducers';
+import { postReducer } from './post/reducers';
 
 const rootReducer = combineReducers({
-    thread: threadReducer
+    thread: threadReducer,
+    post: postReducer
 });
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

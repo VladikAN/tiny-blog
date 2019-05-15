@@ -1,5 +1,10 @@
-import { ThreadState } from './types';
+import { Thread } from './types';
 import { ThreadActionTypes, LOAD_THREAD_COMPLETED_MESSAGE, LOAD_THREAD_STARTED_MESSAGE } from './actions';
+
+export interface ThreadState extends Thread {
+  isFetching: boolean,
+  isFetched: boolean
+}
 
 const initialState : ThreadState = {
     posts: [],

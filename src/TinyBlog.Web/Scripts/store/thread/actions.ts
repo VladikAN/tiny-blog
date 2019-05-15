@@ -3,8 +3,9 @@ import { Post } from './../post/types';
 import { http } from './../../api/http';
 import { LoadThreadUrl } from './../../api/urls';
 
-export const LOAD_THREAD_COMPLETED_MESSAGE = 'LOAD_THREAD_COMPLETED';
+/* Messages */
 export const LOAD_THREAD_STARTED_MESSAGE = 'LOAD_THREAD_STARTED';
+export const LOAD_THREAD_COMPLETED_MESSAGE = 'LOAD_THREAD_COMPLETED';
 
 /* Actions */
 interface LoadThreadStartedAction extends Action<typeof LOAD_THREAD_STARTED_MESSAGE> {

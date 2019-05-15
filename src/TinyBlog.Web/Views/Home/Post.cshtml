@@ -1,15 +1,15 @@
 ﻿@model TinyBlog.Web.ViewModels.PostViewModel
 
 @{
-    ViewData["header"] = Model.Post.Title;
+    ViewData["header"] = Model.Title;
 }
 
-<h2>@Model.Post.Title</h2>
+<h2>@Model.Title</h2>
 
 <div>
-    @Html.Markdown(Model.Post.FullText)
+    @Html.Markdown(Model.FullText)
 </div>
 
-@await Component.InvokeAsync(nameof(Tags), Model.Post.Tags)
+@await Component.InvokeAsync(nameof(Tags), Model.Tags)
 
 <a href="/">[ back to home ]</a>

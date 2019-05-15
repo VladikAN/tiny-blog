@@ -15,7 +15,7 @@ ReactDOM.render(
         component={Dashboard} />
       <Route 
         path="/admin/post/:linkText" 
-        children={({ match:match }) => (match && <Post link={match.params['linkText']} />)} />
+        children={({ match:match }) => (match && <Post linkText={match.params['linkText']} />)} />
     </Router>
     </Provider>,
     document.getElementById('root')
