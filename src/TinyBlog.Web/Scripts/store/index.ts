@@ -1,11 +1,9 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import { postReducer } from './post/reducers';
 import { threadReducer } from './thread/reducers';
 
 const rootReducer = combineReducers({
-    post: postReducer,
     thread: threadReducer
 });
 

@@ -52,7 +52,11 @@ namespace TinyBlog.Web.Configuration
         public static IApplicationBuilder UseMvcWithRoutes(this IApplicationBuilder app)
         {
             app
-                .UseMvc(routes => { routes.MapRoute("default", "{controller=Post}/{action=Index}/{id?}"); });
+                .UseMvc(routes =>
+                {
+                    routes.MapRoute("admin", "admin/{action=Index}/{id?}", new { controller = "Admin" });
+                    routes.MapRoute("default", "{controller=Post}/{action=Index}/{id?}");
+                });
 
             return app;
         }

@@ -22,7 +22,7 @@ namespace TinyBlog.Web.Controllers
             return View(model);
         }
 
-        [HttpGet, Route("/{linkText:required}")]
+        [HttpGet, Route("post/{linkText:required}")]
         public async Task<IActionResult> Post(string linkText)
         {
             var post = await _postDataService.GetByLinkText(linkText);

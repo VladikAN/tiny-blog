@@ -1,12 +1,12 @@
 export interface Post {
-    title: string
+    title: string,
+    linkText: string,
+    previewText: string,
+    fullText: string,
+    publishedAt: Date,
+    tags: Tag[]
 }
 
-export const LOAD_POST_MESSAGE = 'LOAD_POST_MESSAGE';
-
-interface LoadPostAction {
-    type: string,
-    id: string
+export interface Tag {
+    name: string
 }
-
-export type PostActionTypes = LoadPostAction;

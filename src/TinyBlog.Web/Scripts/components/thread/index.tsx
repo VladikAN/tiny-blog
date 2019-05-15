@@ -36,10 +36,13 @@ class Thread extends React.Component<AllProps, State> {
         }
 
         const posts = this.props.thread.posts.map(ps => (
-            <Post title={ps.title} />
+            <Post key={ps.linkText} post={ps} />
         ));
 
-        return (<div>{posts}</div>);
+        return (
+        <div className="thread">
+            {posts}
+        </div>);
     };
 }
 
