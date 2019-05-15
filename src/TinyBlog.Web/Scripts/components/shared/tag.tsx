@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Tag as TagType } from './../../store/post/types';
 
-interface OwnProps {
+interface StateProps {
     tag: TagType
 }
 
-type AllProps = OwnProps;
+type AllProps = StateProps;
 
 interface State {}
 

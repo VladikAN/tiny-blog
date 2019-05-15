@@ -1,1 +1,1 @@
-export const LoadThreadUrl : string = '/admin/thread';
+export const LoadThreadUrl : string = '/api/posts';

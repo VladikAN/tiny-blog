@@ -5,7 +5,7 @@
     <div class="thread">
         @foreach (var post in Model)
         {
-            var href = Url.Action("post", "post", new { post.LinkText });
+            var href = Url.Action("post", new { post.LinkText });
 
         <div class="thread__post">
             <a class="link-header"

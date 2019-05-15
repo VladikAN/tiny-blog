@@ -12,10 +12,11 @@
     ],
     "typeRoots": [
         "./node_modules/@types"
-    ],                                        
+    ],
     "types": [
         "react",
         "react-dom",
-        "react-redux"
+        "react-redux",
+        "react-router-dom"
     ]
 }

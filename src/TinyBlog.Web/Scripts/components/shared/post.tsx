@@ -1,18 +1,19 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import Tag from './tag';
-import { Post as PostType } from './../../store/post/types';
+import { Post as PostType } from '../../store/post/types';
 
-interface OwnProps {
+interface StateProps {
     post: PostType
 }
 
-type AllProps = OwnProps;
+type AllProps = StateProps;
 
 interface State {}
 
 class Post extends React.Component<AllProps, State> {
     render() {
-        const { title, publishedAt, previewText, tags } = this.props.post;
+        const { title, linkText, publishedAt, previewText, tags } = this.props.post;
 
         const tagsRender = tags.map(tg => (
             <Tag key={tg.name} tag={tg} />
@@ -20,9 +21,9 @@ class Post extends React.Component<AllProps, State> {
 
         return (
         <div className="thread__post">
-            <a className="link-header" href={null}>
+            <Link className="link-header" to={`/admin/post/${linkText}`}>
                 <h2>{title}</h2>
-            </a>
+            </Link>
             <div className="thread__post_info">
                 <span>{publishedAt}</span>
             </div>

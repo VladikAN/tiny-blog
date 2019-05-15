@@ -38,11 +38,7 @@
       <Exec Command="npm run release" />
       <ItemGroup>
         <_MoreFiles Include="wwwroot\**" />
-        <ContentWithTargetPath
-          Include="@(_MoreFiles->'%(FullPath)')"
-          RelativePath="%(_MoreFiles.Identity)"
-          TargetPath="%(_MoreFiles.Identity)"
-          CopyToPublishDirectory="Always" />
+        <ContentWithTargetPath Include="@(_MoreFiles->'%(FullPath)')" RelativePath="%(_MoreFiles.Identity)" TargetPath="%(_MoreFiles.Identity)" CopyToPublishDirectory="Always" />
       </ItemGroup>
   </Target>
 </Project>

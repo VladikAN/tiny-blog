@@ -54,8 +54,7 @@ namespace TinyBlog.Web.Configuration
             app
                 .UseMvc(routes =>
                 {
-                    routes.MapRoute("admin", "admin/{action=Index}/{id?}", new { controller = "Admin" });
-                    routes.MapRoute("default", "{controller=Post}/{action=Index}/{id?}");
+                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 });
 
             return app;

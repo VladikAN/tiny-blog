@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TinyBlog.Web.Controllers
 {
-    public class PostController : BaseController
+    public class HomeController : BaseController
     {
         private readonly IPostDataService _postDataService;
 
-        public PostController(IPostDataService postDataService)
+        public HomeController(IPostDataService postDataService)
         {
             _postDataService = postDataService;
         }
@@ -20,6 +20,12 @@ namespace TinyBlog.Web.Controllers
             var posts = await _postDataService.GetAll();
             var model = new ThreadViewModel(posts);
             return View(model);
+        }
+
+        [HttpGet, Route("admin")]
+        public IActionResult Admin()
+        {
+            return View();
         }
 
         [HttpGet, Route("post/{linkText:required}")]
