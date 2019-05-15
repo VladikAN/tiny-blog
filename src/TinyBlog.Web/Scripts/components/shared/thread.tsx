@@ -6,8 +6,7 @@ import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
 import Post from './post';
 
-interface StateProps {
-    thread: ThreadState
+interface StateProps extends ThreadState {
 }
 
 interface DispatchProps {
@@ -25,18 +24,18 @@ class Thread extends React.Component<AllProps, State> {
     constructor(props: AllProps) {
         super(props);
 
-        if (!this.props.thread.isFetched && !this.props.thread.isFetching) {
+        if (!this.props.isFetched && !this.props.isFetching) {
             this.props.loadThread();
         }
     }
 
     render() {
-        if (!this.props.thread.isFetched) {
+        if (!this.props.isFetched) {
             return (<div>loading</div>);
         }
 
-        const posts = this.props.thread.posts.map(ps => (
-            <Post key={ps.linkText} post={ps} />
+        const posts = this.props.posts.map(ps => (
+            <Post key={ps.linkText} {...ps} />
         ));
 
         return (
@@ -47,7 +46,7 @@ class Thread extends React.Component<AllProps, State> {
 }
 
 const mapStateToProps = (state: AppState) : StateProps => ({
-    thread: state.thread
+    ...state.thread
 })
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({

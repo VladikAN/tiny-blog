@@ -4,9 +4,9 @@ import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from 'react-redux';
+import Loading from "../shared/loading";
 
-interface StateProps {
-    post: PostState
+interface StateProps extends PostState {
 }
 
 interface DispatchProps {
@@ -14,33 +14,66 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-    linkText: string
+    id: string
 }
 
 type AllProps = OwnProps & StateProps & DispatchProps;
 
-interface State {}
+interface State {
+    previewText: string
+}
 
 class Post extends React.Component<AllProps, State> {
     constructor(props: AllProps) {
         super(props);
 
-        if ((!this.props.post.isFetched && !this.props.post.isFetching)
-            || this.props.post.linkText != this.props.linkText) {
-            this.props.loadPost(this.props.linkText);
+        this.state = {
+            previewText: this.props.previewText
+        };
+
+        if ((!this.props.isFetched && !this.props.isFetching)
+            || this.props.linkText != this.props.id) {
+            this.props.loadPost(this.props.id);
         }
     }
 
+    handlePreviewChange = (value: string) => {
+        this.setState({ previewText: value });
+    }
+
     render() {
+        if (this.props.isFetching) {
+            return (<Loading />);
+        }
+
+        const { previewText } = this.state;
+
         return (
         <div>
-            {this.props.post.title}
+            <div>
+                <label>
+                    <span>Title</span>
+                    <input
+                        type="text" 
+                        name="title" />
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>Link</span>
+                    <input
+                        type="text" 
+                        name="link" />
+                </label>
+            </div>
+            <div>
+            </div>
         </div>);
     };
 }
 
 const mapStateToProps = (state: AppState) : StateProps => ({
-    post: state.post
+    ...state.post
 })
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
