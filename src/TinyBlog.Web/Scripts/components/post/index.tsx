@@ -5,8 +5,10 @@ import { AppState } from "../../store";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import Loading from "../shared/loading";
+import MarkdownEditor from "../shared/markdown-editor";
 
-interface StateProps extends PostState {
+interface StateProps {
+    post: PostState
 }
 
 interface DispatchProps {
@@ -20,19 +22,14 @@ interface OwnProps {
 type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {
-    previewText: string
 }
 
 class Post extends React.Component<AllProps, State> {
     constructor(props: AllProps) {
         super(props);
 
-        this.state = {
-            previewText: this.props.previewText
-        };
-
-        if ((!this.props.isFetched && !this.props.isFetching)
-            || this.props.linkText != this.props.id) {
+        if ((!this.props.post.isFetched && !this.props.post.isFetching)
+            || this.props.post.linkText != this.props.id) {
             this.props.loadPost(this.props.id);
         }
     }
@@ -42,11 +39,11 @@ class Post extends React.Component<AllProps, State> {
     }
 
     render() {
-        if (this.props.isFetching) {
+        if (this.props.post.isFetching) {
             return (<Loading />);
         }
 
-        const { previewText } = this.state;
+        const { previewText } = this.props.post;
 
         return (
         <div>
@@ -66,14 +63,13 @@ class Post extends React.Component<AllProps, State> {
                         name="link" />
                 </label>
             </div>
-            <div>
-            </div>
+            <MarkdownEditor text={previewText} />
         </div>);
     };
 }
 
 const mapStateToProps = (state: AppState) : StateProps => ({
-    ...state.post
+    post: state.post
 })
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({

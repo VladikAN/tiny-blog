@@ -8,7 +8,7 @@ type AllProps = StateProps;
 
 interface State {}
 
-class Post extends React.Component<AllProps, State> {
+class Tag extends React.Component<AllProps, State> {
     render() {
         let { name } = this.props;
 
@@ -16,4 +16,4 @@ class Post extends React.Component<AllProps, State> {
     };
 }
 
-export default Post;
+export default Tag;
