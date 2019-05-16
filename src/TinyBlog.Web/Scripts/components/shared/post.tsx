@@ -11,8 +11,9 @@ interface State {}
 
 class Post extends React.Component<AllProps, State> {
     render() {
-        const { title, linkText, publishedAt, previewText, tags } = this.props;
-
+        const { title, linkText, publishedAt, previewText, tags, isPublished } = this.props;
+        
+        const extendedTitle = isPublished ? title : `[draft] ${title}`;
         const tagsRender = tags.map(tg => (
             <Tag key={tg.name} {...tg} />
         ));
@@ -20,7 +21,7 @@ class Post extends React.Component<AllProps, State> {
         return (
         <div className="thread__post">
             <Link className="link-header" to={`/admin/post/${linkText}`}>
-                <h2>{title}</h2>
+                <h2>{extendedTitle}</h2>
             </Link>
             <div className="thread__post_info">
                 <span>{publishedAt}</span>

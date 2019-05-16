@@ -2,6 +2,7 @@
 using TinyBlog.DataServices.Services;
 using TinyBlog.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace TinyBlog.Web.Controllers
 {
@@ -17,7 +18,7 @@ namespace TinyBlog.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var posts = await _postDataService.GetAll();
+            var posts = (await _postDataService.GetAll()).Where(x => x.IsPublished).ToArray();
             var model = new ThreadViewModel(posts);
             return View(model);
         }
@@ -32,7 +33,7 @@ namespace TinyBlog.Web.Controllers
         public async Task<IActionResult> Post(string linkText)
         {
             var post = await _postDataService.GetByLinkText(linkText);
-            if (post == null)
+            if (post == null || !post.IsPublished)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -49,7 +50,7 @@ namespace TinyBlog.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var posts = await _postDataService.GetByTag(name);
+            var posts = (await _postDataService.GetByTag(name)).Where(x => x.IsPublished).ToArray();
             var model = new ThreadViewModel(posts);
             return View(nameof(Index), model);
         }

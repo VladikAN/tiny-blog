@@ -13,6 +13,7 @@ const initialState : PostState = {
     fullText: null,
     publishedAt: null,
     tags: [],
+    isPublished: false,
     isFetching: false,
     isFetched: false
 }

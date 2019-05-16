@@ -1,10 +1,11 @@
-﻿using TinyBlog.DataServices.Entities;
-using TinyBlog.DataServices.Services.Dto;
-using TinyBlog.DataServices.Settings;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TinyBlog.DataServices.Entities;
+using TinyBlog.DataServices.Extensions;
+using TinyBlog.DataServices.Services.Dto;
+using TinyBlog.DataServices.Settings;
 
 namespace TinyBlog.DataServices.Services
 {
@@ -22,9 +23,9 @@ namespace TinyBlog.DataServices.Services
 
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => pst.PublishedAt <= now, options);
+                .FindAsync(FilterDefinition<Post>.Empty, options);
 
-            var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
+            var result = data.ToList().Select(pst => pst.BuildDto()).ToArray();
             return result;
         }
 
@@ -35,9 +36,9 @@ namespace TinyBlog.DataServices.Services
 
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => pst.Tags.Any(x => x.Name == queryParam) && pst.PublishedAt <= now, options);
+                .FindAsync(pst => pst.Tags.Any(x => x.Name == queryParam), options);
 
-            var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
+            var result = data.ToList().Select(pst => pst.BuildDto()).ToArray();
             return result;
         }
 
@@ -47,7 +48,7 @@ namespace TinyBlog.DataServices.Services
             var queryParam = linkText.ToLower();
 
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => pst.LinkText == queryParam && pst.PublishedAt <= now);
+                .FindAsync(pst => pst.LinkText == queryParam);
 
             var post = data.FirstOrDefault();
             if (post == null)
@@ -55,8 +56,44 @@ namespace TinyBlog.DataServices.Services
                 return null;
             }
 
-            var result = PostDto.Build(post, includeText: true);
+            var result = post.BuildDto(includeText: true);
             return result;
+        }
+
+        public Task Create(PostDto post)
+        {
+            return Repository.GetCollection<Post>(CollectionName)
+                .InsertOneAsync(post.BuildDomain());
+        }
+
+        public Task Update(PostDto post)
+        {
+            var definition = Builders<Post>.Update
+                .Set(x => x.Title, post.Title)
+                .Set(x => x.LinkText, post.LinkText)
+                .Set(x => x.PreviewText, post.PreviewText)
+                .Set(x => x.FullText, post.FullText);
+                
+            var options = new UpdateOptions { IsUpsert = false };
+
+            return Repository.GetCollection<Post>(CollectionName)
+                .UpdateOneAsync(x => x.LinkText == post.LinkText, definition, options);
+        }
+
+        public Task TogglePublish(string linkText, bool publish)
+        {
+            var definition = Builders<Post>.Update
+                .Set(x => x.IsPublished, publish);
+
+            if (publish)
+            {
+                definition.Set(x => x.PublishedAt, DateTime.UtcNow);
+            }
+
+            var options = new UpdateOptions { IsUpsert = false };
+
+            return Repository.GetCollection<Post>(CollectionName)
+                .UpdateOneAsync(x => x.LinkText == linkText, definition, options);
         }
     }
 }

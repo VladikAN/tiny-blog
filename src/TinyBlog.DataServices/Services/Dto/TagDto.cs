@@ -10,10 +10,5 @@ namespace TinyBlog.DataServices.Services.Dto
         }
 
         public string Name { get; }
-
-        internal static TagDto Build(Tag tag)
-        {
-            return new TagDto(tag.Name);
-        }
     }
 }

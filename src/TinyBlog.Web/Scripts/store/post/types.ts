@@ -4,7 +4,8 @@ export interface Post {
     previewText: string,
     fullText: string,
     publishedAt: Date,
-    tags: Tag[]
+    tags: Tag[],
+    isPublished: boolean
 }
 
 export interface Tag {

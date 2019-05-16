@@ -22,5 +22,8 @@ namespace TinyBlog.DataServices.Entities
 
         [BsonElement("tags")]
         public Tag[] Tags { get; set; }
+
+        [BsonElement("isPublished")]
+        public bool IsPublished { get; set; }
     }
 }

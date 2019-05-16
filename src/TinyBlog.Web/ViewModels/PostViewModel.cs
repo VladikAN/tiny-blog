@@ -20,6 +20,7 @@ namespace TinyBlog.Web.ViewModels
             Tags = (post.Tags ?? new TagDto[0])
                 .Select(tag => new TagViewModel(tag))
                 .ToArray();
+            IsPublished = post.IsPublished;
         }
 
         public string Title { get; }
@@ -28,5 +29,6 @@ namespace TinyBlog.Web.ViewModels
         public string FullText { get; set; }
         public DateTime PublishedAt { get; }
         public TagViewModel[] Tags { get; } = new TagViewModel[0];
+        public bool IsPublished { get; }
     }
 }

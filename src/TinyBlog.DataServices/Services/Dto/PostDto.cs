@@ -1,17 +1,20 @@
-﻿using TinyBlog.DataServices.Entities;
-using System;
-using System.Linq;
+﻿using System;
 
 namespace TinyBlog.DataServices.Services.Dto
 {
     public class PostDto
     {
+        public PostDto()
+        {
+        }
+
         public PostDto(
             string title,
             string linkText,
             string previewText,
             string fullText,
             DateTime publishedAt,
+            bool isPublished,
             TagDto[] tags = null)
         {
             Title = title;
@@ -19,28 +22,16 @@ namespace TinyBlog.DataServices.Services.Dto
             PreviewText = previewText;
             FullText = fullText;
             PublishedAt = publishedAt;
+            IsPublished = isPublished;
             Tags = tags ?? new TagDto[0];
         }
 
-        public string Title { get; }
+        public string Title { get; set; }
         public string LinkText { get; set; }
-        public string PreviewText { get; }
+        public string PreviewText { get; set; }
         public string FullText { get; set; }
-        public DateTime PublishedAt { get; }
-        public TagDto[] Tags { get; }
-
-        internal static PostDto Build(Post post, bool includeText = false)
-        {
-            var tags = (post.Tags?.Select(tg => TagDto.Build(tg)) ?? new TagDto[0]).ToArray();
-            var fullText = includeText ? post.FullText : string.Empty;
-
-            return new PostDto(
-                post.Title,
-                post.LinkText,
-                post.PreviewText,
-                fullText,
-                post.PublishedAt,
-                tags);
-        }
+        public DateTime PublishedAt { get; set; }
+        public TagDto[] Tags { get; set; }
+        public bool IsPublished { get; set; }
     }
 }
