@@ -111,7 +111,7 @@ a.site-title {
     align-items: stretch;
 
     .md-editor__window {
-        height: 256px;
+        min-height: 256px;
         flex: 1 1;
 
         &.md-editor__window-left {

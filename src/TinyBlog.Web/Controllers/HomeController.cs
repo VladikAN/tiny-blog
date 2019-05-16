@@ -22,7 +22,7 @@ namespace TinyBlog.Web.Controllers
             return View(model);
         }
 
-        [HttpGet, Route("admin")]
+        [HttpGet, Route("admin/{*internal}")]
         public IActionResult Admin()
         {
             return View();
