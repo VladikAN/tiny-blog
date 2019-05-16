@@ -25,16 +25,18 @@ interface State {
     title: string,
     linkText: string,
     previewText: string,
-    fullText: string
+    fullText: string,
+    publishedAt: string
 }
 
 class Post extends React.Component<AllProps, State> {
     constructor(props: AllProps) {
         super(props);
 
-        this.state = { title: '', linkText: '', previewText: '', fullText: '' };
+        this.state = { title: '', linkText: '', previewText: '', fullText: '', publishedAt: '' };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleMdChange = this.handleMdChange.bind(this);
     }
 
     componentDidMount() {
@@ -50,7 +52,8 @@ class Post extends React.Component<AllProps, State> {
                 title: this.props.post.title,
                 linkText: this.props.post.linkText,
                 previewText: this.props.post.previewText,
-                fullText: this.props.post.fullText
+                fullText: this.props.post.fullText,
+                publishedAt: this.props.post.publishedAt.toString()
             });
         }
     }
@@ -68,7 +71,7 @@ class Post extends React.Component<AllProps, State> {
             return (<Loading />);
         }
 
-        const { title, linkText, previewText, fullText } = this.state;
+        const { title, linkText, previewText, fullText, publishedAt } = this.state;
 
         return (
         <div>
@@ -89,6 +92,16 @@ class Post extends React.Component<AllProps, State> {
                         type="text"
                         name="linkText"
                         value={linkText}
+                        onChange={this.handleChange} />
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>Published</span>
+                    <input
+                        type="date"
+                        name="publishedAt"
+                        value={publishedAt}
                         onChange={this.handleChange} />
                 </label>
             </div>

@@ -34,7 +34,13 @@ namespace TinyBlog.DataServices.Services.Dto
             var tags = (post.Tags?.Select(tg => TagDto.Build(tg)) ?? new TagDto[0]).ToArray();
             var fullText = includeText ? post.FullText : string.Empty;
 
-            return new PostDto(post.Title, post.LinkText, post.PreviewText, fullText, post.PublishedAt, tags);
+            return new PostDto(
+                post.Title,
+                post.LinkText,
+                post.PreviewText,
+                fullText,
+                post.PublishedAt,
+                tags);
         }
     }
 }

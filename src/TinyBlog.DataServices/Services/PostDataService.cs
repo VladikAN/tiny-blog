@@ -22,10 +22,9 @@ namespace TinyBlog.DataServices.Services
 
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => pst.PublishAt == null || pst.PublishAt <= now, options);
+                .FindAsync(pst => pst.PublishedAt <= now, options);
 
             var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
-
             return result;
         }
 
@@ -36,12 +35,9 @@ namespace TinyBlog.DataServices.Services
 
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => 
-                    pst.Tags.Any(x => x.Name == queryParam)
-                    && (pst.PublishAt == null || pst.PublishAt <= now), options);
+                .FindAsync(pst => pst.Tags.Any(x => x.Name == queryParam) && pst.PublishedAt <= now, options);
 
             var result = data.ToList().Select(pst => PostDto.Build(pst)).ToArray();
-
             return result;
         }
 
@@ -51,9 +47,7 @@ namespace TinyBlog.DataServices.Services
             var queryParam = linkText.ToLower();
 
             var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => 
-                    pst.LinkText == queryParam
-                    && (pst.PublishAt == null || pst.PublishAt <= now));
+                .FindAsync(pst => pst.LinkText == queryParam && pst.PublishedAt <= now);
 
             var post = data.FirstOrDefault();
             if (post == null)
@@ -62,7 +56,6 @@ namespace TinyBlog.DataServices.Services
             }
 
             var result = PostDto.Build(post, includeText: true);
-
             return result;
         }
     }
