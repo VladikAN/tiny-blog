@@ -21,9 +21,7 @@ type AllProps = OwnProps & StateProps & DispatchProps;
 interface State {}
 
 class Thread extends React.Component<AllProps, State> {
-    constructor(props: AllProps) {
-        super(props);
-
+    componentDidMount() {
         if (!this.props.isFetched && !this.props.isFetching) {
             this.props.loadThread();
         }

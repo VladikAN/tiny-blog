@@ -102,3 +102,28 @@ a.site-title {
         text-decoration: none;
     }
 }
+
+.md-editor {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+
+    .md-editor__window {
+        height: 256px;
+        flex: 1 1;
+
+        &.md-editor__window-left {
+            textarea {
+                width: 90%;
+                height: 90%;
+                margin: 5%;
+            }
+        }
+
+        &.md-editor__window-right {
+            border: 1px dashed #ccc;
+        }
+    }
+}

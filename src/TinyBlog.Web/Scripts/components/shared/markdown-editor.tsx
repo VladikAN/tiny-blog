@@ -1,11 +1,16 @@
 import * as React from "react";
-import { Tag as TagType } from './../../store/post/types';
+import { Markdown } from 'react-showdown';
 
 interface OwnProps {
+    name: string,
     text: string
 }
 
-type AllProps = OwnProps;
+interface DispatchProps {
+    onChange: (name: string, value: string) => void
+}
+
+type AllProps = OwnProps & DispatchProps;
 
 interface State {
     newText: string
@@ -18,13 +23,33 @@ class MarkdownEditor extends React.Component<AllProps, State> {
         this.state = {
             newText: this.props.text
         };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidUpdate(prev: AllProps) {
+        if (prev.text != this.props.text) {
+            this.setState({ newText: this.props.text });
+        }
+    }
+
+    handleChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
+        const value = event.currentTarget.value;
+        this.setState({ newText: value });
+        this.props.onChange(this.props.name, value);
     }
 
     render() {
-        let { newText } = this.state;
+        const { newText } = this.state;
 
-        return (<div>
-            {newText}
+        return (
+        <div className="md-editor">
+            <div className="md-editor__window md-editor__window-left">
+                <textarea value={newText || ''} onChange={this.handleChange} />
+            </div>
+            <div className="md-editor__window md-editor__window-right">
+                <Markdown markup={newText || ''} />
+            </div>
         </div>);
     };
 }
