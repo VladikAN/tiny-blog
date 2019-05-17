@@ -62,7 +62,7 @@ namespace TinyBlog.DataServices.Services
             try
             {
                 await PostCollection().InsertOneAsync(post.BuildDomain());
-                _logger.LogInformation($"Post {post.LinkText} was created");
+                _logger.LogInformation($"Post '{post.LinkText}' was created");
 
                 return true;
             }
@@ -77,16 +77,18 @@ namespace TinyBlog.DataServices.Services
         {
             try
             {
+                var domain = post.BuildDomain();
                 var definition = Builders<Post>.Update
-                .Set(x => x.Title, post.Title)
-                .Set(x => x.LinkText, post.LinkText)
-                .Set(x => x.PreviewText, post.PreviewText)
-                .Set(x => x.FullText, post.FullText);
+                .Set(x => x.Title, domain.Title)
+                .Set(x => x.LinkText, domain.LinkText)
+                .Set(x => x.PreviewText, domain.PreviewText)
+                .Set(x => x.FullText, domain.FullText)
+                .Set(x => x.Tags, domain.Tags);
 
                 var options = new UpdateOptions { IsUpsert = false };
 
                 await PostCollection().UpdateOneAsync(x => x.LinkText == post.LinkText, definition, options);
-                _logger.LogInformation($"Post {post.LinkText} was updated");
+                _logger.LogInformation($"Post '{post.LinkText}' was updated");
 
                 return true;
             }

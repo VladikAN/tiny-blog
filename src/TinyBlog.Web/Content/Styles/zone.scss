@@ -1,0 +1,24 @@
+.zone {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    margin: 12px 0;
+
+    &.zone-green {
+        border: 1px dashed #42b6f3;
+        background-color: #42b6f3aa;
+    }
+
+    &.zone-red {
+        border: 1px dashed #fe42b2;
+        background-color: #fe42b2aa;
+    }
+
+    .zone__text {
+        flex: 1 1;
+    }
+
+    .zone__button {
+        flex: 0 1;
+    }
+}

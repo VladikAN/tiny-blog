@@ -28,7 +28,7 @@ namespace TinyBlog.Web.ViewModels
         public string PreviewText { get; set; }
         public string FullText { get; set; }
         public DateTime PublishedAt { get; }
-        public TagViewModel[] Tags { get; } = new TagViewModel[0];
+        public TagViewModel[] Tags { get; set; } = new TagViewModel[0];
         public bool IsPublished { get; }
 
         public PostDto ToDto()

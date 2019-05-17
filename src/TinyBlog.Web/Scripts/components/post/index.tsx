@@ -1,11 +1,12 @@
 import * as React from "react";
 import { loadPost, updatePost, togglePost } from "../../store/post/actions";
-import { Post as PostType } from "../../store/post/types";
+import { Post as PostType, Tag as TagType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import Loading from "../shared/loading";
+import Zone, { ZoneType } from "../shared/zone";
 import MarkdownEditor from "../shared/markdown-editor";
 
 interface StateProps {
@@ -28,14 +29,15 @@ interface State {
     title: string,
     linkText: string,
     previewText: string,
-    fullText: string
+    fullText: string,
+    tags: string
 }
 
 class Post extends React.Component<AllProps, State> {
     constructor(props: AllProps) {
         super(props);
 
-        this.state = { title: '', linkText: '', previewText: '', fullText: '' };
+        this.state = { title: '', linkText: '', previewText: '', fullText: '', tags: '' };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
@@ -56,7 +58,8 @@ class Post extends React.Component<AllProps, State> {
                 title: this.props.post.title || '',
                 linkText: this.props.post.linkText || '',
                 previewText: this.props.post.previewText || '',
-                fullText: this.props.post.fullText || ''
+                fullText: this.props.post.fullText || '',
+                tags: this.props.post.tags.map(tg => tg.name).join(' ')
             });
         }
     }
@@ -70,11 +73,13 @@ class Post extends React.Component<AllProps, State> {
     }
 
     submitPost = () => {
+        const tags = this.state.tags.split(' ').map((tg: string) => ({ name: tg } as TagType))
         const record: PostType = {
             title: this.state.title,
             linkText: this.state.linkText,
             previewText: this.state.previewText,
-            fullText: this.state.fullText
+            fullText: this.state.fullText,
+            tags: tags
         };
 
         this.props.updatePost(record);
@@ -89,17 +94,16 @@ class Post extends React.Component<AllProps, State> {
             return (<Loading />);
         }
 
-        const { title, linkText, previewText, fullText } = this.state;
+        const { title, linkText, previewText, fullText, tags } = this.state;
         const { isUpdating, isPublished } = this.props.post;
 
-        const publishZoneClass = isPublished ? 'zone-red' : 'zone-green';
         const publishZoneText = isPublished
             ? 'This post is currently public. By pressing this button you will hide post from everyone.'
             : 'This post is currently hidden. Publish this post for everyone by pressing button.';
 
         return (
         <div>
-            <div>
+            <div className="editor-field">
                 <label>
                     <span>Title</span>
                     <input
@@ -109,7 +113,7 @@ class Post extends React.Component<AllProps, State> {
                         onChange={this.handleChange} />
                 </label>
             </div>
-            <div>
+            <div className="editor-field">
                 <label>
                     <span>Link</span>
                     <input
@@ -119,23 +123,32 @@ class Post extends React.Component<AllProps, State> {
                         onChange={this.handleChange} />
                 </label>
             </div>
-            <div>
-                <h3>Preview Text</h3>
+            <div className="editor-field">
+                <span>Preview Text</span>
                 <MarkdownEditor 
                     name="previewText"
                     text={previewText}
                     onChange={this.handleMdChange} />
             </div>
-            <div>
-                <h3>Full Text</h3>
+            <div className="editor-field">
+                <span>Full Text</span>
                 <MarkdownEditor 
                     name="fullText"
                     text={fullText}
                     onChange={this.handleMdChange} />
             </div>
-            <div>
-                <h3>Tags</h3>
+            <div className="editor-field">
+                <label>
+                    <span>Tags</span>
+                    <input
+                        type="text"
+                        name="tags"
+                        value={tags}
+                        onChange={this.handleChange} />
+                </label>
+                <span className="editor-field__help">* each tag is separated by single space</span>
             </div>
+
             <button
                 type="button"
                 disabled={isUpdating}
@@ -143,14 +156,11 @@ class Post extends React.Component<AllProps, State> {
                 {isUpdating ? 'Saving' : 'Save'}
                 </button>
 
-            <div className={`zone ${publishZoneClass}`}>
-                <div className="zone__text">{publishZoneText}</div>
-                <button
-                    type="button"
-                    onClick={this.togglePublish}>
-                    {isPublished ? 'Unpublish' : 'Publish'}
-                </button>
-            </div>
+            <Zone
+                type={isPublished ? ZoneType.red : ZoneType.green}
+                text={publishZoneText}
+                buttonText={isPublished ? 'Unpublish' : 'Publish'}
+                onClick={this.togglePublish} />
         </div>);
     };
 }

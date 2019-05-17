@@ -23,6 +23,29 @@ a {
     text-decoration: none;
 }
 
+.editor-field{
+    margin-bottom: 8px;
+
+    label {
+        span {
+            display: block; 
+        }
+
+        input {
+            min-width: 256px;
+            width: 50%;
+            line-height: 24px;
+            padding: 0 2px;
+        }
+    }
+
+    .editor-field__help {
+        display: block;
+        font-size: 80%;
+        color: #666;
+    }
+}
+
 a.site-title {
     font-size: 150%;
     text-transform: uppercase;
@@ -100,23 +123,5 @@ a.site-title {
         padding: 4px 6px;
         text-align: center;
         text-decoration: none;
-    }
-}
-
-.zone {
-    padding: 24px;
-
-    &.zone-green {
-        border: 1px dashed #42b6f3;
-        background-color: #42b6f3aa;
-    }
-
-    &.zone-red {
-        border: 1px dashed #fe42b2;
-        background-color: #fe42b2aa;
-    }
-
-    .zone_text {
-
     }
 }
