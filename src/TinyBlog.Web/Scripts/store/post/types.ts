@@ -3,9 +3,9 @@ export interface Post {
     linkText: string,
     previewText: string,
     fullText: string,
-    publishedAt: Date,
-    tags: Tag[],
-    isPublished: boolean
+    publishedAt?: Date,
+    tags?: Tag[],
+    isPublished?: boolean
 }
 
 export interface Tag {

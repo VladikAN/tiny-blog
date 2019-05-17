@@ -8,8 +8,8 @@ namespace TinyBlog.DataServices.Services
         Task<PostDto[]> GetAll();
         Task<PostDto[]> GetByTag(string name);
         Task<PostDto> GetByLinkText(string linkText);
-        Task Create(PostDto post);
-        Task Update(PostDto post);
-        Task TogglePublish(string linkText, bool publish);
+        Task<bool> Create(PostDto post);
+        Task<bool> Update(PostDto post);
+        Task<bool> TogglePublish(string linkText, bool publish);
     }
 }

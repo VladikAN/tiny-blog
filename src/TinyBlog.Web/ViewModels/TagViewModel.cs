@@ -14,5 +14,10 @@ namespace TinyBlog.Web.ViewModels
         }
 
         public string Name { get; set; }
+
+        public TagDto ToDto()
+        {
+            return new TagDto(Name);
+        }
     }
 }

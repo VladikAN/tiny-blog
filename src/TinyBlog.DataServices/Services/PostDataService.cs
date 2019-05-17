@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,17 +14,19 @@ namespace TinyBlog.DataServices.Services
     {
         private const string CollectionName = "posts";
 
-        public PostDataService(IDatabaseSettings settings) : base(settings)
+        private ILogger _logger;
+
+        public PostDataService(
+            IDatabaseSettings settings,
+            ILogger<PostDataService> logger) : base(settings)
         {
+            _logger = logger;
         }
 
         public async Task<PostDto[]> GetAll()
         {
-            var now = DateTime.UtcNow;
-
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(FilterDefinition<Post>.Empty, options);
+            var data = await PostCollection().FindAsync(FilterDefinition<Post>.Empty, options);
 
             var result = data.ToList().Select(pst => pst.BuildDto()).ToArray();
             return result;
@@ -31,12 +34,9 @@ namespace TinyBlog.DataServices.Services
 
         public async Task<PostDto[]> GetByTag(string name)
         {
-            var now = DateTime.UtcNow;
             var queryParam = name.ToLower();
-
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => pst.Tags.Any(x => x.Name == queryParam), options);
+            var data = await PostCollection().FindAsync(pst => pst.Tags.Any(x => x.Name == queryParam), options);
 
             var result = data.ToList().Select(pst => pst.BuildDto()).ToArray();
             return result;
@@ -44,11 +44,8 @@ namespace TinyBlog.DataServices.Services
 
         public async Task<PostDto> GetByLinkText(string linkText)
         {
-            var now = DateTime.UtcNow;
             var queryParam = linkText.ToLower();
-
-            var data = await Repository.GetCollection<Post>(CollectionName)
-                .FindAsync(pst => pst.LinkText == queryParam);
+            var data = await PostCollection().FindAsync(pst => pst.LinkText == queryParam);
 
             var post = data.FirstOrDefault();
             if (post == null)
@@ -60,40 +57,72 @@ namespace TinyBlog.DataServices.Services
             return result;
         }
 
-        public Task Create(PostDto post)
+        public async Task<bool> Create(PostDto post)
         {
-            return Repository.GetCollection<Post>(CollectionName)
-                .InsertOneAsync(post.BuildDomain());
+            try
+            {
+                await PostCollection().InsertOneAsync(post.BuildDomain());
+                _logger.LogInformation($"Post {post.LinkText} was created");
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return false;
+            }
         }
 
-        public Task Update(PostDto post)
+        public async Task<bool> Update(PostDto post)
         {
-            var definition = Builders<Post>.Update
+            try
+            {
+                var definition = Builders<Post>.Update
                 .Set(x => x.Title, post.Title)
                 .Set(x => x.LinkText, post.LinkText)
                 .Set(x => x.PreviewText, post.PreviewText)
                 .Set(x => x.FullText, post.FullText);
-                
-            var options = new UpdateOptions { IsUpsert = false };
 
-            return Repository.GetCollection<Post>(CollectionName)
-                .UpdateOneAsync(x => x.LinkText == post.LinkText, definition, options);
-        }
+                var options = new UpdateOptions { IsUpsert = false };
 
-        public Task TogglePublish(string linkText, bool publish)
-        {
-            var definition = Builders<Post>.Update
-                .Set(x => x.IsPublished, publish);
+                await PostCollection().UpdateOneAsync(x => x.LinkText == post.LinkText, definition, options);
+                _logger.LogInformation($"Post {post.LinkText} was updated");
 
-            if (publish)
-            {
-                definition.Set(x => x.PublishedAt, DateTime.UtcNow);
+                return true;
             }
-
-            var options = new UpdateOptions { IsUpsert = false };
-
-            return Repository.GetCollection<Post>(CollectionName)
-                .UpdateOneAsync(x => x.LinkText == linkText, definition, options);
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return false;
+            }
         }
+
+        public async Task<bool> TogglePublish(string linkText, bool publish)
+        {
+            try
+            {
+                var definition = Builders<Post>.Update
+                    .Set(x => x.IsPublished, publish);
+
+                if (publish)
+                {
+                    definition.Set(x => x.PublishedAt, DateTime.UtcNow);
+                }
+
+                var options = new UpdateOptions { IsUpsert = false };
+
+                await PostCollection().UpdateOneAsync(x => x.LinkText == linkText, definition, options);
+                _logger.LogInformation($"Post {linkText} has changed publish flat to {publish}");
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return false;
+            }
+        }
+
+        private IMongoCollection<Post> PostCollection() => Repository.GetCollection<Post>(CollectionName);
     }
 }

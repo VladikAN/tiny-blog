@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import MarkdownView from './markdown-view';
 import Tag from './tag';
 import { Post as PostType } from '../../store/post/types';
 
@@ -27,7 +28,7 @@ class Post extends React.Component<AllProps, State> {
                 <span>{publishedAt}</span>
             </div>
             <div className="thread__post_preview">
-                {previewText}
+                <MarkdownView text={previewText} />
             </div>
             <div className="tags">
                 {tagsRender}

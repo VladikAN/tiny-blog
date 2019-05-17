@@ -1,5 +1,6 @@
 import * as React from "react";
-import { loadPost } from "../../store/post/actions";
+import { loadPost, updatePost } from "../../store/post/actions";
+import { Post as PostType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
 import { Dispatch, bindActionCreators } from "redux";
@@ -12,7 +13,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-    loadPost: typeof loadPost
+    loadPost: typeof loadPost,
+    updatePost: typeof updatePost
 }
 
 interface OwnProps {
@@ -25,15 +27,14 @@ interface State {
     title: string,
     linkText: string,
     previewText: string,
-    fullText: string,
-    publishedAt: string
+    fullText: string
 }
 
 class Post extends React.Component<AllProps, State> {
     constructor(props: AllProps) {
         super(props);
 
-        this.state = { title: '', linkText: '', previewText: '', fullText: '', publishedAt: '' };
+        this.state = { title: '', linkText: '', previewText: '', fullText: '' };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
@@ -49,11 +50,10 @@ class Post extends React.Component<AllProps, State> {
     componentDidUpdate(prev: Readonly<AllProps>, next: Readonly<State>) {
         if (!prev.post.isFetched && this.props.post.isFetched) {
             this.setState({
-                title: this.props.post.title,
-                linkText: this.props.post.linkText,
-                previewText: this.props.post.previewText,
-                fullText: this.props.post.fullText,
-                publishedAt: this.props.post.publishedAt.toString()
+                title: this.props.post.title || '',
+                linkText: this.props.post.linkText || '',
+                previewText: this.props.post.previewText || '',
+                fullText: this.props.post.fullText || ''
             });
         }
     }
@@ -66,12 +66,24 @@ class Post extends React.Component<AllProps, State> {
         this.setState({ [name] : value } as React.ComponentState);
     }
 
+    submitPost = () => {
+        const record: PostType = {
+            title: this.state.title,
+            linkText: this.state.linkText,
+            previewText: this.state.previewText,
+            fullText: this.state.fullText
+        };
+
+        this.props.updatePost(record);
+    }
+
     render() {
         if (this.props.post.isFetching) {
             return (<Loading />);
         }
 
-        const { title, linkText, previewText, fullText, publishedAt } = this.state;
+        const { title, linkText, previewText, fullText } = this.state;
+        const { isUpdating } = this.props.post;
 
         return (
         <div>
@@ -96,16 +108,6 @@ class Post extends React.Component<AllProps, State> {
                 </label>
             </div>
             <div>
-                <label>
-                    <span>Published</span>
-                    <input
-                        type="date"
-                        name="publishedAt"
-                        value={publishedAt}
-                        onChange={this.handleChange} />
-                </label>
-            </div>
-            <div>
                 <h3>Preview Text</h3>
                 <MarkdownEditor 
                     name="previewText"
@@ -122,6 +124,12 @@ class Post extends React.Component<AllProps, State> {
             <div>
                 <h3>Tags</h3>
             </div>
+            <button
+                type="button"
+                disabled={isUpdating}
+                onClick={this.submitPost}>
+                {isUpdating ? 'Submiting' : 'Submit'}
+                </button>
         </div>);
     };
 }
@@ -131,7 +139,7 @@ const mapStateToProps = (state: AppState) : StateProps => ({
 })
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-    ...bindActionCreators({ loadPost }, dispatch)
+    ...bindActionCreators({ loadPost, updatePost }, dispatch)
 })
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Post);

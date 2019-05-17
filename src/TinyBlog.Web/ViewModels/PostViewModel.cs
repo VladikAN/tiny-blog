@@ -23,12 +23,28 @@ namespace TinyBlog.Web.ViewModels
             IsPublished = post.IsPublished;
         }
 
-        public string Title { get; }
+        public string Title { get; set; }
         public string LinkText { get; set; }
-        public string PreviewText { get; }
+        public string PreviewText { get; set; }
         public string FullText { get; set; }
         public DateTime PublishedAt { get; }
         public TagViewModel[] Tags { get; } = new TagViewModel[0];
         public bool IsPublished { get; }
+
+        public PostDto ToDto()
+        {
+            return new PostDto
+            {
+                Title = Title,
+                LinkText = LinkText,
+                PreviewText = PreviewText,
+                FullText = FullText,
+                PublishedAt = PublishedAt,
+                Tags = (Tags ?? new TagViewModel[0])
+                    .Select(tag => tag.ToDto())
+                    .ToArray(),
+                // IsPublished ignored
+            };
+        }
     }
 }
