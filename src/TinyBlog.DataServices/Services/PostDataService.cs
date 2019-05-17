@@ -112,7 +112,7 @@ namespace TinyBlog.DataServices.Services
                 var options = new UpdateOptions { IsUpsert = false };
 
                 await PostCollection().UpdateOneAsync(x => x.LinkText == linkText, definition, options);
-                _logger.LogInformation($"Post {linkText} has changed publish flat to {publish}");
+                _logger.LogInformation($"Post '{linkText}' has changed publish flag to {publish}");
 
                 return true;
             }

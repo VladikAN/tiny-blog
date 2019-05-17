@@ -36,7 +36,7 @@ a.site-title {
     width: 100%;
 
     .header__body {
-        width: 50%;
+        width: 75%;
         margin: 0 auto;
 
         a.header__body_link {
@@ -55,7 +55,7 @@ a.site-title {
     height: 100%;
 
     .content {
-        width: 50%;
+        width: 75%;
         margin: 6em auto 0;
         flex: 1 0 auto;
     }
@@ -67,7 +67,7 @@ a.site-title {
         .footer__body {
             font-size: 80%;
             text-align: center;
-            width: 50%;
+            width: 75%;
             margin: 0 auto;
             padding: 12px 0;
         }
@@ -103,27 +103,20 @@ a.site-title {
     }
 }
 
-.md-editor {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
+.zone {
+    padding: 24px;
 
-    .md-editor__window {
-        min-height: 256px;
-        flex: 1 1;
+    &.zone-green {
+        border: 1px dashed #42b6f3;
+        background-color: #42b6f3aa;
+    }
 
-        &.md-editor__window-left {
-            textarea {
-                width: 90%;
-                height: 90%;
-                margin: 5%;
-            }
-        }
+    &.zone-red {
+        border: 1px dashed #fe42b2;
+        background-color: #fe42b2aa;
+    }
 
-        &.md-editor__window-right {
-            border: 1px dashed #ccc;
-        }
+    .zone_text {
+
     }
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { loadPost, updatePost } from "../../store/post/actions";
+import { loadPost, updatePost, togglePost } from "../../store/post/actions";
 import { Post as PostType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
@@ -14,7 +14,8 @@ interface StateProps {
 
 interface DispatchProps {
     loadPost: typeof loadPost,
-    updatePost: typeof updatePost
+    updatePost: typeof updatePost,
+    togglePost: typeof togglePost
 }
 
 interface OwnProps {
@@ -38,6 +39,8 @@ class Post extends React.Component<AllProps, State> {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
+        this.submitPost = this.submitPost.bind(this);
+        this.togglePublish = this.togglePublish.bind(this);
     }
 
     componentDidMount() {
@@ -77,13 +80,22 @@ class Post extends React.Component<AllProps, State> {
         this.props.updatePost(record);
     }
 
+    togglePublish = () => {
+        this.props.togglePost(this.props.post.linkText, !this.props.post.isPublished);
+    }
+
     render() {
         if (this.props.post.isFetching) {
             return (<Loading />);
         }
 
         const { title, linkText, previewText, fullText } = this.state;
-        const { isUpdating } = this.props.post;
+        const { isUpdating, isPublished } = this.props.post;
+
+        const publishZoneClass = isPublished ? 'zone-red' : 'zone-green';
+        const publishZoneText = isPublished
+            ? 'This post is currently public. By pressing this button you will hide post from everyone.'
+            : 'This post is currently hidden. Publish this post for everyone by pressing button.';
 
         return (
         <div>
@@ -128,8 +140,17 @@ class Post extends React.Component<AllProps, State> {
                 type="button"
                 disabled={isUpdating}
                 onClick={this.submitPost}>
-                {isUpdating ? 'Submiting' : 'Submit'}
+                {isUpdating ? 'Saving' : 'Save'}
                 </button>
+
+            <div className={`zone ${publishZoneClass}`}>
+                <div className="zone__text">{publishZoneText}</div>
+                <button
+                    type="button"
+                    onClick={this.togglePublish}>
+                    {isPublished ? 'Unpublish' : 'Publish'}
+                </button>
+            </div>
         </div>);
     };
 }
@@ -139,7 +160,7 @@ const mapStateToProps = (state: AppState) : StateProps => ({
 })
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-    ...bindActionCreators({ loadPost, updatePost }, dispatch)
+    ...bindActionCreators({ loadPost, updatePost, togglePost }, dispatch)
 })
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Post);

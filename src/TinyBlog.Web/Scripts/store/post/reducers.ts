@@ -4,7 +4,9 @@ import {
   LOAD_POST_STARTED_MESSAGE,
   LOAD_POST_COMPLETED_MESSAGE,
   UPDATE_POST_STARTED_MESSAGE,
-  UPDATE_POST_COMPLETED_MESSAGE
+  UPDATE_POST_COMPLETED_MESSAGE,
+  TOGGLE_POST_STARTED_MESSAGE,
+  TOGGLE_POST_COMPLETED_MESSAGE
 } from './actions';
 
 export interface PostState extends Post {
@@ -45,6 +47,17 @@ export function postReducer(state = initialState, action: PostActionTypes) : Pos
     case UPDATE_POST_COMPLETED_MESSAGE:
       return {
         ...action.post,
+        isUpdating: false
+      }
+    case TOGGLE_POST_STARTED_MESSAGE:
+      return {
+        ...state,
+        isUpdating: true
+      }
+    case TOGGLE_POST_COMPLETED_MESSAGE:
+      return {
+        ...state,
+        isPublished: action.isPublished,
         isUpdating: false
       }
     default:

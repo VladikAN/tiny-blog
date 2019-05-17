@@ -67,9 +67,9 @@ namespace TinyBlog.Web.Controllers
         }
 
         [HttpPost, Route("api/post/publish")]
-        public async Task<ApiResponseViewModel> Publish([FromBody] string linkText, bool publish)
+        public async Task<ApiResponseViewModel> Publish([FromBody] PublishPostViewModel model)
         {
-            var success = await _postDataService.TogglePublish(linkText, publish);
+            var success = await _postDataService.TogglePublish(model.LinkText, model.Publish);
             return success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed();
         }
     }
