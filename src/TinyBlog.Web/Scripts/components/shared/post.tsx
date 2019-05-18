@@ -21,9 +21,7 @@ class Post extends React.Component<AllProps, State> {
 
         return (
         <div className="thread__post">
-            <Link className="link-header" to={`/admin/post/${linkText}`}>
-                <h2>{extendedTitle}</h2>
-            </Link>
+            <h2>{extendedTitle} <Link className="link-header" to={`/admin/post/${linkText}`}>[Edit]</Link></h2>
             <div className="thread__post_info">
                 <span>{publishedAt}</span>
             </div>

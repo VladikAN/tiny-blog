@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Loading from "../shared/loading";
 import Zone, { ZoneType } from "../shared/zone";
 import MarkdownEditor from "../shared/markdown-editor";
+import { Link } from "react-router-dom";
 
 interface StateProps {
     post: PostState
@@ -76,7 +77,7 @@ class Post extends React.Component<AllProps, State> {
         const tags = this.state.tags.split(' ').map((tg: string) => ({ name: tg } as TagType))
         const record: PostType = {
             title: this.state.title,
-            linkText: this.state.linkText,
+            linkText: this.props.post.isPublished ? this.props.post.linkText : this.state.linkText,
             previewText: this.state.previewText,
             fullText: this.state.fullText,
             tags: tags
@@ -86,7 +87,14 @@ class Post extends React.Component<AllProps, State> {
     }
 
     togglePublish = () => {
-        this.props.togglePost(this.props.post.linkText, !this.props.post.isPublished);
+        const publish = !this.props.post.isPublished;
+        const message = publish
+            ? 'This post will be available for everyone. Make sure all changes are saved.'
+            : 'This post will be hidden for everyone. This can negatively impact on users. Try to avoid this action.';
+
+        if (confirm(message)) {
+            this.props.togglePost(this.props.post.linkText, publish);
+        }
     }
 
     render() {
@@ -103,6 +111,7 @@ class Post extends React.Component<AllProps, State> {
 
         return (
         <div>
+            <Link to="/admin">back to thread</Link>
             <div className="editor-field">
                 <label>
                     <span>Title</span>
@@ -119,8 +128,10 @@ class Post extends React.Component<AllProps, State> {
                     <input
                         type="text"
                         name="linkText"
+                        disabled={isPublished}
                         value={linkText}
                         onChange={this.handleChange} />
+                    <span className="editor-field__help">Link can be changed only for draft posts</span>
                 </label>
             </div>
             <div className="editor-field">
@@ -146,7 +157,7 @@ class Post extends React.Component<AllProps, State> {
                         value={tags}
                         onChange={this.handleChange} />
                 </label>
-                <span className="editor-field__help">* each tag is separated by single space</span>
+                <span className="editor-field__help">Each tag is separated by single space</span>
             </div>
 
             <button
