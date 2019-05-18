@@ -1,4 +1,6 @@
-﻿* {
+﻿@import 'variables.scss';
+
+* {
     padding: 0;
     margin: 0;
 }
@@ -10,17 +12,26 @@ html, body {
 body {
     background-color: #fff;
     color: #818181;
-    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 16px;
+    font-family: "Open Sans",sans-serif;
+    font-size: .875em;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4 { color: #222; }
-h1 { font-size: 150%; margin: 20px 0; }
-h2 { font-size: 150%; margin: 20px 0; }
+h1 { font-size: 150%; margin: 10px 0; }
+h2 { font-size: 150%; margin: 10px 0; }
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    padding: 10px 20px;
+    text-transform: capitalize;
+}
 
 a {
-    color: #42b6f3;
-    text-decoration: none;
+    color: $linkColor;
+    text-decoration: underline;
 }
 
 .editor-field{
@@ -28,12 +39,13 @@ a {
 
     label {
         span {
-            display: block; 
+            display: block;
+            padding: 4px 0;
         }
 
         input {
             min-width: 256px;
-            width: 50%;
+            width: 100%;
             line-height: 24px;
             padding: 0 2px;
         }
@@ -42,7 +54,8 @@ a {
     .editor-field__help {
         display: block;
         font-size: 80%;
-        color: #666;
+        color: #919aa3;
+        padding: 4px 0;
     }
 }
 
@@ -52,14 +65,14 @@ a.site-title {
 }
 
 .header {
-    background-color: #42b6f3;
+    background-color: $brandColor;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
 
     .header__body {
-        width: 75%;
+        width: $contentWidth;
         margin: 0 auto;
 
         a.header__body_link {
@@ -68,6 +81,7 @@ a.site-title {
             font-weight: 700;
             line-height: 2.4em;
             text-transform: uppercase;
+            text-decoration: none;
         }
     }
 }
@@ -78,23 +92,28 @@ a.site-title {
     height: 100%;
 
     .content {
-        width: 75%;
+        width: $contentWidth;
         margin: 6em auto 0;
         flex: 1 0 auto;
     }
 
     .footer {
-        background-color: #666;
+        background-color: $brandColor;
+        color: #dcdcdc;
         flex: 0 0 auto;
 
         .footer__body {
-            font-size: 80%;
+            font-size: 100%;
             text-align: center;
-            width: 75%;
+            width: $contentWidth;
             margin: 0 auto;
             padding: 12px 0;
         }
     }
+}
+
+.link-header {
+    text-decoration: none;
 }
 
 .thread {
@@ -108,7 +127,12 @@ a.site-title {
         }
 
         .thread__post_preview {
-            margin: 16px 0;
+            margin: 10px 0;
+
+            .thread__post_preview_link {
+                margin: 5px 0 0;
+                display: inline-block; 
+            }
         }
     }
 }

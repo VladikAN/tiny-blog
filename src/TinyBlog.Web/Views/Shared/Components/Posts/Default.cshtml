@@ -8,8 +8,7 @@
             var href = Url.Action("post", new { post.LinkText });
 
         <div class="thread__post">
-            <a class="link-header"
-               href="@href">
+            <a class="link-header" href="@href">
                 <h2>@post.Title</h2>
             </a>
             <div class="thread__post_info">
@@ -19,7 +18,7 @@
             </div>
             <div class="thread__post_preview">
                 @Html.Markdown(post.PreviewText)
-                <a href="@href">[ read more ]</a>
+                <a class="thread__post_preview_link" href="@href">read more</a>
             </div>
 
             @await Component.InvokeAsync(nameof(Tags), post.Tags)

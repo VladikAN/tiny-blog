@@ -26,12 +26,14 @@ class Zone extends React.Component<AllProps, State> {
     render() {
         const { type, text, buttonText } = this.props;
         const className = type == ZoneType.green
-            ? 'zone-green'
-            : 'zone-red';
+            ? 'zone-good'
+            : 'zone-danger';
 
         return (
         <div className={`zone ${className}`}>
-            <div className="zone__text">{text}</div>
+            <div className="zone__text">
+                {text}
+            </div>
             <div className="zone__button">
                 <button
                     type="button"

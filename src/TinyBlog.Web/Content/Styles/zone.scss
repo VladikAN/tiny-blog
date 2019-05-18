@@ -1,17 +1,19 @@
+@import 'variables.scss';
+
 .zone {
-    padding: 24px;
+    border-radius: 5px;
+    color: #fff;
+    padding: 20px;
     display: flex;
     align-items: center;
-    margin: 12px 0;
+    margin: 20px 0;
 
-    &.zone-green {
-        border: 1px dashed #42b6f3;
-        background-color: #42b6f3aa;
+    &.zone-good {
+        background-color: $goodColor;
     }
 
-    &.zone-red {
-        border: 1px dashed #fe42b2;
-        background-color: #fe42b2aa;
+    &.zone-danger {
+        background-color: $dangerColor;
     }
 
     .zone__text {
