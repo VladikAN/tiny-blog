@@ -1,25 +1,35 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Services;
+using TinyBlog.DataServices.Services.Dto;
+using TinyBlog.Web.Configuration.Settings;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Services
 {
     public sealed class AuthService : IAuthService
     {
         private readonly IUserDataSerice _userDataSerice;
+        private readonly IAuthSettings _authSettings;
         private readonly ILogger _logger;
 
         public AuthService(
             IUserDataSerice userDataService,
+            IAuthSettings authSettings,
             ILogger<AuthService> logger)
         {
             _userDataSerice = userDataService;
+            _authSettings = authSettings;
             _logger = logger;
         }
 
-        public async Task<bool> TryAuthorize(string email, string password)
+        public async Task<UserViewModel> TryAuthorize(string email, string password)
         {
             var user = await _userDataSerice.GetCredentials(email);
             if (user == null)
@@ -41,7 +51,35 @@ namespace TinyBlog.Web.Services
                 ? $"Successful autorize attempt with '{email}'."
                 : $"Failed authorize attempt with '{email}'. Wrong password");
 
-            return success;
+            if (success)
+            {
+                var token = GetToken(user);
+                return new UserViewModel(email, token);
+            }
+            
+
+            return null;
+        }
+
+        private string GetToken(UserDto user)
+        {
+            var key = Encoding.UTF8.GetBytes(_authSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = _authSettings.Issuer,
+                Audience = _authSettings.Audience,
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Email)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }

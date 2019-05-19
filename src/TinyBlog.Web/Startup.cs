@@ -21,6 +21,7 @@ namespace TinyBlog.Web
                 .AddServices(_configuration)
                 .AddApplicationInsights(_configuration)
                 .AddResponseCompression(options => options.EnableForHttps = true)
+                .AddJwtAuthentication(_configuration)
                 .AddMvcWithFilters();
         }
 
@@ -32,6 +33,7 @@ namespace TinyBlog.Web
                 .UseCustomErrorHandling(env)
                 .UseStaticFiles()
                 .UseAtomFeed()
+                .UseAuthentication()
                 .UseMvcWithRoutes();
         }
     }
