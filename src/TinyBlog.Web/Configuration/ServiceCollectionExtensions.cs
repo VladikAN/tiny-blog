@@ -36,9 +36,11 @@ namespace TinyBlog.Web.Configuration
             /* Data Services */
             services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
             services.AddTransient<IPostDataService, PostDataService>();
+            services.AddTransient<IUserDataSerice, UserDataService>();
 
             /* Web Services */
             services.AddTransient<IFeedService, FeedService>();
+            services.AddTransient<IAuthService, AuthService>();
 
             return services;
         }

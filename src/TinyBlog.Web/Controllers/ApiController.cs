@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Services;
+using TinyBlog.Web.Services;
 using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Controllers
@@ -8,10 +10,30 @@ namespace TinyBlog.Web.Controllers
     public class ApiController : BaseController
     {
         private readonly IPostDataService _postDataService;
+        private readonly AuthService _authService;
 
-        public ApiController(IPostDataService postDataService)
+        public ApiController(
+            IPostDataService postDataService,
+            AuthService authService)
         {
             _postDataService = postDataService;
+            _authService = authService;
+        }
+
+        [HttpPost, Route("api/auth"), AllowAnonymous]
+        public async Task<ApiResponseViewModel> Authorize([FromBody] AuthViewModel model)
+        {
+            if (model != null && ModelState.IsValid)
+            {
+                var success = await _authService.TryAuthorize(model.Email, model.Password);
+                if (success)
+                {
+                    return ApiResponseViewModel.Success();
+                }
+            }
+
+            await Task.Delay(100); // Small timeout to prevent password guess
+            return ApiResponseViewModel.Failed();
         }
 
         [HttpGet, Route("api/posts")]
