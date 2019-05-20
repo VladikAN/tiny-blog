@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Services;
@@ -51,14 +52,13 @@ namespace TinyBlog.Web.Services
             _logger.LogInformation(success
                 ? $"Successful autorize attempt with '{email}'."
                 : $"Failed authorize attempt with '{email}'. Wrong password");
-
+            
             if (success)
             {
                 var token = GetToken(user);
                 return new UserViewModel(email, token);
             }
             
-
             return null;
         }
 
@@ -81,6 +81,17 @@ namespace TinyBlog.Web.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private string GetSalt()
+        {
+            byte[] salt = new byte[128 / 8];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            return Convert.ToBase64String(salt);
         }
     }
 }
