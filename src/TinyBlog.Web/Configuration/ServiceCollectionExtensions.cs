@@ -40,7 +40,7 @@ namespace TinyBlog.Web.Configuration
             /* Data Services */
             services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
             services.AddTransient<IPostDataService, PostDataService>();
-            services.AddTransient<IUserDataSerice, UserDataService>();
+            services.AddTransient<IUserDataService, UserDataService>();
 
             /* Web Services */
             services.AddTransient<IFeedService, FeedService>();

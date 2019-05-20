@@ -10,11 +10,11 @@ namespace TinyBlog.Web.Controllers
     public class ApiController : BaseController
     {
         private readonly IPostDataService _postDataService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
         public ApiController(
             IPostDataService postDataService,
-            AuthService authService)
+            IAuthService authService)
         {
             _postDataService = postDataService;
             _authService = authService;
@@ -25,10 +25,10 @@ namespace TinyBlog.Web.Controllers
         {
             if (model != null && ModelState.IsValid)
             {
-                var success = await _authService.TryAuthorize(model.Email, model.Password);
-                if (success)
+                var user = await _authService.TryAuthorize(model.Email, model.Password);
+                if (user != null)
                 {
-                    return ApiResponseViewModel.Success();
+                    return ApiResponseViewModel.Success(user);
                 }
             }
 

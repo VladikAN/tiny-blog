@@ -15,12 +15,12 @@ namespace TinyBlog.Web.Services
 {
     public sealed class AuthService : IAuthService
     {
-        private readonly IUserDataSerice _userDataSerice;
+        private readonly IUserDataService _userDataSerice;
         private readonly IAuthSettings _authSettings;
         private readonly ILogger _logger;
 
         public AuthService(
-            IUserDataSerice userDataService,
+            IUserDataService userDataService,
             IAuthSettings authSettings,
             ILogger<AuthService> logger)
         {

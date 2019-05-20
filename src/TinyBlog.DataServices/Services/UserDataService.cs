@@ -8,7 +8,7 @@ using TinyBlog.DataServices.Settings;
 
 namespace TinyBlog.DataServices.Services
 {
-    public class UserDataService : BaseDataService, IUserDataSerice
+    public class UserDataService : BaseDataService, IUserDataService
     {
         private const string CollectionName = "users";
 
