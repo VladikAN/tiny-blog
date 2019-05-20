@@ -35,6 +35,7 @@ namespace TinyBlog.Web.Services
             if (user == null)
             {
                 _logger.LogInformation($"Failed authorize attempt with '{email}'. User not found or not active.");
+                return null;
             }
 
             var salt = Convert.FromBase64String(user.PasswordSalt);

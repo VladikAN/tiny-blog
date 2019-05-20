@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 
 import { threadReducer } from './thread/reducers';
 import { postReducer } from './post/reducers';
+import { loginReducer } from './login/reducers';
 
 const rootReducer = combineReducers({
     thread: threadReducer,
-    post: postReducer
+    post: postReducer,
+    login: loginReducer
 });
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
