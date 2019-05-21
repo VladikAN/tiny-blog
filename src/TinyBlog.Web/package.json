@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "webpack --color --progress",
     "dev:watch": "npm run dev -- --watch",
-    "release": "webpack --config webpack.prod.config.js"
+    "release": "webpack --config webpack.prod.config.js",
+    "lint": "eslint --ext ts,tsx Scripts/",
+    "lint:fix": "npm run lint -- --fix"
   },
   "author": "https://github.com/vladikan/tiny-blog.git",
   "license": "ISC",
@@ -24,9 +26,13 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^7.0.8",
     "@types/react-router-dom": "^4.3.3",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
     "awesome-typescript-loader": "^5.2.1",
     "clean-webpack-plugin": "^2.0.1",
     "css-loader": "^2.1.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",

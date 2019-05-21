@@ -2,7 +2,7 @@ import * as React from "react";
 import { Markdown } from 'react-showdown';
 
 interface OwnProps {
-    text: string
+    text: string;
 }
 
 type AllProps = OwnProps;
@@ -15,9 +15,9 @@ class MarkdownView extends React.Component<AllProps, State> {
         const { text } = this.props;
 
         return (
-        <div>
-            <Markdown markup={text || ''} />
-        </div>);
+            <div>
+                <Markdown markup={text || ''} />
+            </div>);
     };
 }
 

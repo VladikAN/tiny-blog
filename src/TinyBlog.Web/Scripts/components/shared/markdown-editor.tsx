@@ -4,18 +4,18 @@ import { Markdown } from 'react-showdown';
 import 'Styles/markdown-editor.scss';
 
 interface OwnProps {
-    name: string,
-    text: string
+    name: string;
+    text: string;
 }
 
 interface DispatchProps {
-    onChange: (name: string, value: string) => void
+    onChange: (name: string, value: string) => void;
 }
 
 type AllProps = OwnProps & DispatchProps;
 
 interface State {
-    newText: string
+    newText: string;
 }
 
 class MarkdownEditor extends React.Component<AllProps, State> {
@@ -45,14 +45,14 @@ class MarkdownEditor extends React.Component<AllProps, State> {
         const { newText } = this.state;
 
         return (
-        <div className="md-editor">
-            <div className="md-editor__window md-editor__window-left">
-                <textarea value={newText || ''} onChange={this.handleChange} />
-            </div>
-            <div className="md-editor__window md-editor__window-right">
-                <Markdown markup={newText || ''} />
-            </div>
-        </div>);
+            <div className="md-editor">
+                <div className="md-editor__window md-editor__window-left">
+                    <textarea value={newText || ''} onChange={this.handleChange} />
+                </div>
+                <div className="md-editor__window md-editor__window-right">
+                    <Markdown markup={newText || ''} />
+                </div>
+            </div>);
     };
 }
 

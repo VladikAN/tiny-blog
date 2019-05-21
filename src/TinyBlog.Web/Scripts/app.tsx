@@ -9,17 +9,17 @@ import Login from './components/login';
 
 ReactDOM.render(
     <Provider store={configureStore()}>
-    <Login>
-      <Router>
-        <Route 
-          path="/admin" 
-          exact={true} 
-          component={Dashboard} />
-        <Route 
-          path="/admin/post/:id" 
-          children={({ match:match }) => (match && <Post id={match.params['id']} />)} />
-      </Router>
-    </Login>
+        <Login>
+            <Router>
+                <Route 
+                    path="/admin" 
+                    exact={true} 
+                    component={Dashboard} />
+                <Route 
+                    path="/admin/post/:id" 
+                    children={({ match:match }) => (match && <Post id={match.params['id']} />)} />
+            </Router>
+        </Login>
     </Provider>,
     document.getElementById('root')
-  );
+);

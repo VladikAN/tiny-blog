@@ -10,7 +10,7 @@ interface StateProps extends ThreadState {
 }
 
 interface DispatchProps {
-    loadThread: typeof loadThread
+    loadThread: typeof loadThread;
 }
 
 interface OwnProps {
@@ -37,17 +37,17 @@ class Thread extends React.Component<AllProps, State> {
         ));
 
         return (
-        <div className="thread">
-            {posts}
-        </div>);
+            <div className="thread">
+                {posts}
+            </div>);
     };
 }
 
-const mapStateToProps = (state: AppState) : StateProps => ({
+const mapStateToProps = (state: AppState): StateProps => ({
     ...state.thread
 })
 
-const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ loadThread }, dispatch)
 })
 

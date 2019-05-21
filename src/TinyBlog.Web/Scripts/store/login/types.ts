@@ -1,4 +1,4 @@
 export interface Auth {
-    isAuthorized: boolean,
-    token: string
+    isAuthorized: boolean;
+    token: string;
 }

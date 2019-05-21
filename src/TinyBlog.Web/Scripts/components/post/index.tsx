@@ -11,27 +11,27 @@ import MarkdownEditor from "../shared/markdown-editor";
 import { Link } from "react-router-dom";
 
 interface StateProps {
-    post: PostState
+    post: PostState;
 }
 
 interface DispatchProps {
-    loadPost: typeof loadPost,
-    updatePost: typeof updatePost,
-    togglePost: typeof togglePost
+    loadPost: typeof loadPost;
+    updatePost: typeof updatePost;
+    togglePost: typeof togglePost;
 }
 
 interface OwnProps {
-    id: string
+    id: string;
 }
 
 type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {
-    title: string,
-    linkText: string,
-    previewText: string,
-    fullText: string,
-    tags: string
+    title: string;
+    linkText: string;
+    previewText: string;
+    fullText: string;
+    tags: string;
 }
 
 class Post extends React.Component<AllProps, State> {
@@ -110,77 +110,77 @@ class Post extends React.Component<AllProps, State> {
             : 'This post is currently hidden. Publish this post for everyone by pressing button.';
 
         return (
-        <div>
-            <Link to="/admin">back to thread</Link>
-            <div className="editor-field">
-                <label>
-                    <span>Title</span>
-                    <input
-                        type="text"
-                        name="title"
-                        value={title}
-                        onChange={this.handleChange} />
-                </label>
-            </div>
-            <div className="editor-field">
-                <label>
-                    <span>Link</span>
-                    <input
-                        type="text"
-                        name="linkText"
-                        disabled={isPublished}
-                        value={linkText}
-                        onChange={this.handleChange} />
-                    <span className="editor-field__help">Link can be changed only for draft posts</span>
-                </label>
-            </div>
-            <div className="editor-field">
-                <span>Preview Text</span>
-                <MarkdownEditor 
-                    name="previewText"
-                    text={previewText}
-                    onChange={this.handleMdChange} />
-            </div>
-            <div className="editor-field">
-                <span>Full Text</span>
-                <MarkdownEditor 
-                    name="fullText"
-                    text={fullText}
-                    onChange={this.handleMdChange} />
-            </div>
-            <div className="editor-field">
-                <label>
-                    <span>Tags</span>
-                    <input
-                        type="text"
-                        name="tags"
-                        value={tags}
-                        onChange={this.handleChange} />
-                </label>
-                <span className="editor-field__help">Each tag is separated by single space</span>
-            </div>
+            <div>
+                <Link to="/admin">back to thread</Link>
+                <div className="editor-field">
+                    <label>
+                        <span>Title</span>
+                        <input
+                            type="text"
+                            name="title"
+                            value={title}
+                            onChange={this.handleChange} />
+                    </label>
+                </div>
+                <div className="editor-field">
+                    <label>
+                        <span>Link</span>
+                        <input
+                            type="text"
+                            name="linkText"
+                            disabled={isPublished}
+                            value={linkText}
+                            onChange={this.handleChange} />
+                        <span className="editor-field__help">Link can be changed only for draft posts</span>
+                    </label>
+                </div>
+                <div className="editor-field">
+                    <span>Preview Text</span>
+                    <MarkdownEditor 
+                        name="previewText"
+                        text={previewText}
+                        onChange={this.handleMdChange} />
+                </div>
+                <div className="editor-field">
+                    <span>Full Text</span>
+                    <MarkdownEditor 
+                        name="fullText"
+                        text={fullText}
+                        onChange={this.handleMdChange} />
+                </div>
+                <div className="editor-field">
+                    <label>
+                        <span>Tags</span>
+                        <input
+                            type="text"
+                            name="tags"
+                            value={tags}
+                            onChange={this.handleChange} />
+                    </label>
+                    <span className="editor-field__help">Each tag is separated by single space</span>
+                </div>
 
-            <button
-                type="button"
-                disabled={isUpdating}
-                onClick={this.submitPost}>
-                {isUpdating ? 'Saving' : 'Save'}
+                <button
+                    type="button"
+                    disabled={isUpdating}
+                    onClick={this.submitPost}>
+                    {isUpdating ? 'Saving' : 'Save'}
                 </button>
 
-            <Zone
-                type={isPublished ? ZoneType.red : ZoneType.green}
-                text={publishZoneText}
-                buttonText={isPublished ? 'Unpublish' : 'Publish'}
-                onClick={this.togglePublish} />
-        </div>);
+                <Zone
+                    type={isPublished ? ZoneType.red : ZoneType.green}
+                    text={publishZoneText}
+                    buttonText={isPublished ? 'Unpublish' : 'Publish'}
+                    onClick={this.togglePublish} />
+            </div>);
     };
 }
 
-const mapStateToProps = (state: AppState) : StateProps => ({
+const mapStateToProps = (state: AppState): StateProps => ({
     post: state.post
 })
 
-const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ loadPost, updatePost, togglePost }, dispatch)
 })
 

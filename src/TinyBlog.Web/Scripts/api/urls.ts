@@ -1,7 +1,7 @@
 export const AuthUrl = '/api/auth';
 
-export const LoadThreadUrl : string = '/api/posts';
-export const LoadPostUrl : string = '/api/post';
-export const UpdatePostUrl : string = '/api/post/update';
-export const CreatePostUrl : string = '/api/post/create';
-export const TogglePostUrl : string = '/api/post/publish';
+export const LoadThreadUrl = '/api/posts';
+export const LoadPostUrl = '/api/post';
+export const UpdatePostUrl = '/api/post/update';
+export const CreatePostUrl = '/api/post/create';
+export const TogglePostUrl = '/api/post/publish';

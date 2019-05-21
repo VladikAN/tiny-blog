@@ -15,11 +15,11 @@ const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 let middleware = [thunk]
 
 export default function configureStore(initialState={}) {
- return createStore(
-    rootReducer,
-    initialState,
-    composeEnhancers(applyMiddleware(...middleware))
- );
+    return createStore(
+        rootReducer,
+        initialState,
+        composeEnhancers(applyMiddleware(...middleware))
+    );
 }
 
 export type AppState = ReturnType<typeof rootReducer>

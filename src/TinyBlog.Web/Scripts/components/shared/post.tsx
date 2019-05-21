@@ -20,18 +20,18 @@ class Post extends React.Component<AllProps, State> {
         ));
 
         return (
-        <div className="thread__post">
-            <h2>{extendedTitle} <Link className="link-header" to={`/admin/post/${linkText}`}>[Edit]</Link></h2>
-            <div className="thread__post_info">
-                <span>{publishedAt}</span>
-            </div>
-            <div className="thread__post_preview">
-                <MarkdownView text={previewText} />
-            </div>
-            <div className="tags">
-                {tagsRender}
-            </div>
-        </div>);
+            <div className="thread__post">
+                <h2>{extendedTitle} <Link className="link-header" to={`/admin/post/${linkText}`}>[Edit]</Link></h2>
+                <div className="thread__post_info">
+                    <span>{publishedAt}</span>
+                </div>
+                <div className="thread__post_preview">
+                    <MarkdownView text={previewText} />
+                </div>
+                <div className="tags">
+                    {tagsRender}
+                </div>
+            </div>);
     };
 }
 

@@ -9,11 +9,11 @@ import 'Styles/login.scss';
 
 
 interface StateProps {
-    auth: AuthState
+    auth: AuthState;
 }
 
 interface DispatchProps {
-    authCredentials: typeof authCredentials
+    authCredentials: typeof authCredentials;
 }
 
 interface OwnProps {
@@ -23,8 +23,8 @@ interface OwnProps {
 type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {
-    email?: string,
-    password?: string
+    email?: string;
+    password?: string;
 }
 
 class Login extends React.Component<AllProps, State> {
@@ -48,38 +48,38 @@ class Login extends React.Component<AllProps, State> {
         const { isAuthorized } = this.props.auth;
 
         return (
-        <React.Fragment>
-            {isAuthorized && this.props.children}
-            {!isAuthorized && <div className="login">
-                <div className="login__email">
-                    <label>
-                        <span>Email</span>
-                        <input
-                            type="text"
-                            name="email"
-                            onChange={this.handleChange} />
-                    </label>
-                </div>
-                <div className="login__password">
-                    <label>
-                        <span>Password</span>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={this.handleChange} />
-                    </label>
-                </div>
-                <button type="button" onClick={this.handleSubmit}>Sign In</button>
-            </div>}
-        </React.Fragment>);
+            <React.Fragment>
+                {isAuthorized && this.props.children}
+                {!isAuthorized && <div className="login">
+                    <div className="login__email">
+                        <label>
+                            <span>Email</span>
+                            <input
+                                type="text"
+                                name="email"
+                                onChange={this.handleChange} />
+                        </label>
+                    </div>
+                    <div className="login__password">
+                        <label>
+                            <span>Password</span>
+                            <input
+                                type="password"
+                                name="password"
+                                onChange={this.handleChange} />
+                        </label>
+                    </div>
+                    <button type="button" onClick={this.handleSubmit}>Sign In</button>
+                </div>}
+            </React.Fragment>);
     };
 }
 
-const mapStateToProps = (state: AppState) : StateProps => ({
+const mapStateToProps = (state: AppState): StateProps => ({
     auth: state.login
 })
 
-const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ authCredentials }, dispatch)
 })
 

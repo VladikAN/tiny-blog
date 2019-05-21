@@ -12,22 +12,22 @@ interface LoadThreadStartedAction extends Action<typeof LOAD_THREAD_STARTED_MESS
 }
 
 interface LoadThreadAction extends Action<typeof LOAD_THREAD_COMPLETED_MESSAGE> {
-    posts: Post[]
+    posts: Post[];
 }
 
 export type ThreadActionTypes = LoadThreadStartedAction | LoadThreadAction;
 
 /* Action Creators */
-const loadThreadStartedActionCreator = () : LoadThreadStartedAction => {
+const loadThreadStartedActionCreator = (): LoadThreadStartedAction => {
     return { type: LOAD_THREAD_STARTED_MESSAGE };
 }
 
-const loadThreadActionCreator = (posts: Post[]) : LoadThreadAction => {
+const loadThreadActionCreator = (posts: Post[]): LoadThreadAction => {
     return { type: LOAD_THREAD_COMPLETED_MESSAGE, posts };
 }
 
 /* Dispatches */
-export const loadThread = () => async (dispatch : Dispatch) : Promise<void> => {
+export const loadThread = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadThreadStartedActionCreator());
     return http<{ posts: Post[] }>(LoadThreadUrl).then(response => {
         dispatch(loadThreadActionCreator(response.posts))

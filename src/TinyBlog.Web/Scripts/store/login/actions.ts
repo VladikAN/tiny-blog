@@ -29,36 +29,36 @@ export type LoginActionTypes =
     | AuthSuccessAction
 
 /* Action Creators */
-const getTokenStartedActionCreator = () : GetTokenStartedAction => {
+const getTokenStartedActionCreator = (): GetTokenStartedAction => {
     return { type: GET_TOKEN_STARTED_MESSAGE };
 }
 
-const getTokenFailedActionCreator = () : GetTokenFailedAction => {
+const getTokenFailedActionCreator = (): GetTokenFailedAction => {
     return { type: GET_TOKEN_FAILED_MESSAGE };
 }
 
-const getTokenSuccessActionCreator = () : GetTokenSuccessAction => {
+const getTokenSuccessActionCreator = (): GetTokenSuccessAction => {
     return { type: GET_TOKEN_SUCCESS_MESSAGE };
 }
 
-const authStartedActionCreator = () : AuthStartedAction => {
+const authStartedActionCreator = (): AuthStartedAction => {
     return { type: AUTH_STARTED_MESSAGE };
 }
 
-const authFailedActionCreator = () : AuthFailedAction => {
+const authFailedActionCreator = (): AuthFailedAction => {
     return { type: AUTH_FAILED_MESSAGE };
 }
 
-const authSuccessActionCreator = (token: string) : AuthSuccessAction => {
+const authSuccessActionCreator = (token: string): AuthSuccessAction => {
     return { type: AUTH_SUCCESS_MESSAGE, token };
 }
 
 interface Auth {
-    email: string,
-    token: string
+    email: string;
+    token: string;
 }
 
-export const authCredentials = (email: string, password: string) => async (dispatch : Dispatch) : Promise<void> => {
+export const authCredentials = (email: string, password: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(authStartedActionCreator());
     
     const request = new Request(AuthUrl, {
@@ -70,7 +70,7 @@ export const authCredentials = (email: string, password: string) => async (dispa
         }
     });
     
-    return http<{ isSuccess: boolean, payload: Auth }>(request).then(response => {
+    return http<{ isSuccess: boolean; payload: Auth }>(request).then(response => {
         if (response.isSuccess) {
             localStorage.setItem('jwtToken', response.payload.token);
             dispatch(authSuccessActionCreator(response.payload.token));

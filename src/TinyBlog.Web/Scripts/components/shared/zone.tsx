@@ -8,13 +8,13 @@ export enum ZoneType {
 }
 
 interface OwnProps {
-    type: ZoneType,
-    text: string,
-    buttonText: string
+    type: ZoneType;
+    text: string;
+    buttonText: string;
 }
 
 interface DispatchProps {
-    onClick: () => void
+    onClick: () => void;
 }
 
 type AllProps = OwnProps & DispatchProps;
@@ -30,18 +30,18 @@ class Zone extends React.Component<AllProps, State> {
             : 'zone-danger';
 
         return (
-        <div className={`zone ${className}`}>
-            <div className="zone__text">
-                {text}
-            </div>
-            <div className="zone__button">
-                <button
-                    type="button"
-                    onClick={this.props.onClick}>
-                    {buttonText}
-                </button>
-            </div>
-        </div>);
+            <div className={`zone ${className}`}>
+                <div className="zone__text">
+                    {text}
+                </div>
+                <div className="zone__button">
+                    <button
+                        type="button"
+                        onClick={this.props.onClick}>
+                        {buttonText}
+                    </button>
+                </div>
+            </div>);
     };
 }
 

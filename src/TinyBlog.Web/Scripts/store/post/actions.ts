@@ -18,23 +18,23 @@ interface LoadPostStartedAction extends Action<typeof LOAD_POST_STARTED_MESSAGE>
 }
 
 interface LoadPostAction extends Action<typeof LOAD_POST_COMPLETED_MESSAGE> {
-    post: Post
+    post: Post;
 }
 
 interface UpdatePostStartedAction extends Action<typeof UPDATE_POST_STARTED_MESSAGE> {
 }
 
 interface UpdatePostCompletedAction extends Action<typeof UPDATE_POST_COMPLETED_MESSAGE> {
-    isSuccess: boolean,
-    post: Post
+    isSuccess: boolean;
+    post: Post;
 }
 
 interface TogglePostStartedAction extends Action<typeof TOGGLE_POST_STARTED_MESSAGE> {
 }
 
 interface TogglePostCompletedAction extends Action<typeof TOGGLE_POST_COMPLETED_MESSAGE> {
-    isSuccess: boolean,
-    isPublished: boolean
+    isSuccess: boolean;
+    isPublished: boolean;
 }
 
 export type PostActionTypes =
@@ -46,32 +46,32 @@ export type PostActionTypes =
     | TogglePostCompletedAction;
 
 /* Action Creators */
-const loadPostStartedActionCreator = () : LoadPostStartedAction => {
+const loadPostStartedActionCreator = (): LoadPostStartedAction => {
     return { type: LOAD_POST_STARTED_MESSAGE };
 }
 
-const loadPostActionCreator = (post: Post) : LoadPostAction => {
+const loadPostActionCreator = (post: Post): LoadPostAction => {
     return { type: LOAD_POST_COMPLETED_MESSAGE, post };
 }
 
-const UpdatePostStartedActionCreator = () : UpdatePostStartedAction => {
+const UpdatePostStartedActionCreator = (): UpdatePostStartedAction => {
     return { type: UPDATE_POST_STARTED_MESSAGE };
 }
 
-const UpdatePostCompletedActionCreator = (isSuccess: boolean, post: Post) : UpdatePostCompletedAction => {
+const UpdatePostCompletedActionCreator = (isSuccess: boolean, post: Post): UpdatePostCompletedAction => {
     return { type: UPDATE_POST_COMPLETED_MESSAGE, isSuccess, post };
 }
 
-const TogglePostStartedActionCreator = () : TogglePostStartedAction => {
+const TogglePostStartedActionCreator = (): TogglePostStartedAction => {
     return { type: TOGGLE_POST_STARTED_MESSAGE };
 }
 
-const TogglePostCompletedActionCreator = (isSuccess: boolean, isPublished: boolean) : TogglePostCompletedAction => {
+const TogglePostCompletedActionCreator = (isSuccess: boolean, isPublished: boolean): TogglePostCompletedAction => {
     return { type: TOGGLE_POST_COMPLETED_MESSAGE, isSuccess, isPublished };
 }
 
 /* Dispatches */
-export const loadPost = (linkText: string) => async (dispatch : Dispatch) : Promise<void> => {
+export const loadPost = (linkText: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadPostStartedActionCreator());
     const address = `${LoadPostUrl}/${linkText}`;
     return http<Post>(address).then(response => {
@@ -79,7 +79,7 @@ export const loadPost = (linkText: string) => async (dispatch : Dispatch) : Prom
     });
 }
 
-export const updatePost = (post: Post) => async (dispatch : Dispatch) : Promise<void> => {
+export const updatePost = (post: Post) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(UpdatePostStartedActionCreator());
 
     const request = new Request(UpdatePostUrl, {
@@ -91,12 +91,12 @@ export const updatePost = (post: Post) => async (dispatch : Dispatch) : Promise<
         }
     });
 
-    return http<{ isSuccess: boolean, payload: Post }>(request).then(response => {
+    return http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
         dispatch(UpdatePostCompletedActionCreator(response.isSuccess, response.payload))
     });
 }
 
-export const togglePost = (linkText: string, publish: boolean) => async (dispatch : Dispatch) : Promise<void> => {
+export const togglePost = (linkText: string, publish: boolean) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(TogglePostStartedActionCreator());
 
     const request = new Request(TogglePostUrl, {
@@ -108,7 +108,7 @@ export const togglePost = (linkText: string, publish: boolean) => async (dispatc
         }
     });
 
-    return http<{ isSuccess: boolean, isPublished: boolean }>(request).then(response => {
+    return http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
         const published = response.isSuccess ? publish : !publish;
         dispatch(TogglePostCompletedActionCreator(response.isSuccess, published))
     });
