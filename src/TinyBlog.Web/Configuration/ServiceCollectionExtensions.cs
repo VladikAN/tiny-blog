@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Logging;
 
 namespace TinyBlog.Web.Configuration
 {
@@ -77,7 +78,7 @@ namespace TinyBlog.Web.Configuration
         {
             var authSettings = new AuthSettings(configuration);
             var key = Encoding.UTF8.GetBytes(authSettings.Secret);
-
+            IdentityModelEventSource.ShowPII = true;
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -14,7 +14,7 @@ export const AUTH_SUCCESS_MESSAGE = 'AUTH_SUCCESS';
 /* Actions */
 interface GetTokenStartedAction extends Action<typeof GET_TOKEN_STARTED_MESSAGE> {}
 interface GetTokenFailedAction extends Action<typeof GET_TOKEN_FAILED_MESSAGE> {}
-interface GetTokenSuccessAction extends Action<typeof GET_TOKEN_SUCCESS_MESSAGE> {}
+interface GetTokenSuccessAction extends Action<typeof GET_TOKEN_SUCCESS_MESSAGE> { token: string }
 
 interface AuthStartedAction extends Action<typeof AUTH_STARTED_MESSAGE> {}
 interface AuthFailedAction extends Action<typeof AUTH_FAILED_MESSAGE> {}
@@ -37,8 +37,8 @@ const getTokenFailedActionCreator = (): GetTokenFailedAction => {
     return { type: GET_TOKEN_FAILED_MESSAGE };
 }
 
-const getTokenSuccessActionCreator = (): GetTokenSuccessAction => {
-    return { type: GET_TOKEN_SUCCESS_MESSAGE };
+const getTokenSuccessActionCreator = (token: string) : GetTokenSuccessAction => {
+    return { type: GET_TOKEN_SUCCESS_MESSAGE, token };
 }
 
 const authStartedActionCreator = (): AuthStartedAction => {
@@ -58,7 +58,19 @@ interface Auth {
     token: string;
 }
 
-export const authCredentials = (email: string, password: string) => async (dispatch: Dispatch): Promise<void> => {
+export const getToken = () => async (dispatch: Dispatch) : Promise<void> => {
+    dispatch(getTokenStartedActionCreator());
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+        // verify token
+        dispatch(getTokenSuccessActionCreator(token));
+        return;
+    }
+
+    dispatch(getTokenFailedActionCreator());
+}
+
+export const authCredentials = (email: string, password: string) => async (dispatch : Dispatch) : Promise<void> => {
     dispatch(authStartedActionCreator());
     
     const request = new Request(AuthUrl, {

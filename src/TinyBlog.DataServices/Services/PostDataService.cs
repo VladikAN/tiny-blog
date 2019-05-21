@@ -34,7 +34,7 @@ namespace TinyBlog.DataServices.Services
 
         public async Task<PostDto[]> GetByTag(string name)
         {
-            var queryParam = name.ToLower();
+            var queryParam = name.Trim().ToLower();
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
             var data = await PostCollection().FindAsync(pst => pst.Tags.Any(x => x.Name == queryParam), options);
 
@@ -44,7 +44,7 @@ namespace TinyBlog.DataServices.Services
 
         public async Task<PostDto> GetByLinkText(string linkText)
         {
-            var queryParam = linkText.ToLower();
+            var queryParam = linkText.Trim().ToLower();
             var data = await PostCollection().FindAsync(pst => pst.LinkText == queryParam);
 
             var post = data.FirstOrDefault();

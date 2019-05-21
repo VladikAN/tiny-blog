@@ -2,7 +2,7 @@ import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import { AppState } from "../../store";
-import { authCredentials } from './../../store/login/actions';
+import { getToken, authCredentials } from './../../store/login/actions';
 import { AuthState } from "../../store/login/reducers";
 
 import 'Styles/login.scss';
@@ -13,7 +13,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-    authCredentials: typeof authCredentials;
+    getToken: typeof getToken,
+    authCredentials: typeof authCredentials
 }
 
 interface OwnProps {
@@ -31,6 +32,10 @@ class Login extends React.Component<AllProps, State> {
     constructor(props: AllProps) {
         super(props);
 
+        this.state = {};
+
+        this.props.getToken();
+        
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -41,11 +46,16 @@ class Login extends React.Component<AllProps, State> {
 
     handleSubmit = () => {
         const { email, password } = this.state;
+        this.setState({ email: null, password: null });
+
         this.props.authCredentials(email, password);
     }
 
     render() {
         const { isAuthorized } = this.props.auth;
+        if (isAuthorized == null) {
+            return null;
+        }
 
         return (
             <React.Fragment>
@@ -79,8 +89,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
     auth: state.login
 })
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-    ...bindActionCreators({ authCredentials }, dispatch)
+const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
+    ...bindActionCreators({ getToken, authCredentials }, dispatch)
 })
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Login);
