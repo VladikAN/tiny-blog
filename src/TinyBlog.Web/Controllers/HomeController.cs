@@ -3,10 +3,12 @@ using TinyBlog.DataServices.Services;
 using TinyBlog.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TinyBlog.Web.Controllers
 {
-    public class HomeController : BaseController
+    [AllowAnonymous]
+    public class HomeController : Controller
     {
         private readonly IPostDataService _postDataService;
 

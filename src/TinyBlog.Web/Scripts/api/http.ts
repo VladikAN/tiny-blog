@@ -4,7 +4,7 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
         headers: { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorize': token ? `Bearer ${token}` : ''
+            'Authorization': token ? `Bearer ${token}` : ''
         }
     });
 
@@ -14,6 +14,7 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
                 if (!response.ok) {
                     if (response.status == 401) {
                         // force reload page to bring login screen again
+                        localStorage.removeItem('jwtToken');
                         (window as any).location = '/admin';
                         return;
                     }

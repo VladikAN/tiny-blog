@@ -8,7 +8,8 @@ using TinyBlog.Web.ViewModels;
 namespace TinyBlog.Web.Controllers
 {
     [Authorize]
-    public class ApiController : BaseController
+    [ApiController]
+    public class ApiController : Controller
     {
         private readonly IPostDataService _postDataService;
         private readonly IAuthService _authService;
