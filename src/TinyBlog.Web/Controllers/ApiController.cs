@@ -38,21 +38,26 @@ namespace TinyBlog.Web.Controllers
         }
 
         [HttpGet, Route("api/posts")]
-        public async Task<ThreadViewModel> Posts()
+        public async Task<IActionResult> Posts()
         {
             var posts = await _postDataService.GetAll();
-            return new ThreadViewModel(posts);
+            return Json(new ThreadViewModel(posts));
         }
 
         [HttpGet, Route("api/post/{linkText:required}")]
-        public async Task<PostViewModel> Post(string linkText)
+        public async Task<IActionResult> Post(string linkText)
         {
             var post = await _postDataService.GetByLinkText(linkText);
-            return post != null ? new PostViewModel(post) : null;
+            if (post == null)
+            {
+                return BadRequest();
+            }
+
+            return Json(new PostViewModel(post));
         }
 
         [HttpPost, Route("api/post/update")]
-        public async Task<ApiResponseViewModel> Update([FromBody] PostViewModel model)
+        public async Task<IActionResult> Update([FromBody] PostViewModel model)
         {
             var dto = model.ToDto();
             var success = await _postDataService.Update(dto);
@@ -62,16 +67,16 @@ namespace TinyBlog.Web.Controllers
                 var newDto = await _postDataService.GetByLinkText(dto.LinkText);
                 var result = new PostViewModel(newDto);
 
-                return ApiResponseViewModel.Success(result);
+                return Json(ApiResponseViewModel.Success(result));
             }
             else
             {
-                return ApiResponseViewModel.Failed();
+                return Json(ApiResponseViewModel.Failed());
             }
         }
 
         [HttpPost, Route("api/post/create")]
-        public async Task<ApiResponseViewModel> Create([FromBody] PostViewModel model)
+        public async Task<IActionResult> Create([FromBody] PostViewModel model)
         {
             var dto = model.ToDto();
             var success = await _postDataService.Create(dto);
@@ -81,19 +86,19 @@ namespace TinyBlog.Web.Controllers
                 var newDto = await _postDataService.GetByLinkText(dto.LinkText);
                 var result = new PostViewModel(newDto);
 
-                return ApiResponseViewModel.Success(result);
+                return Json(ApiResponseViewModel.Success(result));
             }
             else
             {
-                return ApiResponseViewModel.Failed();
+                return Json(ApiResponseViewModel.Failed());
             }
         }
 
         [HttpPost, Route("api/post/publish")]
-        public async Task<ApiResponseViewModel> Publish([FromBody] PublishPostViewModel model)
+        public async Task<IActionResult> Publish([FromBody] PublishPostViewModel model)
         {
             var success = await _postDataService.TogglePublish(model.LinkText, model.Publish);
-            return success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed();
+            return Json(success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
     }
 }
