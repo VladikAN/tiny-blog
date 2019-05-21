@@ -7,11 +7,8 @@ interface OwnProps {
 
 type AllProps = OwnProps;
 
-interface State {
-}
-
-class MarkdownView extends React.Component<AllProps, State> {
-    render() {
+class MarkdownView extends React.Component<AllProps> {
+    public render(): React.ReactNode {
         const { text } = this.props;
 
         return (

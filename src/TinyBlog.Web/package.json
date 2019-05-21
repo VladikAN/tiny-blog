@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack --color --progress",
     "dev:watch": "npm run dev -- --watch",
-    "release": "webpack --config webpack.prod.config.js",
+    "release": "npm run lint && webpack --config webpack.prod.config.js --progress",
     "lint": "eslint --ext ts,tsx Scripts/",
     "lint:fix": "npm run lint -- --fix"
   },

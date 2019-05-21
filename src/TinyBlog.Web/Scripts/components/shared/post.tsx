@@ -5,17 +5,14 @@ import Tag from './tag';
 import { Post as PostType } from '../../store/post/types';
 
 interface StateProps extends PostType {}
-
 type AllProps = StateProps;
 
-interface State {}
-
-class Post extends React.Component<AllProps, State> {
-    render() {
+class Post extends React.Component<AllProps> {
+    public render(): React.ReactNode {
         const { title, linkText, publishedAt, previewText, tags, isPublished } = this.props;
         
         const extendedTitle = isPublished ? title : `[draft] ${title}`;
-        const tagsRender = tags.map(tg => (
+        const tagsRender = tags.map<React.ReactNode>(tg => (
             <Tag key={tg.name} {...tg} />
         ));
 

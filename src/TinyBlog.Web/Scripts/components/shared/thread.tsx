@@ -6,28 +6,22 @@ import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
 import Post from './post';
 
-interface StateProps extends ThreadState {
-}
+interface StateProps extends ThreadState {}
 
 interface DispatchProps {
     loadThread: typeof loadThread;
 }
 
-interface OwnProps {
-}
+type AllProps = StateProps & DispatchProps;
 
-type AllProps = OwnProps & StateProps & DispatchProps;
-
-interface State {}
-
-class Thread extends React.Component<AllProps, State> {
-    componentDidMount() {
+class Thread extends React.Component<AllProps> {
+    public componentDidMount(): void {
         if (!this.props.isFetched && !this.props.isFetching) {
             this.props.loadThread();
         }
     }
 
-    render() {
+    public render(): React.ReactNode {
         if (!this.props.isFetched) {
             return (<div>loading</div>);
         }
@@ -51,4 +45,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ loadThread }, dispatch)
 })
 
-export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Thread);
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Thread);

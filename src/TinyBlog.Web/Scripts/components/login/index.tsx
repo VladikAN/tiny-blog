@@ -7,7 +7,6 @@ import { AuthState } from "../../store/login/reducers";
 
 import 'Styles/login.scss';
 
-
 interface StateProps {
     auth: AuthState;
 }
@@ -17,11 +16,7 @@ interface DispatchProps {
     authCredentials: typeof authCredentials;
 }
 
-interface OwnProps {
-
-}
-
-type AllProps = OwnProps & StateProps & DispatchProps;
+type AllProps = StateProps & DispatchProps;
 
 interface State {
     email?: string;
@@ -29,7 +24,7 @@ interface State {
 }
 
 class Login extends React.Component<AllProps, State> {
-    constructor(props: AllProps) {
+    public constructor(props: AllProps) {
         super(props);
 
         this.state = {};
@@ -40,18 +35,18 @@ class Login extends React.Component<AllProps, State> {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+    private handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
         this.setState({ [event.currentTarget.name]: event.currentTarget.value } as React.ComponentState);
     }
 
-    handleSubmit = () => {
+    private handleSubmit = (): void => {
         const { email, password } = this.state;
         this.setState({ email: null, password: null });
 
         this.props.authCredentials(email, password);
     }
 
-    render() {
+    public render(): React.ReactNode {
         const { isAuthorized } = this.props.auth;
         if (isAuthorized == null) {
             return null;
@@ -93,4 +88,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ getToken, authCredentials }, dispatch)
 })
 
-export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Login);
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Login);

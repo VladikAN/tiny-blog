@@ -19,7 +19,7 @@ interface State {
 }
 
 class MarkdownEditor extends React.Component<AllProps, State> {
-    constructor(props: AllProps) {
+    public constructor(props: AllProps) {
         super(props);
 
         this.state = {
@@ -29,19 +29,19 @@ class MarkdownEditor extends React.Component<AllProps, State> {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidUpdate(prev: AllProps) {
+    public componentDidUpdate(prev: AllProps): void {
         if (prev.text != this.props.text) {
             this.setState({ newText: this.props.text });
         }
     }
 
-    handleChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    private handleChange = (event: React.FormEvent<HTMLTextAreaElement>): void => {
         const value = event.currentTarget.value;
         this.setState({ newText: value });
         this.props.onChange(this.props.name, value);
     }
 
-    render() {
+    public render(): React.ReactNode {
         const { newText } = this.state;
 
         return (

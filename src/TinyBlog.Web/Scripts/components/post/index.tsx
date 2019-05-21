@@ -35,46 +35,45 @@ interface State {
 }
 
 class Post extends React.Component<AllProps, State> {
-    constructor(props: AllProps) {
+    public constructor(props: AllProps) {
         super(props);
-
         this.state = { title: '', linkText: '', previewText: '', fullText: '', tags: '' };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
-        this.submitPost = this.submitPost.bind(this);
-        this.togglePublish = this.togglePublish.bind(this);
+        this.handleSumbit = this.handleSumbit.bind(this);
+        this.handleTogglePublish = this.handleTogglePublish.bind(this);
     }
 
-    componentDidMount() {
+    public componentDidMount(): void {
         if ((!this.props.post.isFetched && !this.props.post.isFetching)
             || this.props.post.linkText != this.props.id) {
             this.props.loadPost(this.props.id);
         }
     }
 
-    componentDidUpdate(prev: Readonly<AllProps>, next: Readonly<State>) {
+    public componentDidUpdate(prev: Readonly<AllProps>): void {
         if (!prev.post.isFetched && this.props.post.isFetched) {
             this.setState({
                 title: this.props.post.title || '',
                 linkText: this.props.post.linkText || '',
                 previewText: this.props.post.previewText || '',
                 fullText: this.props.post.fullText || '',
-                tags: this.props.post.tags.map(tg => tg.name).join(' ')
+                tags: this.props.post.tags.map<string>(tg => tg.name).join(' ')
             });
         }
     }
 
-    handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+    private handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
         this.setState({ [event.currentTarget.name]: event.currentTarget.value } as React.ComponentState);
     }
 
-    handleMdChange = (name: string, value: string) => {
+    private handleMdChange = (name: string, value: string): void => {
         this.setState({ [name] : value } as React.ComponentState);
     }
 
-    submitPost = () => {
-        const tags = this.state.tags.split(' ').map((tg: string) => ({ name: tg } as TagType))
+    private handleSumbit = (): void => {
+        const tags = this.state.tags.split(' ').map<TagType>((tg: string) => ({ name: tg }))
         const record: PostType = {
             title: this.state.title,
             linkText: this.props.post.isPublished ? this.props.post.linkText : this.state.linkText,
@@ -86,7 +85,7 @@ class Post extends React.Component<AllProps, State> {
         this.props.updatePost(record);
     }
 
-    togglePublish = () => {
+    private handleTogglePublish = (): void => {
         const publish = !this.props.post.isPublished;
         const message = publish
             ? 'This post will be available for everyone. Make sure all changes are saved.'
@@ -97,7 +96,7 @@ class Post extends React.Component<AllProps, State> {
         }
     }
 
-    render() {
+    public render(): React.ReactNode {
         if (this.props.post.isFetching) {
             return (<Loading />);
         }
@@ -163,7 +162,7 @@ class Post extends React.Component<AllProps, State> {
                 <button
                     type="button"
                     disabled={isUpdating}
-                    onClick={this.submitPost}>
+                    onClick={this.handleSumbit}>
                     {isUpdating ? 'Saving' : 'Save'}
                 </button>
 
@@ -171,7 +170,7 @@ class Post extends React.Component<AllProps, State> {
                     type={isPublished ? ZoneType.red : ZoneType.green}
                     text={publishZoneText}
                     buttonText={isPublished ? 'Unpublish' : 'Publish'}
-                    onClick={this.togglePublish} />
+                    onClick={this.handleTogglePublish} />
             </div>);
     };
 }

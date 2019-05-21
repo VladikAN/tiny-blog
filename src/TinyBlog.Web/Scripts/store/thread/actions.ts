@@ -8,8 +8,7 @@ export const LOAD_THREAD_STARTED_MESSAGE = 'LOAD_THREAD_STARTED';
 export const LOAD_THREAD_COMPLETED_MESSAGE = 'LOAD_THREAD_COMPLETED';
 
 /* Actions */
-interface LoadThreadStartedAction extends Action<typeof LOAD_THREAD_STARTED_MESSAGE> {
-}
+interface LoadThreadStartedAction extends Action<typeof LOAD_THREAD_STARTED_MESSAGE> {}
 
 interface LoadThreadAction extends Action<typeof LOAD_THREAD_COMPLETED_MESSAGE> {
     posts: Post[];

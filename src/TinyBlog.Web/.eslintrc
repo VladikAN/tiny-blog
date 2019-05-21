@@ -12,6 +12,11 @@
         }
     },
     "rules": {
+        "@typescript-eslint/no-empty-interface": "off",
+        "react/no-children-prop": "warn",
+        "@typescript-eslint/explicit-function-return-type": {
+            "allowExpressions": true
+        }
     },
     "settings": {
         "react": {

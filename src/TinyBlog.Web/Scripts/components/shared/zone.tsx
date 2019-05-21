@@ -19,11 +19,8 @@ interface DispatchProps {
 
 type AllProps = OwnProps & DispatchProps;
 
-interface State {
-}
-
-class Zone extends React.Component<AllProps, State> {
-    render() {
+class Zone extends React.Component<AllProps> {
+    public render(): React.ReactNode {
         const { type, text, buttonText } = this.props;
         const className = type == ZoneType.green
             ? 'zone-good'

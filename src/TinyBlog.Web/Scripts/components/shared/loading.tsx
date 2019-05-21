@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export default class Loading extends React.Component {
-    render() {
+    public render(): React.ReactNode {
         return (<div>Loading ...</div>);
     }
 }

@@ -17,7 +17,7 @@ ReactDOM.render(
                     component={Dashboard} />
                 <Route 
                     path="/admin/post/:id" 
-                    children={({ match:match }) => (match && <Post id={match.params['id']} />)} />
+                    children={({ match:match }): React.ReactNode => (match && <Post id={match.params['id']} />)} />
             </Router>
         </Login>
     </Provider>,
