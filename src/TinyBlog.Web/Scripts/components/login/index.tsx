@@ -13,8 +13,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-    getToken: typeof getToken,
-    authCredentials: typeof authCredentials
+    getToken: typeof getToken;
+    authCredentials: typeof authCredentials;
 }
 
 interface OwnProps {
@@ -89,7 +89,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
     auth: state.login
 })
 
-const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ getToken, authCredentials }, dispatch)
 })
 
