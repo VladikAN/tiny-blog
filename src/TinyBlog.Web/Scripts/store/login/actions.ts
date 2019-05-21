@@ -75,11 +75,7 @@ export const authCredentials = (email: string, password: string) => async (dispa
     
     const request = new Request(AuthUrl, {
         method: 'POST',
-        body: JSON.stringify({ email: email, password: password }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        body: JSON.stringify({ email: email, password: password })
     });
     
     return http<{ isSuccess: boolean; payload: Auth }>(request).then(response => {

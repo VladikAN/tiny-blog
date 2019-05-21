@@ -74,7 +74,10 @@ class Login extends React.Component<AllProps, State> {
                                 onChange={this.handleChange} />
                         </label>
                     </div>
-                    <button type="button" onClick={this.handleSubmit}>Sign In</button>
+                    <button
+                        className="btn-login"
+                        type="button"
+                        onClick={this.handleSubmit}>Sign In</button>
                 </div>}
             </React.Fragment>);
     };

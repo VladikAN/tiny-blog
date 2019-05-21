@@ -3,8 +3,8 @@ import * as React from "react";
 import 'Styles/zone.scss';
 
 export enum ZoneType {
-    green,
-    red
+    success,
+    danger
 }
 
 interface OwnProps {
@@ -22,9 +22,12 @@ type AllProps = OwnProps & DispatchProps;
 class Zone extends React.Component<AllProps> {
     public render(): React.ReactNode {
         const { type, text, buttonText } = this.props;
-        const className = type == ZoneType.green
-            ? 'zone-good'
+        const className = type == ZoneType.success
+            ? 'zone-success'
             : 'zone-danger';
+        const btnClassName = type == ZoneType.success
+            ? 'btn-success'
+            : 'btn-danger';
 
         return (
             <div className={`zone ${className}`}>
@@ -33,6 +36,7 @@ class Zone extends React.Component<AllProps> {
                 </div>
                 <div className="zone__button">
                     <button
+                        className={btnClassName}
                         type="button"
                         onClick={this.props.onClick}>
                         {buttonText}

@@ -159,15 +159,18 @@ class Post extends React.Component<AllProps, State> {
                     <span className="editor-field__help">Each tag is separated by single space</span>
                 </div>
 
-                <button
-                    type="button"
-                    disabled={isUpdating}
-                    onClick={this.handleSumbit}>
-                    {isUpdating ? 'Saving' : 'Save'}
-                </button>
+                <div className="align-right">
+                    <button
+                        className="btn-success"
+                        type="button"
+                        disabled={isUpdating}
+                        onClick={this.handleSumbit}>
+                        {isUpdating ? 'Saving' : 'Save'}
+                    </button>
+                </div>
 
                 <Zone
-                    type={isPublished ? ZoneType.red : ZoneType.green}
+                    type={isPublished ? ZoneType.danger : ZoneType.success}
                     text={publishZoneText}
                     buttonText={isPublished ? 'Unpublish' : 'Publish'}
                     onClick={this.handleTogglePublish} />

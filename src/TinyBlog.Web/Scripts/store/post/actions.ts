@@ -84,11 +84,7 @@ export const updatePost = (post: Post) => async (dispatch: Dispatch): Promise<vo
 
     const request = new Request(UpdatePostUrl, {
         method: 'POST',
-        body: JSON.stringify(post),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        body: JSON.stringify(post)
     });
 
     return http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
@@ -101,11 +97,7 @@ export const togglePost = (linkText: string, publish: boolean) => async (dispatc
 
     const request = new Request(TogglePostUrl, {
         method: 'POST',
-        body: JSON.stringify({ linkText: linkText, publish: publish }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        body: JSON.stringify({ linkText: linkText, publish: publish })
     });
 
     return http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
