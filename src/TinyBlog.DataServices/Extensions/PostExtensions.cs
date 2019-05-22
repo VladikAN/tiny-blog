@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using MongoDB.Bson;
+using System.Linq;
 using TinyBlog.DataServices.Entities;
 using TinyBlog.DataServices.Services.Dto;
 
@@ -24,8 +25,10 @@ namespace TinyBlog.DataServices.Extensions
 
         internal static Post BuildDomain(this PostDto post)
         {
+            var entityId = !string.IsNullOrWhiteSpace(post.Id) ? ObjectId.Parse(post.Id) : ObjectId.GenerateNewId();
             var result = new Post
             {
+                EntityId = entityId,
                 Title = post.Title,
                 LinkText = post.LinkText,
                 PreviewText = post.PreviewText,

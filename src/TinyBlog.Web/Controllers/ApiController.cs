@@ -61,13 +61,11 @@ namespace TinyBlog.Web.Controllers
         public async Task<IActionResult> Save([FromBody] PostViewModel model)
         {
             var dto = model.ToDto();
-            var success = string.IsNullOrWhiteSpace(model.Id)
-                ? await _postDataService.Create(dto)
-                : await _postDataService.Update(dto);
+            var id = await _postDataService.Upsert(dto);
 
-            if (success)
+            if (!string.IsNullOrWhiteSpace(id))
             {
-                var newDto = await _postDataService.Get(dto.Id);
+                var newDto = await _postDataService.Get(id);
                 var result = new PostViewModel(newDto);
 
                 return Json(ApiResponseViewModel.Success(result));

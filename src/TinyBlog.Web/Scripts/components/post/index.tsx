@@ -57,11 +57,7 @@ class Post extends React.Component<AllProps, State> {
     public componentDidUpdate(prev: Readonly<AllProps>): void {
         if (this.props.entityId != null && !prev.post.isFetched && this.props.post.isFetched) {
             this.setState({
-                id: this.props.post.id,
-                title: this.props.post.title || '',
-                linkText: this.props.post.linkText || '',
-                previewText: this.props.post.previewText || '',
-                fullText: this.props.post.fullText || '',
+                ...this.props.post,
                 tags: this.props.post.tags.map<string>(tg => tg.name).join(' ')
             });
         }
@@ -77,15 +73,7 @@ class Post extends React.Component<AllProps, State> {
 
     private handleSumbit = (): void => {
         const tags = this.state.tags.split(' ').map<TagType>((tg: string) => ({ name: tg }))
-        const record: PostType = {
-            id: this.state.id,
-            title: this.state.title,
-            linkText: this.props.post.isPublished ? this.props.post.linkText : this.state.linkText,
-            previewText: this.state.previewText,
-            fullText: this.state.fullText,
-            tags: tags
-        };
-
+        const record: PostType = { ...this.state, tags: tags };
         this.props.savePost(record);
     }
 

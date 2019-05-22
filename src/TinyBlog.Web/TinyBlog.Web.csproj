@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-      <Exec Command="npm run release" />
+    <Exec Command="npm install" />
+    <Exec Command="npm run release" />
   </Target>
 </Project>

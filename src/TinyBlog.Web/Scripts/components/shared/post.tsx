@@ -24,9 +24,7 @@ class Post extends React.Component<AllProps> {
                 <div className="thread__post_preview">
                     <MarkdownView text={previewText} />
                 </div>
-                <div className="tags">
-                    {tagsRender}
-                </div>
+                {tagsRender && tagsRender.length > 0 && <div className="tags">{tagsRender}</div>}
             </div>);
     };
 }

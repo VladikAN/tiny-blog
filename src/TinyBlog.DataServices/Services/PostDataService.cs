@@ -49,28 +49,13 @@ namespace TinyBlog.DataServices.Services
             return post?.BuildDto(includeText: true);
         }
 
-        public async Task<bool> Create(PostDto post)
-        {
-            try
-            {
-                await PostCollection().InsertOneAsync(post.BuildDomain());
-                _logger.LogInformation($"Post '{post.LinkText}' was created");
-                return true;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message);
-                return false;
-            }
-        }
-
         public async Task<PostDto> Get(string id)
         {
             var entity = await GetById(id);
             return entity?.BuildDto();
         }
 
-        public async Task<bool> Update(PostDto post)
+        public async Task<string> Upsert(PostDto post)
         {
             try
             {
@@ -80,20 +65,19 @@ namespace TinyBlog.DataServices.Services
                     .Set(x => x.LinkText, domain.LinkText)
                     .Set(x => x.PreviewText, domain.PreviewText)
                     .Set(x => x.FullText, domain.FullText)
-                    .Set(x => x.Tags, domain.Tags);
+                    .Set(x => x.Tags, domain.Tags)
+                    .Set(x => x.PublishedAt, domain.IsPublished ? domain.PublishedAt : DateTime.UtcNow);
 
-                var options = new UpdateOptions { IsUpsert = false };
-                var entityId = ObjectId.Parse(post.Id);
+                var options = new UpdateOptions { IsUpsert = true };
+                var result = await PostCollection().UpdateOneAsync(x => x.EntityId == domain.EntityId, definition, options);
+                _logger.LogInformation($"Post '{post.LinkText}' was saved");
 
-                await PostCollection().UpdateOneAsync(x => x.EntityId == entityId, definition, options);
-                _logger.LogInformation($"Post '{post.LinkText}' was updated");
-
-                return true;
+                return domain.EntityId.ToString();
             }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
-                return false;
+                return null;
             }
         }
 
@@ -103,11 +87,9 @@ namespace TinyBlog.DataServices.Services
             {
                 var entity = await GetById(id);
 
-                var definition = Builders<Post>.Update.Set(x => x.IsPublished, publish);
-                if (publish && entity.PublishedAt == null)
-                {
-                    definition.Set(x => x.PublishedAt, DateTime.UtcNow);
-                }
+                var definition = Builders<Post>.Update
+                    .Set(x => x.IsPublished, publish)
+                    .Set(x => x.PublishedAt, publish ? DateTime.UtcNow : entity.PublishedAt);
 
                 var options = new UpdateOptions { IsUpsert = false };
                 await PostCollection().UpdateOneAsync(x => x.EntityId == entity.EntityId, definition, options);
