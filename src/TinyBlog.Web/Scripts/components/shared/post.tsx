@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import MarkdownView from './markdown-view';
-import Tag from './tag';
 import { Post as PostType } from '../../store/post/types';
 
 interface StateProps extends PostType {}
@@ -13,7 +12,7 @@ class Post extends React.Component<AllProps> {
         
         const extendedTitle = isPublished ? title : `[draft] ${title}`;
         const tagsRender = tags.map<React.ReactNode>(tg => (
-            <Tag key={tg.name} {...tg} />
+            <a key={tg.name} href={null}>{tg.name}</a>
         ));
 
         return (

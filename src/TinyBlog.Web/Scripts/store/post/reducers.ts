@@ -3,8 +3,8 @@ import {
     PostActionTypes,
     LOAD_POST_STARTED_MESSAGE,
     LOAD_POST_COMPLETED_MESSAGE,
-    UPDATE_POST_STARTED_MESSAGE,
-    UPDATE_POST_COMPLETED_MESSAGE,
+    SAVE_POST_STARTED_MESSAGE,
+    SAVE_POST_COMPLETED_MESSAGE,
     TOGGLE_POST_STARTED_MESSAGE,
     TOGGLE_POST_COMPLETED_MESSAGE
 } from './actions';
@@ -12,7 +12,7 @@ import {
 export interface PostState extends Post {
     isFetching?: boolean;
     isFetched?: boolean;
-    isUpdating?: boolean;
+    isSaving?: boolean;
 }
 
 const initialState: PostState = {
@@ -40,26 +40,26 @@ export function postReducer(state = initialState, action: PostActionTypes): Post
                 isFetching: false,
                 isFetched: true
             };
-        case UPDATE_POST_STARTED_MESSAGE:
+        case SAVE_POST_STARTED_MESSAGE:
             return {
                 ...state,
-                isUpdating: true
+                isSaving: true
             }
-        case UPDATE_POST_COMPLETED_MESSAGE:
+        case SAVE_POST_COMPLETED_MESSAGE:
             return {
                 ...action.post,
-                isUpdating: false
+                isSaving: false
             }
         case TOGGLE_POST_STARTED_MESSAGE:
             return {
                 ...state,
-                isUpdating: true
+                isSaving: true
             }
         case TOGGLE_POST_COMPLETED_MESSAGE:
             return {
                 ...state,
                 isPublished: action.isPublished,
-                isUpdating: false
+                isSaving: false
             }
         default:
             return state

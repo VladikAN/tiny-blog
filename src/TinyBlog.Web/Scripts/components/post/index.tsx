@@ -1,5 +1,5 @@
 import * as React from "react";
-import { loadPost, updatePost, togglePost } from "../../store/post/actions";
+import { loadPost, savePost, togglePost } from "../../store/post/actions";
 import { Post as PostType, Tag as TagType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
@@ -16,17 +16,18 @@ interface StateProps {
 
 interface DispatchProps {
     loadPost: typeof loadPost;
-    updatePost: typeof updatePost;
+    savePost: typeof savePost;
     togglePost: typeof togglePost;
 }
 
 interface OwnProps {
-    id: string;
+    entityId?: string;
 }
 
 type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {
+    id: string;
     title: string;
     linkText: string;
     previewText: string;
@@ -37,7 +38,7 @@ interface State {
 class Post extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
-        this.state = { title: '', linkText: '', previewText: '', fullText: '', tags: '' };
+        this.state = { id: '', title: '', linkText: '', previewText: '', fullText: '', tags: '' };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
@@ -46,15 +47,17 @@ class Post extends React.Component<AllProps, State> {
     }
 
     public componentDidMount(): void {
-        if ((!this.props.post.isFetched && !this.props.post.isFetching)
-            || this.props.post.linkText != this.props.id) {
-            this.props.loadPost(this.props.id);
+        if (this.props.entityId != null) {
+            if ((!this.props.post.isFetched && !this.props.post.isFetching) || this.props.post.id != this.props.entityId) {
+                this.props.loadPost(this.props.entityId);
+            }
         }
     }
 
     public componentDidUpdate(prev: Readonly<AllProps>): void {
-        if (!prev.post.isFetched && this.props.post.isFetched) {
+        if (this.props.entityId != null && !prev.post.isFetched && this.props.post.isFetched) {
             this.setState({
+                id: this.props.post.id,
                 title: this.props.post.title || '',
                 linkText: this.props.post.linkText || '',
                 previewText: this.props.post.previewText || '',
@@ -75,7 +78,7 @@ class Post extends React.Component<AllProps, State> {
     private handleSumbit = (): void => {
         const tags = this.state.tags.split(' ').map<TagType>((tg: string) => ({ name: tg }))
         const record: PostType = {
-            id: this.props.post.id,
+            id: this.state.id,
             title: this.state.title,
             linkText: this.props.post.isPublished ? this.props.post.linkText : this.state.linkText,
             previewText: this.state.previewText,
@@ -83,7 +86,7 @@ class Post extends React.Component<AllProps, State> {
             tags: tags
         };
 
-        this.props.updatePost(record);
+        this.props.savePost(record);
     }
 
     private handleTogglePublish = (): void => {
@@ -103,7 +106,7 @@ class Post extends React.Component<AllProps, State> {
         }
 
         const { title, linkText, previewText, fullText, tags } = this.state;
-        const { isUpdating, isPublished } = this.props.post;
+        const { isSaving: isUpdating, isPublished } = this.props.post;
 
         const publishZoneText = isPublished
             ? 'This post is currently public. By pressing this button you will hide post from everyone.'
@@ -184,7 +187,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-    ...bindActionCreators({ loadPost, updatePost, togglePost }, dispatch)
+    ...bindActionCreators({ loadPost, savePost, togglePost }, dispatch)
 })
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Post);

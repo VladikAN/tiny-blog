@@ -1,37 +1,31 @@
 import { Dispatch, Action } from 'redux';
 import { Post } from './../post/types';
 import { http } from './../../api/http';
-import { LoadPostUrl, UpdatePostUrl, TogglePostUrl } from './../../api/urls';
+import { LoadPostUrl, SavePostUrl, TogglePostUrl } from './../../api/urls';
 
 /* Messages */
 export const LOAD_POST_STARTED_MESSAGE = 'LOAD_POST_STARTED';
 export const LOAD_POST_COMPLETED_MESSAGE = 'LOAD_POST_COMPLETED';
 
-export const UPDATE_POST_STARTED_MESSAGE = 'UPDATE_POST_STARTED';
-export const UPDATE_POST_COMPLETED_MESSAGE = 'UPDATE_POST_COMPLETED';
+export const SAVE_POST_STARTED_MESSAGE = 'SAVE_POST_STARTED';
+export const SAVE_POST_COMPLETED_MESSAGE = 'SAVE_POST_COMPLETED';
 
 export const TOGGLE_POST_STARTED_MESSAGE = 'TOGGLE_POST_STARTED';
 export const TOGGLE_POST_COMPLETED_MESSAGE = 'TOGGLE_POST_COMPLETED';
 
 /* Actions */
-interface LoadPostStartedAction extends Action<typeof LOAD_POST_STARTED_MESSAGE> {
-}
-
+interface LoadPostStartedAction extends Action<typeof LOAD_POST_STARTED_MESSAGE> {}
 interface LoadPostAction extends Action<typeof LOAD_POST_COMPLETED_MESSAGE> {
     post: Post;
 }
 
-interface UpdatePostStartedAction extends Action<typeof UPDATE_POST_STARTED_MESSAGE> {
-}
-
-interface UpdatePostCompletedAction extends Action<typeof UPDATE_POST_COMPLETED_MESSAGE> {
+interface SavePostStartedAction extends Action<typeof SAVE_POST_STARTED_MESSAGE> {}
+interface SavePostCompletedAction extends Action<typeof SAVE_POST_COMPLETED_MESSAGE> {
     isSuccess: boolean;
     post: Post;
 }
 
-interface TogglePostStartedAction extends Action<typeof TOGGLE_POST_STARTED_MESSAGE> {
-}
-
+interface TogglePostStartedAction extends Action<typeof TOGGLE_POST_STARTED_MESSAGE> {}
 interface TogglePostCompletedAction extends Action<typeof TOGGLE_POST_COMPLETED_MESSAGE> {
     isSuccess: boolean;
     isPublished: boolean;
@@ -40,8 +34,8 @@ interface TogglePostCompletedAction extends Action<typeof TOGGLE_POST_COMPLETED_
 export type PostActionTypes =
     LoadPostStartedAction 
     | LoadPostAction
-    | UpdatePostStartedAction
-    | UpdatePostCompletedAction
+    | SavePostStartedAction
+    | SavePostCompletedAction
     | TogglePostStartedAction
     | TogglePostCompletedAction;
 
@@ -54,12 +48,12 @@ const loadPostActionCreator = (post: Post): LoadPostAction => {
     return { type: LOAD_POST_COMPLETED_MESSAGE, post };
 }
 
-const UpdatePostStartedActionCreator = (): UpdatePostStartedAction => {
-    return { type: UPDATE_POST_STARTED_MESSAGE };
+const SavePostStartedActionCreator = (): SavePostStartedAction => {
+    return { type: SAVE_POST_STARTED_MESSAGE };
 }
 
-const UpdatePostCompletedActionCreator = (isSuccess: boolean, post: Post): UpdatePostCompletedAction => {
-    return { type: UPDATE_POST_COMPLETED_MESSAGE, isSuccess, post };
+const SavePostCompletedActionCreator = (isSuccess: boolean, post: Post): SavePostCompletedAction => {
+    return { type: SAVE_POST_COMPLETED_MESSAGE, isSuccess, post };
 }
 
 const TogglePostStartedActionCreator = (): TogglePostStartedAction => {
@@ -79,16 +73,16 @@ export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void
     });
 }
 
-export const updatePost = (post: Post) => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(UpdatePostStartedActionCreator());
+export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void> => {
+    dispatch(SavePostStartedActionCreator());
 
-    const request = new Request(UpdatePostUrl, {
+    const request = new Request(SavePostUrl, {
         method: 'POST',
         body: JSON.stringify(post)
     });
 
     return http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
-        dispatch(UpdatePostCompletedActionCreator(response.isSuccess, response.payload))
+        dispatch(SavePostCompletedActionCreator(response.isSuccess, response.payload))
     });
 }
 
