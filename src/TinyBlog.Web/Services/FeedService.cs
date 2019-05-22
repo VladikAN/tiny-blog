@@ -1,10 +1,10 @@
-﻿using TinyBlog.DataServices.Services;
-using TinyBlog.Web.Configuration.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using TinyBlog.DataServices.Services;
+using TinyBlog.Web.Configuration.Settings;
 
 namespace TinyBlog.Web.Services
 {
@@ -34,8 +34,7 @@ namespace TinyBlog.Web.Services
             // Tags
             var tags = posts
                 .SelectMany(pst => pst.Tags)
-                .Where(tg => tg != null)
-                .Select(tg => tg.Name)
+                .Where(tg => !string.IsNullOrWhiteSpace(tg))
                 .Distinct();
             foreach (var tag in tags)
             {

@@ -21,7 +21,7 @@ namespace TinyBlog.DataServices.Entities
         public DateTime PublishedAt { get; set; }
 
         [BsonElement("tags")]
-        public Tag[] Tags { get; set; }
+        public string[] Tags { get; set; }
 
         [BsonElement("isPublished")]
         public bool IsPublished { get; set; }

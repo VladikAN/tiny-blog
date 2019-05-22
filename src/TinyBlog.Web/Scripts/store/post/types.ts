@@ -5,10 +5,6 @@ export interface Post {
     previewText: string;
     fullText: string;
     publishedAt?: Date;
-    tags?: Tag[];
+    tags?: string[];
     isPublished?: boolean;
-}
-
-export interface Tag {
-    name: string;
 }

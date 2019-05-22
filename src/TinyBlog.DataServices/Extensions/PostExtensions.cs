@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson;
-using System.Linq;
 using TinyBlog.DataServices.Entities;
 using TinyBlog.DataServices.Services.Dto;
 
@@ -9,9 +8,7 @@ namespace TinyBlog.DataServices.Extensions
     {
         internal static PostDto BuildDto(this Post post, bool includeText = false)
         {
-            var tags = (post.Tags?.Select(tg => tg.BuildDto()) ?? new TagDto[0]).ToArray();
             var fullText = includeText ? post.FullText : string.Empty;
-
             return new PostDto(
                 post.EntityId.ToString(),
                 post.Title,
@@ -20,7 +17,7 @@ namespace TinyBlog.DataServices.Extensions
                 fullText,
                 post.PublishedAt,
                 post.IsPublished,
-                tags);
+                post.Tags);
         }
 
         internal static Post BuildDomain(this PostDto post)
@@ -34,9 +31,7 @@ namespace TinyBlog.DataServices.Extensions
                 PreviewText = post.PreviewText,
                 FullText = post.FullText,
                 PublishedAt = post.PublishedAt,
-                Tags = (post.Tags ?? new TagDto[0])
-                    .Select(tg => tg.BuildDomain())
-                    .ToArray()
+                Tags = post.Tags
             };
 
             return result;

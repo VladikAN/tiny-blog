@@ -16,7 +16,7 @@ namespace TinyBlog.DataServices.Services.Dto
             string fullText,
             DateTime publishedAt,
             bool isPublished,
-            TagDto[] tags = null)
+            string[] tags)
         {
             Id = id;
             Title = title;
@@ -25,7 +25,7 @@ namespace TinyBlog.DataServices.Services.Dto
             FullText = fullText;
             PublishedAt = publishedAt;
             IsPublished = isPublished;
-            Tags = tags ?? new TagDto[0];
+            Tags = tags ?? new string[0];
         }
 
         public string Id { get; set; }
@@ -34,7 +34,7 @@ namespace TinyBlog.DataServices.Services.Dto
         public string PreviewText { get; set; }
         public string FullText { get; set; }
         public DateTime PublishedAt { get; set; }
-        public TagDto[] Tags { get; set; }
+        public string[] Tags { get; set; }
         public bool IsPublished { get; set; }
     }
 }

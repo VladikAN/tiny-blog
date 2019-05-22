@@ -10,6 +10,14 @@
     @Html.Markdown(Model.FullText)
 </div>
 
-@await Component.InvokeAsync(nameof(Tags), Model.Tags)
+@if (Model.Tags != null || Model.Tags.Length > 0)
+{
+    <div class="tags">
+        @foreach (var tag in Model.Tags)
+        {
+            <a href="@Url.Action("Tag", "Home", new { tag })">@tag</a>
+        }
+    </div>
+}
 
 <a href="/">[ back to home ]</a>

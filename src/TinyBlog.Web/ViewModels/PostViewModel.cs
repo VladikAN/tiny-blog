@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using TinyBlog.DataServices.Services.Dto;
 
 namespace TinyBlog.Web.ViewModels
@@ -18,9 +17,7 @@ namespace TinyBlog.Web.ViewModels
             PreviewText = post.PreviewText;
             FullText = post.FullText;
             PublishedAt = post.PublishedAt;
-            Tags = (post.Tags ?? new TagDto[0])
-                .Select(tag => new TagViewModel(tag))
-                .ToArray();
+            Tags = post.Tags ?? new string[0];
             IsPublished = post.IsPublished;
         }
 
@@ -30,7 +27,7 @@ namespace TinyBlog.Web.ViewModels
         public string PreviewText { get; set; }
         public string FullText { get; set; }
         public DateTime PublishedAt { get; }
-        public TagViewModel[] Tags { get; set; } = new TagViewModel[0];
+        public string[] Tags { get; set; } = new string[0];
         public bool IsPublished { get; }
 
         public PostDto ToDto()
@@ -43,9 +40,7 @@ namespace TinyBlog.Web.ViewModels
                 PreviewText = PreviewText,
                 FullText = FullText,
                 PublishedAt = PublishedAt,
-                Tags = (Tags ?? new TagViewModel[0])
-                    .Select(tag => tag.ToDto())
-                    .ToArray(),
+                Tags = Tags
                 // IsPublished ignored
             };
         }

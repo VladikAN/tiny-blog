@@ -35,7 +35,7 @@ namespace TinyBlog.DataServices.Services
         {
             var queryParam = name.Trim().ToLower();
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await PostCollection().FindAsync(pst => pst.Tags.Any(x => x.Name == queryParam), options);
+            var data = await PostCollection().FindAsync(pst => pst.Tags.Any(tg => tg == queryParam), options);
 
             var result = data.ToList().Select(pst => pst.BuildDto()).ToArray();
             return result;

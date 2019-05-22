@@ -21,7 +21,15 @@
                 <a class="thread__post_preview_link" href="@href">read more</a>
             </div>
 
-            @await Component.InvokeAsync(nameof(Tags), post.Tags)
+            @if (post.Tags != null || post.Tags.Length > 0)
+            {
+                <div class="tags">
+                    @foreach (var tag in post.Tags)
+                    {
+                        <a href="@Url.Action("Tag", "Home", new { tag })">@tag</a>
+                    }
+                </div>
+            }
         </div>
         }
     </div>

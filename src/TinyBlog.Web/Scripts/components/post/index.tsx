@@ -1,6 +1,6 @@
 import * as React from "react";
 import { loadPost, savePost, togglePost } from "../../store/post/actions";
-import { Post as PostType, Tag as TagType } from "../../store/post/types";
+import { Post as PostType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
 import { Dispatch, bindActionCreators } from "redux";
@@ -58,7 +58,7 @@ class Post extends React.Component<AllProps, State> {
         if (this.props.entityId != null && !prev.post.isFetched && this.props.post.isFetched) {
             this.setState({
                 ...this.props.post,
-                tags: this.props.post.tags.map<string>(tg => tg.name).join(' ')
+                tags: this.props.post.tags.join(' ')
             });
         }
     }
@@ -72,8 +72,7 @@ class Post extends React.Component<AllProps, State> {
     }
 
     private handleSumbit = (): void => {
-        const tags = this.state.tags.split(' ').map<TagType>((tg: string) => ({ name: tg }))
-        const record: PostType = { ...this.state, tags: tags };
+        const record: PostType = { ...this.state, tags: this.state.tags.split(' ') };
         this.props.savePost(record);
     }
 

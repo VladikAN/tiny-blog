@@ -12,7 +12,7 @@ class Post extends React.Component<AllProps> {
         
         const extendedTitle = isPublished ? title : `[draft] ${title}`;
         const tagsRender = tags.map<React.ReactNode>(tg => (
-            <a key={tg.name} href={null}>{tg.name}</a>
+            <a key={tg} href={null}>{tg}</a>
         ));
 
         return (
