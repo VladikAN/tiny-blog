@@ -45,10 +45,10 @@ namespace TinyBlog.Web.Controllers
             return Json(new ThreadViewModel(posts));
         }
 
-        [HttpGet, Route("api/post/{linkText:required}")]
-        public async Task<IActionResult> Post(string linkText)
+        [HttpGet, Route("api/post/{id:required}")]
+        public async Task<IActionResult> Post(string id)
         {
-            var post = await _postDataService.GetByLinkText(linkText);
+            var post = await _postDataService.Get(id);
             if (post == null)
             {
                 return BadRequest();
@@ -98,7 +98,7 @@ namespace TinyBlog.Web.Controllers
         [HttpPost, Route("api/post/publish")]
         public async Task<IActionResult> Publish([FromBody] PublishPostViewModel model)
         {
-            var success = await _postDataService.TogglePublish(model.LinkText, model.Publish);
+            var success = await _postDataService.TogglePublish(model.Id, model.Publish);
             return Json(success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
     }

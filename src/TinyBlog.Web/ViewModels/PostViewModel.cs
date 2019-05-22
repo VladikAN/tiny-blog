@@ -12,6 +12,7 @@ namespace TinyBlog.Web.ViewModels
 
         public PostViewModel(PostDto post)
         {
+            Id = post.Id;
             Title = post.Title;
             LinkText = post.LinkText;
             PreviewText = post.PreviewText;
@@ -23,6 +24,7 @@ namespace TinyBlog.Web.ViewModels
             IsPublished = post.IsPublished;
         }
 
+        public string Id { get; set; }
         public string Title { get; set; }
         public string LinkText { get; set; }
         public string PreviewText { get; set; }
@@ -35,6 +37,7 @@ namespace TinyBlog.Web.ViewModels
         {
             return new PostDto
             {
+                Id = Id,
                 Title = Title,
                 LinkText = LinkText,
                 PreviewText = PreviewText,

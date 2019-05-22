@@ -75,6 +75,7 @@ class Post extends React.Component<AllProps, State> {
     private handleSumbit = (): void => {
         const tags = this.state.tags.split(' ').map<TagType>((tg: string) => ({ name: tg }))
         const record: PostType = {
+            id: this.props.post.id,
             title: this.state.title,
             linkText: this.props.post.isPublished ? this.props.post.linkText : this.state.linkText,
             previewText: this.state.previewText,
@@ -92,7 +93,7 @@ class Post extends React.Component<AllProps, State> {
             : 'This post will be hidden for everyone. This can negatively impact on users. Try to avoid this action.';
 
         if (confirm(message)) {
-            this.props.togglePost(this.props.post.linkText, publish);
+            this.props.togglePost(this.props.post.id, publish);
         }
     }
 

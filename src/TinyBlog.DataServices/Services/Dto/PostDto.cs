@@ -9,6 +9,7 @@ namespace TinyBlog.DataServices.Services.Dto
         }
 
         public PostDto(
+            string id,
             string title,
             string linkText,
             string previewText,
@@ -17,6 +18,7 @@ namespace TinyBlog.DataServices.Services.Dto
             bool isPublished,
             TagDto[] tags = null)
         {
+            Id = id;
             Title = title;
             LinkText = linkText;
             PreviewText = previewText;
@@ -26,6 +28,7 @@ namespace TinyBlog.DataServices.Services.Dto
             Tags = tags ?? new TagDto[0];
         }
 
+        public string Id { get; set; }
         public string Title { get; set; }
         public string LinkText { get; set; }
         public string PreviewText { get; set; }

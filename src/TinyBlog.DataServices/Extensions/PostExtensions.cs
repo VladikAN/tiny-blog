@@ -12,6 +12,7 @@ namespace TinyBlog.DataServices.Extensions
             var fullText = includeText ? post.FullText : string.Empty;
 
             return new PostDto(
+                post.EntityId.ToString(),
                 post.Title,
                 post.LinkText,
                 post.PreviewText,

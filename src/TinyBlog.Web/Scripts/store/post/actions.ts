@@ -71,9 +71,9 @@ const TogglePostCompletedActionCreator = (isSuccess: boolean, isPublished: boole
 }
 
 /* Dispatches */
-export const loadPost = (linkText: string) => async (dispatch: Dispatch): Promise<void> => {
+export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadPostStartedActionCreator());
-    const address = `${LoadPostUrl}/${linkText}`;
+    const address = `${LoadPostUrl}/${id}`;
     return http<Post>(address).then(response => {
         dispatch(loadPostActionCreator(response))
     });
@@ -92,12 +92,12 @@ export const updatePost = (post: Post) => async (dispatch: Dispatch): Promise<vo
     });
 }
 
-export const togglePost = (linkText: string, publish: boolean) => async (dispatch: Dispatch): Promise<void> => {
+export const togglePost = (id: string, publish: boolean) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(TogglePostStartedActionCreator());
 
     const request = new Request(TogglePostUrl, {
         method: 'POST',
-        body: JSON.stringify({ linkText: linkText, publish: publish })
+        body: JSON.stringify({ id: id, publish: publish })
     });
 
     return http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {

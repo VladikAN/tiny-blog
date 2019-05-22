@@ -9,7 +9,7 @@ type AllProps = StateProps;
 
 class Post extends React.Component<AllProps> {
     public render(): React.ReactNode {
-        const { title, linkText, publishedAt, previewText, tags, isPublished } = this.props;
+        const { title, id, publishedAt, previewText, tags, isPublished } = this.props;
         
         const extendedTitle = isPublished ? title : `[draft] ${title}`;
         const tagsRender = tags.map<React.ReactNode>(tg => (
@@ -18,7 +18,7 @@ class Post extends React.Component<AllProps> {
 
         return (
             <div className="thread__post">
-                <h2>{extendedTitle} <Link className="link-header" to={`/admin/post/${linkText}`}>[Edit]</Link></h2>
+                <h2>{extendedTitle} <Link className="link-header" to={`/admin/post/${id}`}>[Edit]</Link></h2>
                 <div className="thread__post_info">
                     <span>{publishedAt}</span>
                 </div>

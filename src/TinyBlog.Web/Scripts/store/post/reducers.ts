@@ -16,6 +16,7 @@ export interface PostState extends Post {
 }
 
 const initialState: PostState = {
+    id: null,
     title: null,
     linkText: null,
     previewText: null,
