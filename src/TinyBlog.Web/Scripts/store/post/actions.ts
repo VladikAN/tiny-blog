@@ -31,6 +31,7 @@ interface SavePostCompletedAction extends Action<typeof SAVE_POST_COMPLETED_MESS
 
 interface TogglePostStartedAction extends Action<typeof TOGGLE_POST_STARTED_MESSAGE> {}
 interface TogglePostCompletedAction extends Action<typeof TOGGLE_POST_COMPLETED_MESSAGE> {
+    id: string;
     isSuccess: boolean;
     isPublished: boolean;
 }
@@ -69,8 +70,8 @@ const TogglePostStartedActionCreator = (): TogglePostStartedAction => {
     return { type: TOGGLE_POST_STARTED_MESSAGE };
 }
 
-const TogglePostCompletedActionCreator = (isSuccess: boolean, isPublished: boolean): TogglePostCompletedAction => {
-    return { type: TOGGLE_POST_COMPLETED_MESSAGE, isSuccess, isPublished };
+const TogglePostCompletedActionCreator = (id: string, isSuccess: boolean, isPublished: boolean): TogglePostCompletedAction => {
+    return { type: TOGGLE_POST_COMPLETED_MESSAGE, id, isSuccess, isPublished };
 }
 
 /* Dispatches */
@@ -109,6 +110,6 @@ export const togglePost = (id: string, publish: boolean) => async (dispatch: Dis
 
     return http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
         const published = response.isSuccess ? publish : !publish;
-        dispatch(TogglePostCompletedActionCreator(response.isSuccess, published))
+        dispatch(TogglePostCompletedActionCreator(id, response.isSuccess, published))
     });
 }

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import MarkdownView from './markdown-view';
+import DateRender from './date-render';
 import { Post as PostType } from '../../store/post/types';
 
 interface StateProps extends PostType {}
@@ -19,7 +20,7 @@ class Post extends React.Component<AllProps> {
             <div className="thread__post">
                 <h2>{extendedTitle} <Link className="link-header" to={`/admin/post/${id}`}>[Edit]</Link></h2>
                 <div className="thread__post_info">
-                    <span>{publishedAt}</span>
+                    <DateRender date={publishedAt} />
                 </div>
                 <div className="thread__post_preview">
                     <MarkdownView text={previewText} />

@@ -49,9 +49,7 @@ class Post extends React.Component<AllProps, State> {
 
     public componentDidMount(): void {
         if (this.props.entityId) {
-            if ((!this.props.post.isFetched && !this.props.post.isFetching) || this.props.post.id != this.props.entityId) {
-                this.props.loadPost(this.props.entityId);
-            }
+            this.props.loadPost(this.props.entityId);
         } else {
             this.props.resetPost();
         }
