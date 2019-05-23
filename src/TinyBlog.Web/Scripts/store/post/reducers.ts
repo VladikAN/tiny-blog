@@ -1,6 +1,7 @@
 import { Post } from './types';
 import {
     PostActionTypes,
+    RESET_POST_MESSAGE,
     LOAD_POST_STARTED_MESSAGE,
     LOAD_POST_COMPLETED_MESSAGE,
     SAVE_POST_STARTED_MESSAGE,
@@ -28,6 +29,12 @@ const initialState: PostState = {
 
 export function postReducer(state = initialState, action: PostActionTypes): PostState {
     switch (action.type) {
+        case RESET_POST_MESSAGE: 
+            return {
+                ...initialState,
+                isFetching: false,
+                isFetched: true
+            };
         case LOAD_POST_STARTED_MESSAGE:
             return {
                 ...state, /* drop all */

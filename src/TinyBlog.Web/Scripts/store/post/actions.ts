@@ -4,6 +4,8 @@ import { http } from './../../api/http';
 import { LoadPostUrl, SavePostUrl, TogglePostUrl } from './../../api/urls';
 
 /* Messages */
+export const RESET_POST_MESSAGE ='RESET_POST';
+
 export const LOAD_POST_STARTED_MESSAGE = 'LOAD_POST_STARTED';
 export const LOAD_POST_COMPLETED_MESSAGE = 'LOAD_POST_COMPLETED';
 
@@ -14,6 +16,8 @@ export const TOGGLE_POST_STARTED_MESSAGE = 'TOGGLE_POST_STARTED';
 export const TOGGLE_POST_COMPLETED_MESSAGE = 'TOGGLE_POST_COMPLETED';
 
 /* Actions */
+interface ResetPostAction extends Action<typeof RESET_POST_MESSAGE> {}
+
 interface LoadPostStartedAction extends Action<typeof LOAD_POST_STARTED_MESSAGE> {}
 interface LoadPostAction extends Action<typeof LOAD_POST_COMPLETED_MESSAGE> {
     post: Post;
@@ -32,7 +36,8 @@ interface TogglePostCompletedAction extends Action<typeof TOGGLE_POST_COMPLETED_
 }
 
 export type PostActionTypes =
-    LoadPostStartedAction 
+    ResetPostAction
+    | LoadPostStartedAction 
     | LoadPostAction
     | SavePostStartedAction
     | SavePostCompletedAction
@@ -40,6 +45,10 @@ export type PostActionTypes =
     | TogglePostCompletedAction;
 
 /* Action Creators */
+const resetPostActionCreator = (): ResetPostAction => {
+    return { type: RESET_POST_MESSAGE };
+}
+
 const loadPostStartedActionCreator = (): LoadPostStartedAction => {
     return { type: LOAD_POST_STARTED_MESSAGE };
 }
@@ -65,6 +74,10 @@ const TogglePostCompletedActionCreator = (isSuccess: boolean, isPublished: boole
 }
 
 /* Dispatches */
+export const resetPost = () => async (dispatch: Dispatch): Promise<void> => {
+    dispatch(resetPostActionCreator());
+}
+
 export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadPostStartedActionCreator());
     const address = `${LoadPostUrl}/${id}`;

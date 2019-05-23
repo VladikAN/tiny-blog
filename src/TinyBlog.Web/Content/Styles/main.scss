@@ -42,6 +42,10 @@ button {
         background-color: $dangerColorBtn;
         color: #fff;
     }
+    
+    &:disabled {
+        background-color: #919aa3 !important;
+    }
 }
 
 a {
@@ -114,6 +118,7 @@ a.site-title {
         width: $contentWidth;
         margin: 6em auto 0;
         flex: 1 0 auto;
+        padding-bottom: 20px;
     }
 
     .footer {

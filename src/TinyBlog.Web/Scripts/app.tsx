@@ -16,8 +16,13 @@ ReactDOM.render(
                     exact={true} 
                     component={Dashboard} />
                 <Route 
-                    path="/admin/post/:id" 
-                    children={({ match:match }): React.ReactNode => (match && <Post entityId={match.params['id']} />)} />
+                    path="/admin/post"
+                    exact={true}
+                    component={Post} />
+                <Route 
+                    path="/admin/post/:id">
+                    {({ match:match }) => (match && <Post entityId={match.params['id']} />)}
+                </Route>
             </Router>
         </Login>
     </Provider>,

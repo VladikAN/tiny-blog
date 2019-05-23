@@ -1,5 +1,5 @@
 import * as React from "react";
-import { loadPost, savePost, togglePost } from "../../store/post/actions";
+import { resetPost, loadPost, savePost, togglePost } from "../../store/post/actions";
 import { Post as PostType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
@@ -15,6 +15,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
+    resetPost: typeof resetPost;
     loadPost: typeof loadPost;
     savePost: typeof savePost;
     togglePost: typeof togglePost;
@@ -47,19 +48,19 @@ class Post extends React.Component<AllProps, State> {
     }
 
     public componentDidMount(): void {
-        if (this.props.entityId != null) {
+        if (this.props.entityId) {
             if ((!this.props.post.isFetched && !this.props.post.isFetching) || this.props.post.id != this.props.entityId) {
                 this.props.loadPost(this.props.entityId);
             }
+        } else {
+            this.props.resetPost();
         }
     }
 
     public componentDidUpdate(prev: Readonly<AllProps>): void {
-        if (this.props.entityId != null && !prev.post.isFetched && this.props.post.isFetched) {
-            this.setState({
-                ...this.props.post,
-                tags: this.props.post.tags.join(' ')
-            });
+        if (this.props.entityId && !prev.post.isFetched && this.props.post.isFetched) {
+            const tags = this.props.post.tags.join(' ');
+            this.setState({ ...this.props.post, tags: tags });
         }
     }
 
@@ -93,7 +94,10 @@ class Post extends React.Component<AllProps, State> {
         }
 
         const { title, linkText, previewText, fullText, tags } = this.state;
-        const { isSaving: isUpdating, isPublished } = this.props.post;
+        const { isSaving } = this.props.post;
+
+        const isEdit = this.props.entityId;
+        const isPublished = isEdit && this.props.post.isPublished;
 
         const publishZoneText = isPublished
             ? 'This post is currently public. By pressing this button you will hide post from everyone.'
@@ -154,17 +158,18 @@ class Post extends React.Component<AllProps, State> {
                     <button
                         className="btn-success"
                         type="button"
-                        disabled={isUpdating}
+                        disabled={isSaving}
                         onClick={this.handleSumbit}>
-                        {isUpdating ? 'Saving' : 'Save'}
+                        {isSaving ? 'Saving' : 'Save'}
                     </button>
                 </div>
 
-                <Zone
-                    type={isPublished ? ZoneType.danger : ZoneType.success}
-                    text={publishZoneText}
-                    buttonText={isPublished ? 'Unpublish' : 'Publish'}
-                    onClick={this.handleTogglePublish} />
+                {isEdit &&
+                    <Zone
+                        type={isPublished ? ZoneType.danger : ZoneType.success}
+                        text={publishZoneText}
+                        buttonText={isPublished ? 'Unpublish' : 'Publish'}
+                        onClick={this.handleTogglePublish} />}
             </div>);
     };
 }
@@ -174,7 +179,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-    ...bindActionCreators({ loadPost, savePost, togglePost }, dispatch)
+    ...bindActionCreators({ resetPost, loadPost, savePost, togglePost }, dispatch)
 })
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Post);
