@@ -17,10 +17,21 @@ interface DispatchProps {
 type AllProps = StateProps & DispatchProps;
 
 class Dashboard extends React.Component<AllProps> {
+    public constructor(props: AllProps) {
+        super(props);
+
+        this.handleLogout = this.handleLogout.bind(this);
+    }
+
     public componentDidMount(): void {
         if (!this.props.isFetched && !this.props.isFetching) {
             this.props.loadThread();
         }
+    }
+
+    private handleLogout(): void {
+        localStorage.removeItem('jwtToken');
+        (window as any).location = '/admin';
     }
 
     public render(): React.ReactNode {
@@ -36,6 +47,7 @@ class Dashboard extends React.Component<AllProps> {
             <React.Fragment>
                 <div className="align-right">
                     <Link to="/admin/post">+ Add</Link>
+                    &nbsp;<a href={null} onClick={this.handleLogout}>logout</a>
                 </div>
                 <div className="thread">
                     {posts}

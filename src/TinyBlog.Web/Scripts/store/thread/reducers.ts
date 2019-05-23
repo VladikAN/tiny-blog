@@ -43,9 +43,9 @@ export function threadReducer(state = initialState, action: ThreadActionTypes | 
                 if (item.id == action.post.id) { 
                     isEdit = true;
                     return { ...action.post }
-                 }
+                }
 
-                 return item;
+                return item;
             });
 
             if (!isEdit) {

@@ -82,6 +82,7 @@ export const authCredentials = (email: string, password: string) => async (dispa
         if (response.isSuccess) {
             localStorage.setItem('jwtToken', response.payload.token);
             dispatch(authSuccessActionCreator(response.payload.token));
+            return;
         }
 
         dispatch(authFailedActionCreator());
