@@ -45,9 +45,13 @@ class Dashboard extends React.Component<AllProps> {
 
         return (
             <React.Fragment>
-                <div className="align-right">
-                    <Link to="/admin/post">+ Add</Link>
-                    &nbsp;<a href={null} onClick={this.handleLogout}>logout</a>
+                <div className="controls">
+                    <div className="controls__btn">
+                        <Link to="/admin/post">+ Add</Link>
+                    </div>
+                    <div className="controls__btn">
+                        <a href={null} onClick={this.handleLogout}>logout</a>
+                    </div>
                 </div>
                 <div className="thread">
                     {posts}

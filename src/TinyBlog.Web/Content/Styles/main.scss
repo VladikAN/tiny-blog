@@ -83,6 +83,15 @@ a {
     text-align: right;
 }
 
+.controls {
+    text-align: right;
+    
+    .controls__btn {
+        display: inline;
+        margin-left: 10px;
+    }
+}
+
 a.site-title {
     font-size: 150%;
     text-transform: uppercase;
