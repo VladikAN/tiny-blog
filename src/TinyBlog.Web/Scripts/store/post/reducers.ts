@@ -7,7 +7,9 @@ import {
     SAVE_POST_STARTED_MESSAGE,
     SAVE_POST_COMPLETED_MESSAGE,
     TOGGLE_POST_STARTED_MESSAGE,
-    TOGGLE_POST_COMPLETED_MESSAGE
+    TOGGLE_POST_COMPLETED_MESSAGE,
+    DELETE_POST_STARTED_MESSAGE,
+    DELETE_POST_COMPLETED_MESSAGE
 } from './actions';
 
 export interface PostState extends Post {
@@ -67,6 +69,22 @@ export function postReducer(state = initialState, action: PostActionTypes): Post
                 ...state,
                 isPublished: action.isPublished,
                 isSaving: false
+            }
+        case DELETE_POST_STARTED_MESSAGE:
+            return {
+                ...state,
+                isFetching: true,
+                isFetched: false
+            }
+        case DELETE_POST_COMPLETED_MESSAGE:
+            if (!action.isSuccess) {
+                return { ...state };
+            }
+
+            return {
+                ...initialState,
+                isFetching: false,
+                isFetched: true
             }
         default:
             return state

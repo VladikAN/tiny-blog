@@ -1,5 +1,11 @@
 import * as React from "react";
-import { resetPost, loadPost, savePost, togglePost } from "../../store/post/actions";
+import {
+    resetPost,
+    loadPost,
+    savePost,
+    togglePost,
+    deletePost
+} from "../../store/post/actions";
 import { Post as PostType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
@@ -19,6 +25,7 @@ interface DispatchProps {
     loadPost: typeof loadPost;
     savePost: typeof savePost;
     togglePost: typeof togglePost;
+    deletePost: typeof deletePost;
 }
 
 interface OwnProps {
@@ -45,6 +52,7 @@ class Post extends React.Component<AllProps, State> {
         this.handleMdChange = this.handleMdChange.bind(this);
         this.handleSumbit = this.handleSumbit.bind(this);
         this.handleTogglePublish = this.handleTogglePublish.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     public componentDidMount(): void {
@@ -86,12 +94,18 @@ class Post extends React.Component<AllProps, State> {
         }
     }
 
+    private handleDelete = (id: string):void => {
+        if (confirm('Are you sure want to delete this post?')) {
+            this.props.deletePost(id);
+        }
+    }
+
     public render(): React.ReactNode {
         if (this.props.post.isFetching) {
             return (<Loading />);
         }
 
-        const { title, linkText, previewText, fullText, tags } = this.state;
+        const { id, title, linkText, previewText, fullText, tags } = this.state;
         const { isSaving } = this.props.post;
 
         const isEdit = this.props.entityId;
@@ -168,6 +182,13 @@ class Post extends React.Component<AllProps, State> {
                         text={publishZoneText}
                         buttonText={isPublished ? 'Unpublish' : 'Publish'}
                         onClick={this.handleTogglePublish} />}
+
+                {isEdit && !isPublished &&
+                    <Zone
+                        type={ZoneType.danger}
+                        text="Delete this post. No one will see it."
+                        buttonText="Delete"
+                        onClick={() => this.handleDelete(id)} />}
             </div>);
     };
 }
@@ -177,7 +198,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-    ...bindActionCreators({ resetPost, loadPost, savePost, togglePost }, dispatch)
+    ...bindActionCreators({ resetPost, loadPost, savePost, togglePost, deletePost }, dispatch)
 })
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Post);

@@ -24,7 +24,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<UserDto> GetCredentials(string email)
         {
             var queryParam = email.Trim().ToLower();
-            var userQuery = await UserCollection().FindAsync(usr => usr.Email == queryParam && usr.IsActive);
+            var userQuery = await UserCollection().FindAsync(usr => !usr.IsDeleted && usr.Email == queryParam && usr.IsActive);
             var user = await userQuery.FirstOrDefaultAsync();
             return user?.BuildDto();
         }

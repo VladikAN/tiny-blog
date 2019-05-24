@@ -1,7 +1,7 @@
 import { Dispatch, Action } from 'redux';
 import { Post } from './../post/types';
 import { http } from './../../api/http';
-import { LoadPostUrl, SavePostUrl, TogglePostUrl } from './../../api/urls';
+import { LoadPostUrl, SavePostUrl, TogglePostUrl, DeletePostUrl } from './../../api/urls';
 
 /* Messages */
 export const RESET_POST_MESSAGE ='RESET_POST';
@@ -14,6 +14,9 @@ export const SAVE_POST_COMPLETED_MESSAGE = 'SAVE_POST_COMPLETED';
 
 export const TOGGLE_POST_STARTED_MESSAGE = 'TOGGLE_POST_STARTED';
 export const TOGGLE_POST_COMPLETED_MESSAGE = 'TOGGLE_POST_COMPLETED';
+
+export const DELETE_POST_STARTED_MESSAGE = 'DELETE_POST_STARTED';
+export const DELETE_POST_COMPLETED_MESSAGE = 'DELETE_POST_COMPLETED';
 
 /* Actions */
 interface ResetPostAction extends Action<typeof RESET_POST_MESSAGE> {}
@@ -36,14 +39,22 @@ interface TogglePostCompletedAction extends Action<typeof TOGGLE_POST_COMPLETED_
     isPublished: boolean;
 }
 
+interface DeletePostStartedAction extends Action<typeof DELETE_POST_STARTED_MESSAGE> {}
+interface DeletePostCompletedAction extends Action<typeof DELETE_POST_COMPLETED_MESSAGE> {
+    id: string;
+    isSuccess: boolean;
+}
+
 export type PostActionTypes =
     ResetPostAction
-    | LoadPostStartedAction 
+    | LoadPostStartedAction
     | LoadPostAction
     | SavePostStartedAction
     | SavePostCompletedAction
     | TogglePostStartedAction
-    | TogglePostCompletedAction;
+    | TogglePostCompletedAction
+    | DeletePostStartedAction
+    | DeletePostCompletedAction;
 
 /* Action Creators */
 const resetPostActionCreator = (): ResetPostAction => {
@@ -72,6 +83,14 @@ const TogglePostStartedActionCreator = (): TogglePostStartedAction => {
 
 const TogglePostCompletedActionCreator = (id: string, isSuccess: boolean, isPublished: boolean): TogglePostCompletedAction => {
     return { type: TOGGLE_POST_COMPLETED_MESSAGE, id, isSuccess, isPublished };
+}
+
+const DeletePostStartedActionCreator = (): DeletePostStartedAction => {
+    return { type: DELETE_POST_STARTED_MESSAGE };
+}
+
+const DeletePostCompletedActionCreator = (id: string, isSuccess: boolean): DeletePostCompletedAction => {
+    return { type: DELETE_POST_COMPLETED_MESSAGE, id, isSuccess };
 }
 
 /* Dispatches */
@@ -111,5 +130,14 @@ export const togglePost = (id: string, publish: boolean) => async (dispatch: Dis
     return http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
         const published = response.isSuccess ? publish : !publish;
         dispatch(TogglePostCompletedActionCreator(id, response.isSuccess, published))
+    });
+}
+
+export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
+    dispatch(DeletePostStartedActionCreator());
+
+    const request = new Request(`${DeletePostUrl}/${id}`, { method: 'POST' });
+    return http<{ isSuccess: boolean }>(request).then(response => {
+        dispatch(DeletePostCompletedActionCreator(id, response.isSuccess));
     });
 }

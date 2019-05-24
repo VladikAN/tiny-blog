@@ -82,5 +82,12 @@ namespace TinyBlog.Web.Controllers
             var success = await _postDataService.TogglePublish(model.Id, model.Publish);
             return Json(success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
+
+        [HttpPost, Route("api/post/delete/{id:required}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var success = await _postDataService.Delete(id);
+            return Json(success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
+        }
     }
 }
