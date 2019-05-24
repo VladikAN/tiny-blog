@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
 });
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-let middleware = [thunk]
+let middleware = [thunk];
 
 export default function configureStore(initialState={}): Store {
     return createStore(
@@ -22,4 +22,4 @@ export default function configureStore(initialState={}): Store {
     );
 }
 
-export type AppState = ReturnType<typeof rootReducer>
+export type AppState = ReturnType<typeof rootReducer>;

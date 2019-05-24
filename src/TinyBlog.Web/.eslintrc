@@ -12,11 +12,12 @@
         }
     },
     "rules": {
+        "@typescript-eslint/no-unused-vars": "on",
         "@typescript-eslint/no-empty-interface": "off",
-        "react/no-children-prop": "warn",
-        "@typescript-eslint/explicit-function-return-type": {
-            "allowExpressions": true
-        }
+        "@typescript-eslint/type-annotation-spacing": { "before": "false", "after": "true" },
+        "@typescript-eslint/explicit-function-return-type": { "allowExpressions": true },
+        "semi": "off",
+        "@typescript-eslint/semi": "warn"
     },
     "settings": {
         "react": {

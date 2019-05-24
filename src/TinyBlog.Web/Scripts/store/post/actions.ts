@@ -59,52 +59,52 @@ export type PostActionTypes =
 /* Action Creators */
 const resetPostActionCreator = (): ResetPostAction => {
     return { type: RESET_POST_MESSAGE };
-}
+};
 
 const loadPostStartedActionCreator = (): LoadPostStartedAction => {
     return { type: LOAD_POST_STARTED_MESSAGE };
-}
+};
 
 const loadPostActionCreator = (post: Post): LoadPostAction => {
     return { type: LOAD_POST_COMPLETED_MESSAGE, post };
-}
+};
 
 const SavePostStartedActionCreator = (): SavePostStartedAction => {
     return { type: SAVE_POST_STARTED_MESSAGE };
-}
+};
 
 const SavePostCompletedActionCreator = (isSuccess: boolean, post: Post): SavePostCompletedAction => {
     return { type: SAVE_POST_COMPLETED_MESSAGE, isSuccess, post };
-}
+};
 
 const TogglePostStartedActionCreator = (): TogglePostStartedAction => {
     return { type: TOGGLE_POST_STARTED_MESSAGE };
-}
+};
 
 const TogglePostCompletedActionCreator = (id: string, isSuccess: boolean, isPublished: boolean): TogglePostCompletedAction => {
     return { type: TOGGLE_POST_COMPLETED_MESSAGE, id, isSuccess, isPublished };
-}
+};
 
 const DeletePostStartedActionCreator = (): DeletePostStartedAction => {
     return { type: DELETE_POST_STARTED_MESSAGE };
-}
+};
 
 const DeletePostCompletedActionCreator = (id: string, isSuccess: boolean): DeletePostCompletedAction => {
     return { type: DELETE_POST_COMPLETED_MESSAGE, id, isSuccess };
-}
+};
 
 /* Dispatches */
 export const resetPost = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(resetPostActionCreator());
-}
+};
 
 export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadPostStartedActionCreator());
     const address = `${LoadPostUrl}/${id}`;
     return http<Post>(address).then(response => {
-        dispatch(loadPostActionCreator(response))
+        dispatch(loadPostActionCreator(response));
     });
-}
+};
 
 export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(SavePostStartedActionCreator());
@@ -115,9 +115,9 @@ export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void
     });
 
     return http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
-        dispatch(SavePostCompletedActionCreator(response.isSuccess, response.payload))
+        dispatch(SavePostCompletedActionCreator(response.isSuccess, response.payload));
     });
-}
+};
 
 export const togglePost = (id: string, publish: boolean) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(TogglePostStartedActionCreator());
@@ -129,9 +129,9 @@ export const togglePost = (id: string, publish: boolean) => async (dispatch: Dis
 
     return http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
         const published = response.isSuccess ? publish : !publish;
-        dispatch(TogglePostCompletedActionCreator(id, response.isSuccess, published))
+        dispatch(TogglePostCompletedActionCreator(id, response.isSuccess, published));
     });
-}
+};
 
 export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(DeletePostStartedActionCreator());
@@ -140,4 +140,4 @@ export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<vo
     return http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(DeletePostCompletedActionCreator(id, response.isSuccess));
     });
-}
+};

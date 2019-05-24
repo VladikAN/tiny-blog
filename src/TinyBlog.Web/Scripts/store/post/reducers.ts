@@ -27,7 +27,7 @@ const initialState: PostState = {
     publishedAt: null,
     tags: [],
     isPublished: false
-}
+};
 
 export function postReducer(state = initialState, action: PostActionTypes): PostState {
     switch (action.type) {
@@ -53,29 +53,29 @@ export function postReducer(state = initialState, action: PostActionTypes): Post
             return {
                 ...state,
                 isSaving: true
-            }
+            };
         case SAVE_POST_COMPLETED_MESSAGE:
             return {
                 ...action.post,
                 isSaving: false
-            }
+            };
         case TOGGLE_POST_STARTED_MESSAGE:
             return {
                 ...state,
                 isSaving: true
-            }
+            };
         case TOGGLE_POST_COMPLETED_MESSAGE:
             return {
                 ...state,
                 isPublished: action.isPublished,
                 isSaving: false
-            }
+            };
         case DELETE_POST_STARTED_MESSAGE:
             return {
                 ...state,
                 isFetching: true,
                 isFetched: false
-            }
+            };
         case DELETE_POST_COMPLETED_MESSAGE:
             if (!action.isSuccess) {
                 return { ...state };
@@ -85,8 +85,8 @@ export function postReducer(state = initialState, action: PostActionTypes): Post
                 ...initialState,
                 isFetching: false,
                 isFetched: true
-            }
+            };
         default:
-            return state
+            return state;
     }
 }

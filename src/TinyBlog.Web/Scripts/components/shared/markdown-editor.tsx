@@ -39,7 +39,7 @@ class MarkdownEditor extends React.Component<AllProps, State> {
         const value = event.currentTarget.value;
         this.setState({ newText: value });
         this.props.onChange(this.props.name, value);
-    }
+    };
 
     public render(): React.ReactNode {
         const { newText } = this.state;

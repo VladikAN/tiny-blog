@@ -19,16 +19,16 @@ export type ThreadActionTypes = LoadThreadStartedAction | LoadThreadAction;
 /* Action Creators */
 const loadThreadStartedActionCreator = (): LoadThreadStartedAction => {
     return { type: LOAD_THREAD_STARTED_MESSAGE };
-}
+};
 
 const loadThreadActionCreator = (posts: Post[]): LoadThreadAction => {
     return { type: LOAD_THREAD_COMPLETED_MESSAGE, posts };
-}
+};
 
 /* Dispatches */
 export const loadThread = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadThreadStartedActionCreator());
     return http<{ posts: Post[] }>(LoadThreadUrl).then(response => {
-        dispatch(loadThreadActionCreator(response.posts))
+        dispatch(loadThreadActionCreator(response.posts));
     });
-}
+};

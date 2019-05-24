@@ -20,7 +20,7 @@ const initialState: ThreadState = {
     posts: [],
     isFetching: false,
     isFetched: false
-}
+};
 
 export function threadReducer(state = initialState, action: ThreadActionTypes | PostActionTypes): ThreadState {
     switch (action.type) {
@@ -47,7 +47,7 @@ export function threadReducer(state = initialState, action: ThreadActionTypes | 
             let posts = state.posts.map(item => {
                 if (item.id == action.post.id) { 
                     isEdit = true;
-                    return { ...action.post }
+                    return { ...action.post };
                 }
 
                 return item;
@@ -78,10 +78,10 @@ export function threadReducer(state = initialState, action: ThreadActionTypes | 
 
             return {
                 ...state,
-                posts: state.posts.filter(item => { return item.id != action.id })
-            }
+                posts: state.posts.filter(item => { return item.id != action.id; })
+            };
 
         default:
-            return state
+            return state;
     }
 }

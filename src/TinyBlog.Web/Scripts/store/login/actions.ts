@@ -26,32 +26,32 @@ export type LoginActionTypes =
     | GetTokenSuccessAction
     | AuthStartedAction
     | AuthFailedAction
-    | AuthSuccessAction
+    | AuthSuccessAction;
 
 /* Action Creators */
 const getTokenStartedActionCreator = (): GetTokenStartedAction => {
     return { type: GET_TOKEN_STARTED_MESSAGE };
-}
+};
 
 const getTokenFailedActionCreator = (): GetTokenFailedAction => {
     return { type: GET_TOKEN_FAILED_MESSAGE };
-}
+};
 
 const getTokenSuccessActionCreator = (token: string): GetTokenSuccessAction => {
     return { type: GET_TOKEN_SUCCESS_MESSAGE, token };
-}
+};
 
 const authStartedActionCreator = (): AuthStartedAction => {
     return { type: AUTH_STARTED_MESSAGE };
-}
+};
 
 const authFailedActionCreator = (): AuthFailedAction => {
     return { type: AUTH_FAILED_MESSAGE };
-}
+};
 
 const authSuccessActionCreator = (token: string): AuthSuccessAction => {
     return { type: AUTH_SUCCESS_MESSAGE, token };
-}
+};
 
 interface Auth {
     email: string;
@@ -68,7 +68,7 @@ export const getToken = () => async (dispatch: Dispatch): Promise<void> => {
     }
 
     dispatch(getTokenFailedActionCreator());
-}
+};
 
 export const authCredentials = (email: string, password: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(authStartedActionCreator());
@@ -87,4 +87,4 @@ export const authCredentials = (email: string, password: string) => async (dispa
 
         dispatch(authFailedActionCreator());
     });
-}
+};

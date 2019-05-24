@@ -72,16 +72,16 @@ class Post extends React.Component<AllProps, State> {
 
     private handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
         this.setState({ [event.currentTarget.name]: event.currentTarget.value } as React.ComponentState);
-    }
+    };
 
     private handleMdChange = (name: string, value: string): void => {
         this.setState({ [name] : value } as React.ComponentState);
-    }
+    };
 
     private handleSumbit = (): void => {
         const record: PostType = { ...this.state, tags: this.state.tags.split(' ') };
         this.props.savePost(record);
-    }
+    };
 
     private handleTogglePublish = (): void => {
         const publish = !this.props.post.isPublished;
@@ -92,13 +92,13 @@ class Post extends React.Component<AllProps, State> {
         if (confirm(message)) {
             this.props.togglePost(this.props.post.id, publish);
         }
-    }
+    };
 
     private handleDelete = (id: string):void => {
         if (confirm('Are you sure want to delete this post?')) {
             this.props.deletePost(id);
         }
-    }
+    };
 
     public render(): React.ReactNode {
         if (this.props.post.isFetching) {
@@ -195,10 +195,10 @@ class Post extends React.Component<AllProps, State> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     post: state.post
-})
+});
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ resetPost, loadPost, savePost, togglePost, deletePost }, dispatch)
-})
+});
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Post);

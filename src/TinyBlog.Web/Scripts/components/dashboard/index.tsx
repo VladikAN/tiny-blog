@@ -66,10 +66,10 @@ class Dashboard extends React.Component<AllProps> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     ...state.thread
-})
+});
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ loadThread }, dispatch)
-})
+});
 
 export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Dashboard);

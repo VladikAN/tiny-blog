@@ -17,7 +17,7 @@ const initialState: AuthState = {
     isAuthorized: null,
     token: '',
     isFetching: false
-}
+};
 
 export function loginReducer(state = initialState, action: LoginActionTypes): AuthState {
     switch (action.type) {
@@ -54,6 +54,6 @@ export function loginReducer(state = initialState, action: LoginActionTypes): Au
                 isFetching: false
             };
         default:
-            return state
+            return state;
     }
 }

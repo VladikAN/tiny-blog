@@ -37,14 +37,14 @@ class Login extends React.Component<AllProps, State> {
 
     private handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
         this.setState({ [event.currentTarget.name]: event.currentTarget.value } as React.ComponentState);
-    }
+    };
 
     private handleSubmit = (): void => {
         const { email, password } = this.state;
         this.setState({ email: null, password: null });
 
         this.props.authCredentials(email, password);
-    }
+    };
 
     public render(): React.ReactNode {
         const { isAuthorized } = this.props.auth;
@@ -87,10 +87,10 @@ class Login extends React.Component<AllProps, State> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     auth: state.login
-})
+});
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ getToken, authCredentials }, dispatch)
-})
+});
 
 export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Login);
