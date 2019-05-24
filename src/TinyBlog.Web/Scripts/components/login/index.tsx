@@ -19,15 +19,15 @@ interface DispatchProps {
 type AllProps = StateProps & DispatchProps;
 
 interface State {
-    email?: string;
-    password?: string;
+    email: string;
+    password: string;
 }
 
 class Login extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
-        this.state = {};
+        this.state = { email: '', password: '' };
 
         this.props.getToken();
         
@@ -39,11 +39,11 @@ class Login extends React.Component<AllProps, State> {
         this.setState({ [event.currentTarget.name]: event.currentTarget.value } as React.ComponentState);
     };
 
-    private handleSubmit = (): void => {
+    private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         const { email, password } = this.state;
-        this.setState({ email: null, password: null });
-
         this.props.authCredentials(email, password);
+        this.setState({ email: '', password: '' });
+        event.preventDefault();
     };
 
     public render(): React.ReactNode {
@@ -56,30 +56,36 @@ class Login extends React.Component<AllProps, State> {
             <React.Fragment>
                 {isAuthorized && this.props.children}
                 {!isAuthorized && <div className="login">
-                    <div className="login__email">
-                        <label>
-                            <span>Email</span>
-                            <input
-                                type="text"
-                                name="email"
-                                onChange={this.handleChange} />
-                        </label>
-                    </div>
-                    <div className="login__password">
-                        <label>
-                            <span>Password</span>
-                            <input
-                                type="password"
-                                name="password"
-                                onChange={this.handleChange} />
-                        </label>
-                    </div>
-                    <div className="login__buttons">
-                        <button
-                            className="btn-login"
-                            type="button"
-                            onClick={this.handleSubmit}>Sign In</button>
-                    </div>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="login__email">
+                            <label>
+                                <span>Email</span>
+                                <input
+                                    type="text"
+                                    autoComplete="off"
+                                    autoFocus
+                                    name="email"
+                                    value={this.state.email}
+                                    onChange={this.handleChange} />
+                            </label>
+                        </div>
+                        <div className="login__password">
+                            <label>
+                                <span>Password</span>
+                                <input
+                                    type="password"
+                                    autoComplete="off"
+                                    name="password"
+                                    value={this.state.password}
+                                    onChange={this.handleChange} />
+                            </label>
+                        </div>
+                        <div className="login__buttons">
+                            <button
+                                className="btn-login"
+                                type="submit">Sign In</button>
+                        </div>
+                    </form>
                 </div>}
             </React.Fragment>);
     };
