@@ -1,6 +1,7 @@
 ﻿@import 'variables.scss';
 
 * {
+    box-sizing: border-box;
     padding: 0;
     margin: 0;
 }
@@ -64,7 +65,6 @@ a {
         }
 
         input {
-            box-sizing: border-box;
             min-width: 256px;
             width: 100%;
             line-height: 24px;
@@ -169,14 +169,33 @@ a.site-title {
             text-transform: uppercase;
         }
 
-        .thread__post_preview {
-            margin: 10px 0;
-
-            .thread__post_preview_link {
-                margin: 5px 0 0;
-                display: inline-block; 
-            }
+        .thread__post_preview_link {
+            margin: 5px 0 0;
+            display: inline-block; 
         }
+    }
+}
+
+.markdown {
+    margin: 10px 0;
+    font-size: 1rem;
+
+    code {
+        background-color: #666;
+        color: #fff;
+        width: 100%;
+        display: inline-block;
+        padding: 4px;
+        margin: 4px 0;
+        font-size: 1rem;
+    }
+
+    p {
+        padding-bottom: 5px;
+    }
+
+    ol, ul {
+        margin-left: 20px;
     }
 }
 

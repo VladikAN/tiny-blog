@@ -16,7 +16,7 @@
                     @post.PublishedAt.ToString("MMM yyyy")
                 </span>
             </div>
-            <div class="thread__post_preview">
+            <div class="thread__post_preview markdown">
                 @Html.Markdown(post.PreviewText)
                 <a class="thread__post_preview_link" href="@href">read more</a>
             </div>

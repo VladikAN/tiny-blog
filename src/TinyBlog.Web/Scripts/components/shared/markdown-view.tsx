@@ -12,7 +12,7 @@ class MarkdownView extends React.Component<AllProps> {
         const { text } = this.props;
 
         return (
-            <div>
+            <div className="markdown">
                 <Markdown markup={text || ''} />
             </div>);
     };
