@@ -17,7 +17,7 @@
     @{await Html.RenderPartialAsync("_GoogleTagsHead", ViewData); }
 
     <title>@metaTitle</title>
-    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" asp-href-include="~/css/*.css" asp-append-version="true" />
 </head>
 <body>
     @{await Html.RenderPartialAsync("_GoogleTagsBody", ViewData); }
@@ -25,6 +25,7 @@
     <div class="header">
         <div class="header__body">
             <a class="header__body_link" href="/">@siteTitle</a>
+            <a class="header__body_rss" href="/feed.atom"><span class="typcn typcn-rss"></span></a>
         </div>
     </div>
 
@@ -32,7 +33,6 @@
         <div class="content">
             @RenderBody()
         </div>
-
 
         <div class="footer">
             <div class="footer__body">

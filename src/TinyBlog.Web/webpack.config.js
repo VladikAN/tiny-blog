@@ -49,6 +49,16 @@ module.exports = {
             { 
                 test: /\.tsx?$/, 
                 loader: 'awesome-typescript-loader'
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: '../fonts/'
+                    }
+                }]
             }
         ]
     },

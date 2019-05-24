@@ -47,10 +47,14 @@ class Dashboard extends React.Component<AllProps> {
             <React.Fragment>
                 <div className="controls">
                     <div className="controls__btn">
-                        <Link to="/admin/post">+ Add</Link>
+                        <Link to="/admin/post">
+                            <span className="typcn typcn-document-add"></span>&nbsp;Add
+                        </Link>
                     </div>
                     <div className="controls__btn">
-                        <a href={null} onClick={this.handleLogout}>logout</a>
+                        <a href={null} onClick={this.handleLogout}>
+                            <span className="typcn typcn-key"></span>&nbsp;logout
+                        </a>
                     </div>
                 </div>
                 <div className="thread">

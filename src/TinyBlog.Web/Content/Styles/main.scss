@@ -108,13 +108,21 @@ a.site-title {
         width: $contentWidth;
         margin: 0 auto;
 
-        a.header__body_link {
+        a {
             color: #fff;
             font-size: 2em;
             font-weight: 700;
             line-height: 2.4em;
             text-transform: uppercase;
             text-decoration: none;
+        }
+
+        .header__body_link {
+
+        }
+
+        .header__body_rss {
+            float: right;
         }
     }
 }
