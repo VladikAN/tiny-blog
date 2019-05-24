@@ -10,11 +10,15 @@ html, body {
     height: 100%;
 }
 
+html {
+    font-size: 14px;
+}
+
 body {
     background-color: #fafafa;
     color: #818181;
     font-family: "Open Sans",sans-serif;
-    font-size: .875em;
+    font-size: 1rem;
     overflow-x: hidden;
 }
 
@@ -111,9 +115,9 @@ a.site-title {
 
         a {
             color: #fff;
-            font-size: 2em;
+            font-size: 2rem;
             font-weight: 700;
-            line-height: 2.4em;
+            line-height: 4rem;
             text-transform: uppercase;
             text-decoration: none;
         }
@@ -135,7 +139,7 @@ a.site-title {
 
     .content {
         width: $contentWidth;
-        margin: 6em auto 0;
+        margin: 6rem auto 0;
         flex: 1 0 auto;
         padding-bottom: 20px;
     }
@@ -161,7 +165,7 @@ a.site-title {
 
 .thread {
     .thread__post {
-        margin-bottom: 2em;
+        margin-bottom: 2rem;
 
         .thread__post_info {
             font-size: 80%;
