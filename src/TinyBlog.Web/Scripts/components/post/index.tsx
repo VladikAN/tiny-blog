@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import Loading from "../shared/loading";
 import Zone, { ZoneType } from "../shared/zone";
 import MarkdownEditor from "../shared/markdown-editor";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 interface StateProps {
     post: PostState;
@@ -50,7 +50,7 @@ class Post extends React.Component<AllProps, State> {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
-        this.handleSumbit = this.handleSumbit.bind(this);
+        this.handleSave = this.handleSave.bind(this);
         this.handleTogglePublish = this.handleTogglePublish.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
@@ -78,7 +78,7 @@ class Post extends React.Component<AllProps, State> {
         this.setState({ [name] : value } as React.ComponentState);
     };
 
-    private handleSumbit = (): void => {
+    private handleSave = (): void => {
         const record: PostType = { ...this.state, tags: this.state.tags.split(' ') };
         this.props.savePost(record);
     };
@@ -103,6 +103,10 @@ class Post extends React.Component<AllProps, State> {
     public render(): React.ReactNode {
         if (this.props.post.isFetching) {
             return (<Loading />);
+        }
+
+        if (this.props.post.isCreated || this.props.post.isDeleted) {
+            return (<Redirect to="/admin" />);
         }
 
         const { id, title, linkText, previewText, fullText, tags } = this.state;
@@ -171,7 +175,7 @@ class Post extends React.Component<AllProps, State> {
                         className="btn-success"
                         type="button"
                         disabled={isSaving}
-                        onClick={this.handleSumbit}>
+                        onClick={this.handleSave}>
                         {isSaving ? 'Saving' : 'Save'}
                     </button>
                 </div>
@@ -198,7 +202,13 @@ const mapStateToProps = (state: AppState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-    ...bindActionCreators({ resetPost, loadPost, savePost, togglePost, deletePost }, dispatch)
+    ...bindActionCreators({
+        resetPost,
+        loadPost,
+        savePost,
+        togglePost,
+        deletePost
+    }, dispatch)
 });
 
 export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Post);

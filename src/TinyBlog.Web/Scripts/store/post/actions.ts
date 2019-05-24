@@ -29,6 +29,7 @@ interface LoadPostAction extends Action<typeof LOAD_POST_COMPLETED_MESSAGE> {
 interface SavePostStartedAction extends Action<typeof SAVE_POST_STARTED_MESSAGE> {}
 interface SavePostCompletedAction extends Action<typeof SAVE_POST_COMPLETED_MESSAGE> {
     isSuccess: boolean;
+    isEdit: boolean;
     post: Post;
 }
 
@@ -73,8 +74,8 @@ const SavePostStartedActionCreator = (): SavePostStartedAction => {
     return { type: SAVE_POST_STARTED_MESSAGE };
 };
 
-const SavePostCompletedActionCreator = (isSuccess: boolean, post: Post): SavePostCompletedAction => {
-    return { type: SAVE_POST_COMPLETED_MESSAGE, isSuccess, post };
+const SavePostCompletedActionCreator = (isSuccess: boolean, isEdit: boolean, post: Post): SavePostCompletedAction => {
+    return { type: SAVE_POST_COMPLETED_MESSAGE, isSuccess, isEdit, post };
 };
 
 const TogglePostStartedActionCreator = (): TogglePostStartedAction => {
@@ -101,7 +102,7 @@ export const resetPost = () => async (dispatch: Dispatch): Promise<void> => {
 export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadPostStartedActionCreator());
     const address = `${LoadPostUrl}/${id}`;
-    return http<Post>(address).then(response => {
+    return await http<Post>(address).then(response => {
         dispatch(loadPostActionCreator(response));
     });
 };
@@ -114,8 +115,9 @@ export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void
         body: JSON.stringify(post)
     });
 
-    return http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
-        dispatch(SavePostCompletedActionCreator(response.isSuccess, response.payload));
+    const isEdit = !!post.id;
+    return await http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
+        dispatch(SavePostCompletedActionCreator(response.isSuccess, isEdit, response.payload));
     });
 };
 
@@ -127,7 +129,7 @@ export const togglePost = (id: string, publish: boolean) => async (dispatch: Dis
         body: JSON.stringify({ id: id, publish: publish })
     });
 
-    return http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
+    return await http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
         const published = response.isSuccess ? publish : !publish;
         dispatch(TogglePostCompletedActionCreator(id, response.isSuccess, published));
     });
@@ -137,7 +139,7 @@ export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<vo
     dispatch(DeletePostStartedActionCreator());
 
     const request = new Request(`${DeletePostUrl}/${id}`, { method: 'POST' });
-    return http<{ isSuccess: boolean }>(request).then(response => {
+    return await http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(DeletePostCompletedActionCreator(id, response.isSuccess));
     });
 };

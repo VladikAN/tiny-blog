@@ -78,7 +78,7 @@ export const authCredentials = (email: string, password: string) => async (dispa
         body: JSON.stringify({ email: email, password: password })
     });
     
-    return http<{ isSuccess: boolean; payload: Auth }>(request).then(response => {
+    return await http<{ isSuccess: boolean; payload: Auth }>(request).then(response => {
         if (response.isSuccess) {
             localStorage.setItem('jwtToken', response.payload.token);
             dispatch(authSuccessActionCreator(response.payload.token));
