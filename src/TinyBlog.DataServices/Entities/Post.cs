@@ -20,10 +20,10 @@ namespace TinyBlog.DataServices.Entities
         [BsonElement("publishedAt")]
         public DateTime PublishedAt { get; set; }
 
-        [BsonElement("publishAt")]
-        public DateTime? PublishAt { get; set; }
-
         [BsonElement("tags")]
-        public Tag[] Tags { get; set; }
+        public string[] Tags { get; set; }
+
+        [BsonElement("isPublished")]
+        public bool IsPublished { get; set; }
     }
 }

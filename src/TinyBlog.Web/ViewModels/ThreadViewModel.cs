@@ -1,4 +1,5 @@
-﻿using TinyBlog.DataServices.Services.Dto;
+﻿using System.Linq;
+using TinyBlog.DataServices.Services.Dto;
 
 namespace TinyBlog.Web.ViewModels
 {
@@ -6,9 +7,11 @@ namespace TinyBlog.Web.ViewModels
     {
         public ThreadViewModel(PostDto[] posts)
         {
-            Posts = posts;
+            Posts = (posts ?? new PostDto[0])
+                .Select(post => new PostViewModel(post))
+                .ToArray();
         }
 
-        public PostDto[] Posts { get; set; } = new PostDto[0];
+        public PostViewModel[] Posts { get; set; } = new PostViewModel[0];
     }
 }

@@ -2,14 +2,17 @@
 using TinyBlog.DataServices.Services;
 using TinyBlog.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TinyBlog.Web.Controllers
 {
-    public class PostController : BaseController
+    [AllowAnonymous]
+    public class HomeController : Controller
     {
         private readonly IPostDataService _postDataService;
 
-        public PostController(IPostDataService postDataService)
+        public HomeController(IPostDataService postDataService)
         {
             _postDataService = postDataService;
         }
@@ -17,16 +20,22 @@ namespace TinyBlog.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var posts = await _postDataService.GetAll();
+            var posts = (await _postDataService.GetAll()).Where(x => x.IsPublished).ToArray();
             var model = new ThreadViewModel(posts);
             return View(model);
         }
 
-        [HttpGet, Route("/{linkText:required}")]
+        [HttpGet, Route("admin/{*internal}")]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
+        [HttpGet, Route("post/{linkText:required}")]
         public async Task<IActionResult> Post(string linkText)
         {
             var post = await _postDataService.GetByLinkText(linkText);
-            if (post == null)
+            if (post == null || !post.IsPublished)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -43,7 +52,7 @@ namespace TinyBlog.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var posts = await _postDataService.GetByTag(name);
+            var posts = (await _postDataService.GetByTag(name)).Where(x => x.IsPublished).ToArray();
             var model = new ThreadViewModel(posts);
             return View(nameof(Index), model);
         }

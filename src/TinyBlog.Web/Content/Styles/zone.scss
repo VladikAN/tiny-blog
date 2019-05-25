@@ -1,0 +1,26 @@
+@import 'variables.scss';
+
+.zone {
+    border-radius: 5px;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+
+    &.zone-success {
+        background-color: $successColor;
+    }
+
+    &.zone-danger {
+        background-color: $dangerColor;
+    }
+
+    .zone__text {
+        flex: 1 1;
+    }
+
+    .zone__button {
+        flex: 0 1;
+    }
+}
