@@ -1,0 +1,23 @@
+﻿@model TinyBlog.Web.ViewModels.PostViewModel
+
+@{
+    ViewData["header"] = Model.Title;
+}
+
+<h2>@Model.Title</h2>
+
+<div class="markdown">
+    @Html.Markdown(Model.FullText)
+</div>
+
+@if (Model.Tags != null || Model.Tags.Length > 0)
+{
+    <div class="tags">
+        @foreach (var tag in Model.Tags)
+        {
+            <a href="/tag/@(tag)">@tag</a>
+        }
+    </div>
+}
+
+<a href="/">[ back to home ]</a>

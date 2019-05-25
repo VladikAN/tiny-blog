@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Logging;
 
 namespace TinyBlog.Web.Configuration
 {
@@ -31,14 +35,17 @@ namespace TinyBlog.Web.Configuration
             /* Common */
             services
                 .AddSingleton(configuration)
-                .AddSingleton<ISiteSettings, SiteSettings>();
+                .AddSingleton<ISiteSettings, SiteSettings>()
+                .AddSingleton<IAuthSettings, AuthSettings>();
 
             /* Data Services */
             services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
             services.AddTransient<IPostDataService, PostDataService>();
+            services.AddTransient<IUserDataService, UserDataService>();
 
             /* Web Services */
             services.AddTransient<IFeedService, FeedService>();
+            services.AddTransient<IAuthService, AuthService>();
 
             return services;
         }
@@ -63,6 +70,34 @@ namespace TinyBlog.Web.Configuration
                 services
                     .AddApplicationInsightsTelemetry(settings.Key);
             }
+
+            return services;
+        }
+
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            var authSettings = new AuthSettings(configuration);
+            var key = Encoding.UTF8.GetBytes(authSettings.Secret);
+            IdentityModelEventSource.ShowPII = true;
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = authSettings.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = authSettings.Audience
+                };
+            });
 
             return services;
         }

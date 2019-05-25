@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "outDir": "./wwwroot/js",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es6",
+        "jsx": "react"
+    },
+    "include": [
+        "./Scripts/**/*"
+    ],
+    "typeRoots": [
+        "./node_modules/@types"
+    ],
+    "types": [
+        "react",
+        "react-dom",
+        "react-redux",
+        "react-router-dom"
+    ]
+}

@@ -13,11 +13,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     @{await Html.RenderPartialAsync("_GoogleTagsHead", ViewData); }
 
     <title>@metaTitle</title>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" asp-href-include="~/css/*.css" asp-append-version="true" />
 </head>
 <body>
     @{await Html.RenderPartialAsync("_GoogleTagsBody", ViewData); }
@@ -25,6 +25,7 @@
     <div class="header">
         <div class="header__body">
             <a class="header__body_link" href="/">@siteTitle</a>
+            <a class="header__body_rss" href="/feed.atom"><span class="typcn typcn-rss"></span></a>
         </div>
     </div>
 
@@ -33,7 +34,6 @@
             @RenderBody()
         </div>
 
-        
         <div class="footer">
             <div class="footer__body">
                 @if (!string.IsNullOrWhiteSpace(footer))
@@ -44,5 +44,7 @@
             </div>
         </div>
     </div>
+
+    @RenderSection("scripts", false)
 </body>
 </html>

@@ -1,15 +1,14 @@
-﻿@model TinyBlog.DataServices.Services.Dto.PostDto[]
+﻿@model TinyBlog.Web.ViewModels.PostViewModel[]
 
 @if (Model != null && Model.Length > 0)
 {
     <div class="thread">
         @foreach (var post in Model)
         {
-            var href = Url.Action("post", "post", new { post.LinkText });
+            var href = Url.Action("post", new { post.LinkText });
 
         <div class="thread__post">
-            <a class="link-header"
-               href="@href">
+            <a class="link-header" href="@href">
                 <h2>@post.Title</h2>
             </a>
             <div class="thread__post_info">
@@ -17,12 +16,20 @@
                     @post.PublishedAt.ToString("MMM yyyy")
                 </span>
             </div>
-            <div class="thread__post_preview">
+            <div class="thread__post_preview markdown">
                 @Html.Markdown(post.PreviewText)
-                <a href="@href">[ read more ]</a>
+                <a class="thread__post_preview_link" href="@href">read more</a>
             </div>
 
-            @await Component.InvokeAsync(nameof(Tags), post.Tags)
+            @if (post.Tags != null || post.Tags.Length > 0)
+            {
+                <div class="tags">
+                    @foreach (var tag in post.Tags)
+                    {
+                        <a href="/tag/@(tag)">@tag</a>
+                    }
+                </div>
+            }
         </div>
         }
     </div>
