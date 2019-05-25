@@ -6,6 +6,7 @@ node_modules/
 
 **/wwwroot/js
 **/wwwroot/css
+**/wwwroot/fonts
 
 .vs/
 .idea/
