@@ -7,7 +7,7 @@ using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Controllers
 {
-    [Authorize]
+    [RequireHttps, Authorize]
     [ApiController]
     public class ApiController : Controller
     {
