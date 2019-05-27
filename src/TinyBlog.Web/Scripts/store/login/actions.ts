@@ -1,6 +1,8 @@
 import { AuthUrl } from './../../api/urls';
+import { getJwtToken, setJwtToken } from "./../../api/jwt";
 import { http } from './../../api/http';
 import { Dispatch, Action } from 'redux';
+import { requestFailedActionCreator } from '../shared/actions';
 
 /* Messages */
 export const GET_TOKEN_STARTED_MESSAGE = 'GET_TOKEN_STARTED';
@@ -60,7 +62,7 @@ interface Auth {
 
 export const getToken = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(getTokenStartedActionCreator());
-    const token = localStorage.getItem('jwtToken');
+    const token = getJwtToken();
     if (token) {
         // verify token
         dispatch(getTokenSuccessActionCreator(token));
@@ -80,11 +82,11 @@ export const authCredentials = (email: string, password: string) => async (dispa
     
     return await http<{ isSuccess: boolean; payload: Auth }>(request).then(response => {
         if (response.isSuccess) {
-            localStorage.setItem('jwtToken', response.payload.token);
+            setJwtToken(response.payload.token);
             dispatch(authSuccessActionCreator(response.payload.token));
             return;
         }
 
         dispatch(authFailedActionCreator());
-    });
+    }).catch(response => { requestFailedActionCreator(response); });
 };

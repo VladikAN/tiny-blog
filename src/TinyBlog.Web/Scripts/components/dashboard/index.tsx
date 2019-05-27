@@ -1,12 +1,13 @@
 import * as React from "react";
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from "redux";
+import { dropJwtToken } from "../../api/jwt";
 import { AppState } from '../../store';
 import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
 import Post from './../shared/post';
 import Loading from './../shared/loading';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 interface StateProps extends ThreadState {}
 
@@ -16,9 +17,15 @@ interface DispatchProps {
 
 type AllProps = StateProps & DispatchProps;
 
-class Dashboard extends React.Component<AllProps> {
+interface State {
+    isLoggedOut: boolean;
+}
+
+class Dashboard extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
+
+        this.state = { isLoggedOut: false };
 
         this.handleLogout = this.handleLogout.bind(this);
     }
@@ -30,13 +37,17 @@ class Dashboard extends React.Component<AllProps> {
     }
 
     private handleLogout(): void {
-        localStorage.removeItem('jwtToken');
-        (window as any).location = '/admin';
+        dropJwtToken();
+        this.setState({ isLoggedOut: true });
     }
 
     public render(): React.ReactNode {
         if (!this.props.isFetched) {
             return (<Loading />);
+        }
+
+        if (this.state.isLoggedOut) {
+            return (<Redirect to="/admin" />);
         }
 
         const posts = this.props.posts.map(ps => (
