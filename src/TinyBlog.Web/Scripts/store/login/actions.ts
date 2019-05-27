@@ -2,8 +2,7 @@ import { AuthUrl } from './../../api/urls';
 import { getJwtToken, setJwtToken, dropJwtToken } from "./../../api/jwt";
 import { http } from './../../api/http';
 import { Dispatch, Action } from 'redux';
-import { requestFailedActionCreator } from '../shared/actions';
-import { async } from 'q';
+import { requestFailedCreator } from '../shared/actions';
 
 /* Messages */
 export const GET_TOKEN_STARTED_MESSAGE = 'GET_TOKEN_STARTED';
@@ -19,11 +18,11 @@ export const AUTH_LOGOUT_MESSAGE = 'AUTH_LOGOUT';
 /* Actions */
 interface GetTokenStartedAction extends Action<typeof GET_TOKEN_STARTED_MESSAGE> {}
 interface GetTokenFailedAction extends Action<typeof GET_TOKEN_FAILED_MESSAGE> {}
-interface GetTokenSuccessAction extends Action<typeof GET_TOKEN_SUCCESS_MESSAGE> { token: string }
+interface GetTokenSuccessAction extends Action<typeof GET_TOKEN_SUCCESS_MESSAGE> {}
 
 interface AuthStartedAction extends Action<typeof AUTH_STARTED_MESSAGE> {}
 interface AuthFailedAction extends Action<typeof AUTH_FAILED_MESSAGE> {}
-interface AuthSuccessAction extends Action<typeof AUTH_SUCCESS_MESSAGE> { token: string }
+interface AuthSuccessAction extends Action<typeof AUTH_SUCCESS_MESSAGE> {}
 
 interface AuthLogoutAction extends Action<typeof AUTH_LOGOUT_MESSAGE> {}
 
@@ -37,33 +36,15 @@ export type LoginActionTypes =
     | AuthLogoutAction;
 
 /* Action Creators */
-const getTokenStartedActionCreator = (): GetTokenStartedAction => {
-    return { type: GET_TOKEN_STARTED_MESSAGE };
-};
+const getTokenStartedCreator = (): GetTokenStartedAction => { return { type: GET_TOKEN_STARTED_MESSAGE }; };
+const getTokenFailedCreator = (): GetTokenFailedAction => { return { type: GET_TOKEN_FAILED_MESSAGE }; };
+const getTokenSuccessCreator = (): GetTokenSuccessAction => { return { type: GET_TOKEN_SUCCESS_MESSAGE }; };
 
-const getTokenFailedActionCreator = (): GetTokenFailedAction => {
-    return { type: GET_TOKEN_FAILED_MESSAGE };
-};
+const authStartedCreator = (): AuthStartedAction => { return { type: AUTH_STARTED_MESSAGE }; };
+const authFailedCreator = (): AuthFailedAction => { return { type: AUTH_FAILED_MESSAGE }; };
+const authSuccessCreator = (): AuthSuccessAction => { return { type: AUTH_SUCCESS_MESSAGE }; };
 
-const getTokenSuccessActionCreator = (token: string): GetTokenSuccessAction => {
-    return { type: GET_TOKEN_SUCCESS_MESSAGE, token };
-};
-
-const authStartedActionCreator = (): AuthStartedAction => {
-    return { type: AUTH_STARTED_MESSAGE };
-};
-
-const authFailedActionCreator = (): AuthFailedAction => {
-    return { type: AUTH_FAILED_MESSAGE };
-};
-
-const authSuccessActionCreator = (token: string): AuthSuccessAction => {
-    return { type: AUTH_SUCCESS_MESSAGE, token };
-};
-
-const authLogoutActionCreator = (): AuthLogoutAction => {
-    return { type: AUTH_LOGOUT_MESSAGE };
-};
+const authLogoutCreator = (): AuthLogoutAction => { return { type: AUTH_LOGOUT_MESSAGE }; };
 
 interface AuthResponseModel {
     email: string;
@@ -71,19 +52,17 @@ interface AuthResponseModel {
 }
 
 export const getToken = () => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(getTokenStartedActionCreator());
+    dispatch(getTokenStartedCreator());
     const token = getJwtToken();
     if (token) {
-        // verify token
-        dispatch(getTokenSuccessActionCreator(token));
-        return;
+        dispatch(getTokenSuccessCreator());
+    } else {
+        dispatch(getTokenFailedCreator());
     }
-
-    dispatch(getTokenFailedActionCreator());
 };
 
 export const authCredentials = (email: string, password: string) => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(authStartedActionCreator());
+    dispatch(authStartedCreator());
     
     const request = new Request(AuthUrl, {
         method: 'POST',
@@ -93,17 +72,16 @@ export const authCredentials = (email: string, password: string) => async (dispa
     return await http<{ isSuccess: boolean; payload: AuthResponseModel }>(request).then(response => {
         if (response.isSuccess) {
             setJwtToken(response.payload.token);
-            dispatch(authSuccessActionCreator(response.payload.token));
-            return;
+            dispatch(authSuccessCreator());
+        } else {
+            dispatch(authFailedCreator());
         }
-
-        dispatch(authFailedActionCreator());
-    }, response => {
-        dispatch(requestFailedActionCreator(response));
+    }, reject => {
+        dispatch(requestFailedCreator(reject));
     });
 };
 
 export const logout = () => async (dispatch: Dispatch): Promise<void> => {
     dropJwtToken();
-    dispatch(authLogoutActionCreator());
+    dispatch(authLogoutCreator());
 };

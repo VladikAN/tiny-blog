@@ -2,7 +2,7 @@ import { Dispatch, Action } from 'redux';
 import { Post } from './../post/types';
 import { http } from './../../api/http';
 import { LoadPostUrl, SavePostUrl, TogglePostUrl, DeletePostUrl } from './../../api/urls';
-import { requestFailedActionCreator } from '../shared/actions';
+import { requestFailedCreator } from '../shared/actions';
 
 /* Messages */
 export const RESET_POST_MESSAGE ='RESET_POST';
@@ -59,59 +59,59 @@ export type PostActionTypes =
     | DeletePostCompletedAction;
 
 /* Action Creators */
-const resetPostActionCreator = (): ResetPostAction => {
+const resetPostCreator = (): ResetPostAction => {
     return { type: RESET_POST_MESSAGE };
 };
 
-const loadPostStartedActionCreator = (): LoadPostStartedAction => {
+const loadPostStartedCreator = (): LoadPostStartedAction => {
     return { type: LOAD_POST_STARTED_MESSAGE };
 };
 
-const loadPostActionCreator = (post: Post): LoadPostCompletedAction => {
+const loadPostCompletedCreator = (post: Post): LoadPostCompletedAction => {
     return { type: LOAD_POST_COMPLETED_MESSAGE, post };
 };
 
-const SavePostStartedActionCreator = (): SavePostStartedAction => {
+const SavePostStartedCreator = (): SavePostStartedAction => {
     return { type: SAVE_POST_STARTED_MESSAGE };
 };
 
-const SavePostCompletedActionCreator = (isSuccess: boolean, isEdit: boolean, post: Post): SavePostCompletedAction => {
+const SavePostCompletedCreator = (isSuccess: boolean, isEdit: boolean, post: Post): SavePostCompletedAction => {
     return { type: SAVE_POST_COMPLETED_MESSAGE, isSuccess, isEdit, post };
 };
 
-const TogglePostStartedActionCreator = (): TogglePostStartedAction => {
+const TogglePostStartedCreator = (): TogglePostStartedAction => {
     return { type: TOGGLE_POST_STARTED_MESSAGE };
 };
 
-const TogglePostCompletedActionCreator = (id: string, isSuccess: boolean, isPublished: boolean): TogglePostCompletedAction => {
+const TogglePostCompletedCreator = (id: string, isSuccess: boolean, isPublished: boolean): TogglePostCompletedAction => {
     return { type: TOGGLE_POST_COMPLETED_MESSAGE, id, isSuccess, isPublished };
 };
 
-const DeletePostStartedActionCreator = (): DeletePostStartedAction => {
+const DeletePostStartedCreator = (): DeletePostStartedAction => {
     return { type: DELETE_POST_STARTED_MESSAGE };
 };
 
-const DeletePostCompletedActionCreator = (id: string, isSuccess: boolean): DeletePostCompletedAction => {
+const DeletePostCompletedCreator = (id: string, isSuccess: boolean): DeletePostCompletedAction => {
     return { type: DELETE_POST_COMPLETED_MESSAGE, id, isSuccess };
 };
 
 /* Dispatches */
 export const resetPost = () => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(resetPostActionCreator());
+    dispatch(resetPostCreator());
 };
 
 export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(loadPostStartedActionCreator());
+    dispatch(loadPostStartedCreator());
     const address = `${LoadPostUrl}/${id}`;
     return await http<Post>(address).then(response => {
-        dispatch(loadPostActionCreator(response));
-    }, response => {
-        dispatch(requestFailedActionCreator(response));
+        dispatch(loadPostCompletedCreator(response));
+    }, reject => {
+        dispatch(requestFailedCreator(reject));
     });
 };
 
 export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(SavePostStartedActionCreator());
+    dispatch(SavePostStartedCreator());
 
     const request = new Request(SavePostUrl, {
         method: 'POST',
@@ -120,14 +120,14 @@ export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void
 
     const isEdit = !!post.id;
     return await http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
-        dispatch(SavePostCompletedActionCreator(response.isSuccess, isEdit, response.payload));
-    }, response => {
-        dispatch(requestFailedActionCreator(response));
+        dispatch(SavePostCompletedCreator(response.isSuccess, isEdit, response.payload));
+    }, reject => {
+        dispatch(requestFailedCreator(reject));
     });
 };
 
 export const togglePost = (id: string, publish: boolean) => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(TogglePostStartedActionCreator());
+    dispatch(TogglePostStartedCreator());
 
     const request = new Request(TogglePostUrl, {
         method: 'POST',
@@ -136,19 +136,19 @@ export const togglePost = (id: string, publish: boolean) => async (dispatch: Dis
 
     return await http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
         const published = response.isSuccess ? publish : !publish;
-        dispatch(TogglePostCompletedActionCreator(id, response.isSuccess, published));
-    }, response => {
-        dispatch(requestFailedActionCreator(response));
+        dispatch(TogglePostCompletedCreator(id, response.isSuccess, published));
+    }, reject => {
+        dispatch(requestFailedCreator(reject));
     });
 };
 
 export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
-    dispatch(DeletePostStartedActionCreator());
+    dispatch(DeletePostStartedCreator());
 
     const request = new Request(`${DeletePostUrl}/${id}`, { method: 'POST' });
     return await http<{ isSuccess: boolean }>(request).then(response => {
-        dispatch(DeletePostCompletedActionCreator(id, response.isSuccess));
-    }, response => {
-        dispatch(requestFailedActionCreator(response));
+        dispatch(DeletePostCompletedCreator(id, response.isSuccess));
+    }, reject => {
+        dispatch(requestFailedCreator(reject));
     });
 };

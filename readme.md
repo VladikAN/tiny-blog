@@ -5,6 +5,5 @@ TO DO:
 - handle errors
 - unit/integration tests
 - better MD editor
-- handle eslint 'any' warning
 - verify token
-- logout through dispath
+- fetch status
