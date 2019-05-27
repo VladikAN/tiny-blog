@@ -9,6 +9,6 @@ interface RequestFailedAction extends Action<typeof REQUEST_FAILED_MESSAGE> { re
 export type SharedActionTypes = RequestFailedAction;
 
 /* Action Creators */
-export const requestFailedActionCreator = (reason: any): RequestFailedAction => {
+export const requestFailedCreator = (reason: any): RequestFailedAction => {
     return { type: REQUEST_FAILED_MESSAGE, reason };
 };
