@@ -7,25 +7,21 @@ import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
 import Post from './../shared/post';
 import Loading from './../shared/loading';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { logout } from "../../store/login/actions";
 
 interface StateProps extends ThreadState {}
 
 interface DispatchProps {
     loadThread: typeof loadThread;
+    logout: typeof logout;
 }
 
 type AllProps = StateProps & DispatchProps;
 
-interface State {
-    isLoggedOut: boolean;
-}
-
-class Dashboard extends React.Component<AllProps, State> {
+class Dashboard extends React.Component<AllProps> {
     public constructor(props: AllProps) {
         super(props);
-
-        this.state = { isLoggedOut: false };
 
         this.handleLogout = this.handleLogout.bind(this);
     }
@@ -38,16 +34,12 @@ class Dashboard extends React.Component<AllProps, State> {
 
     private handleLogout(): void {
         dropJwtToken();
-        this.setState({ isLoggedOut: true });
+        this.props.logout();
     }
 
     public render(): React.ReactNode {
         if (!this.props.isFetched) {
             return (<Loading />);
-        }
-
-        if (this.state.isLoggedOut) {
-            return (<Redirect to="/admin" />);
         }
 
         const posts = this.props.posts.map(ps => (
@@ -80,7 +72,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-    ...bindActionCreators({ loadThread }, dispatch)
+    ...bindActionCreators({ loadThread, logout }, dispatch)
 });
 
 export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Dashboard);

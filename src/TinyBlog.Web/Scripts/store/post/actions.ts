@@ -23,7 +23,7 @@ export const DELETE_POST_COMPLETED_MESSAGE = 'DELETE_POST_COMPLETED';
 interface ResetPostAction extends Action<typeof RESET_POST_MESSAGE> {}
 
 interface LoadPostStartedAction extends Action<typeof LOAD_POST_STARTED_MESSAGE> {}
-interface LoadPostAction extends Action<typeof LOAD_POST_COMPLETED_MESSAGE> {
+interface LoadPostCompletedAction extends Action<typeof LOAD_POST_COMPLETED_MESSAGE> {
     post: Post;
 }
 
@@ -50,7 +50,7 @@ interface DeletePostCompletedAction extends Action<typeof DELETE_POST_COMPLETED_
 export type PostActionTypes =
     ResetPostAction
     | LoadPostStartedAction
-    | LoadPostAction
+    | LoadPostCompletedAction
     | SavePostStartedAction
     | SavePostCompletedAction
     | TogglePostStartedAction
@@ -67,7 +67,7 @@ const loadPostStartedActionCreator = (): LoadPostStartedAction => {
     return { type: LOAD_POST_STARTED_MESSAGE };
 };
 
-const loadPostActionCreator = (post: Post): LoadPostAction => {
+const loadPostActionCreator = (post: Post): LoadPostCompletedAction => {
     return { type: LOAD_POST_COMPLETED_MESSAGE, post };
 };
 

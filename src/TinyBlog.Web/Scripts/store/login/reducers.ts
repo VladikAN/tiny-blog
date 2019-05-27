@@ -1,4 +1,3 @@
-import { Auth } from './types';
 import {
     LoginActionTypes,
     GET_TOKEN_STARTED_MESSAGE,
@@ -6,20 +5,21 @@ import {
     GET_TOKEN_SUCCESS_MESSAGE,
     AUTH_STARTED_MESSAGE,
     AUTH_FAILED_MESSAGE,
-    AUTH_SUCCESS_MESSAGE
+    AUTH_SUCCESS_MESSAGE,
+    AUTH_LOGOUT_MESSAGE
 } from './actions';
 import {
     SharedActionTypes,
     REQUEST_FAILED_MESSAGE
 } from './../shared/actions';
 
-export interface AuthState extends Auth {
+export interface AuthState {
+    isAuthorized?: boolean;
     isFetching: boolean;
 }
 
 const initialState: AuthState = {
     isAuthorized: null,
-    token: '',
     isFetching: false
 };
 
@@ -33,38 +33,28 @@ export function loginReducer(state = initialState, action: LoginActionTypes | Sh
             }
 
             return state;
+            
         case GET_TOKEN_STARTED_MESSAGE:
-            return {
-                ...state
-            };
+            return { ...state };
+
         case GET_TOKEN_FAILED_MESSAGE:
-            return {
-                ...state,
-                isAuthorized: false
-            };
+            return { ...state, isAuthorized: false };
+
         case GET_TOKEN_SUCCESS_MESSAGE:
-            return {
-                ...state,
-                isAuthorized: true,
-                token: action.token
-            };
+            return { ...state, isAuthorized: true };
+
         case AUTH_STARTED_MESSAGE:
-            return {
-                ...state,
-                isFetching: true
-            };
+            return { ...state, isFetching: true };
+
         case AUTH_FAILED_MESSAGE:
-            return {
-                ...state,
-                isFetching: false
-            };
+            return { ...state, isAuthorized: false, isFetching: false };
+
         case AUTH_SUCCESS_MESSAGE:
-            return {
-                ...state,
-                isAuthorized: true,
-                token: action.token,
-                isFetching: false
-            };
+            return { ...state, isAuthorized: true, isFetching: false };
+
+        case AUTH_LOGOUT_MESSAGE:
+            return { ...state, isAuthorized: false };
+
         default:
             return state;
     }

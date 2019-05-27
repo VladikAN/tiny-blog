@@ -11,7 +11,6 @@ import {
     DELETE_POST_STARTED_MESSAGE,
     DELETE_POST_COMPLETED_MESSAGE
 } from './actions';
-import { stat } from 'fs';
 
 export interface PostState extends Post {
     isFetching?: boolean;
