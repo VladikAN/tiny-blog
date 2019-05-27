@@ -8,6 +8,10 @@ import {
     AUTH_FAILED_MESSAGE,
     AUTH_SUCCESS_MESSAGE
 } from './actions';
+import {
+    SharedActionTypes,
+    REQUEST_FAILED_MESSAGE
+} from './../shared/actions';
 
 export interface AuthState extends Auth {
     isFetching: boolean;
@@ -19,8 +23,16 @@ const initialState: AuthState = {
     isFetching: false
 };
 
-export function loginReducer(state = initialState, action: LoginActionTypes): AuthState {
+export function loginReducer(state = initialState, action: LoginActionTypes | SharedActionTypes): AuthState {
     switch (action.type) {
+        case REQUEST_FAILED_MESSAGE: 
+            if (action.reason instanceof Response) {
+                if (action.reason.status == 401) {
+                    return { ...state, isAuthorized: false, isFetching: false };
+                }
+            }
+
+            return state;
         case GET_TOKEN_STARTED_MESSAGE:
             return {
                 ...state

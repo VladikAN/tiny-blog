@@ -2,6 +2,7 @@ import { Dispatch, Action } from 'redux';
 import { Post } from './../post/types';
 import { http } from './../../api/http';
 import { LoadPostUrl, SavePostUrl, TogglePostUrl, DeletePostUrl } from './../../api/urls';
+import { requestFailedActionCreator } from '../shared/actions';
 
 /* Messages */
 export const RESET_POST_MESSAGE ='RESET_POST';
@@ -104,7 +105,7 @@ export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void
     const address = `${LoadPostUrl}/${id}`;
     return await http<Post>(address).then(response => {
         dispatch(loadPostActionCreator(response));
-    });
+    }).catch(response => { requestFailedActionCreator(response); });
 };
 
 export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void> => {
@@ -118,7 +119,7 @@ export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void
     const isEdit = !!post.id;
     return await http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
         dispatch(SavePostCompletedActionCreator(response.isSuccess, isEdit, response.payload));
-    });
+    }).catch(response => { requestFailedActionCreator(response); });
 };
 
 export const togglePost = (id: string, publish: boolean) => async (dispatch: Dispatch): Promise<void> => {
@@ -132,7 +133,7 @@ export const togglePost = (id: string, publish: boolean) => async (dispatch: Dis
     return await http<{ isSuccess: boolean; isPublished: boolean }>(request).then(response => {
         const published = response.isSuccess ? publish : !publish;
         dispatch(TogglePostCompletedActionCreator(id, response.isSuccess, published));
-    });
+    }).catch(response => { requestFailedActionCreator(response); });
 };
 
 export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<void> => {
@@ -141,5 +142,5 @@ export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<vo
     const request = new Request(`${DeletePostUrl}/${id}`, { method: 'POST' });
     return await http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(DeletePostCompletedActionCreator(id, response.isSuccess));
-    });
+    }).catch(response => { requestFailedActionCreator(response); });
 };
