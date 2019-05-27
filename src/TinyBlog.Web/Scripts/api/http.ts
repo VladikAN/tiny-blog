@@ -14,11 +14,10 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
         fetch(merged)
             .then(response => {
                 if (!response.ok) {
-                    reject(response.status);
-                    return;
+                    reject(response);
+                } else {
+                    resolve(response.json());
                 }
-                
-                resolve(response.json());
             })
             .catch(err => reject(err));
     });

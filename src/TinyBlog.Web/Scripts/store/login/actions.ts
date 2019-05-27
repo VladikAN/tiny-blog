@@ -98,7 +98,9 @@ export const authCredentials = (email: string, password: string) => async (dispa
         }
 
         dispatch(authFailedActionCreator());
-    }).catch(response => { requestFailedActionCreator(response); });
+    }, response => {
+        dispatch(requestFailedActionCreator(response));
+    });
 };
 
 export const logout = () => async (dispatch: Dispatch): Promise<void> => {

@@ -31,5 +31,7 @@ export const loadThread = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(loadThreadStartedActionCreator());
     return await http<{ posts: Post[] }>(LoadThreadUrl).then(response => {
         dispatch(loadThreadActionCreator(response.posts));
-    }).catch(response => { requestFailedActionCreator(response); });
+    }, response => {
+        dispatch(requestFailedActionCreator(response));
+    });
 };
