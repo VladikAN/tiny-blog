@@ -17,6 +17,7 @@
         "react",
         "react-dom",
         "react-redux",
+        "react-redux-toastr",
         "react-router-dom"
     ]
 }

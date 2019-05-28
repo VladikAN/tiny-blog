@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from "redux";
-import { dropJwtToken } from "../../api/jwt";
 import { AppState } from '../../store';
 import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
@@ -33,7 +32,6 @@ class Dashboard extends React.Component<AllProps> {
     }
 
     private handleLogout(): void {
-        dropJwtToken();
         this.props.logout();
     }
 
