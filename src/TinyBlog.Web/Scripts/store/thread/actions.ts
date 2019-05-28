@@ -3,6 +3,7 @@ import { Post } from './../post/types';
 import { http } from './../../api/http';
 import { LoadThreadUrl } from './../../api/urls';
 import { requestFailedCreator } from '../shared/actions';
+import { toastr } from 'react-redux-toastr';
 
 /* Messages */
 export const LOAD_THREAD_STARTED_MESSAGE = 'LOAD_THREAD_STARTED';
@@ -33,5 +34,6 @@ export const loadThread = () => async (dispatch: Dispatch): Promise<void> => {
         dispatch(loadThreadActionCreator(response.posts));
     }, reject => {
         dispatch(requestFailedCreator(reject));
+        toastr.error('Load Thread', 'Server responded with error');
     });
 };

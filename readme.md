@@ -5,5 +5,5 @@ TO DO:
 - handle errors
 - unit/integration tests
 - better MD editor
-- verify token
-- fetch status
+- prepare for localization
+- eslint imports, quotes

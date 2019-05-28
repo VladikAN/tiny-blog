@@ -6,6 +6,7 @@ import configureStore from './store';
 import Dashboard from './components/dashboard';
 import Post from './components/post';
 import Login from './components/login';
+import ReduxToastr from "react-redux-toastr";
 
 ReactDOM.render(
     <Provider store={configureStore()}>
@@ -24,6 +25,14 @@ ReactDOM.render(
                     {({ match:match }) => (match && <Post entityId={match.params['id']} />)}
                 </Route>
             </BrowserRouter>
+
+            <ReduxToastr
+                timeOut={2000}
+                newestOnTop={true}
+                preventDuplicates={true}
+                position='top-center'
+                transitionIn="fadeIn"
+                transitionOut="fadeOut" />
         </Login>
     </Provider>,
     document.getElementById('root')
