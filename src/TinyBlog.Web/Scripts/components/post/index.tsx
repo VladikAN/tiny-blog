@@ -1,16 +1,16 @@
 import * as React from "react";
 import {
-    resetPost,
+    deletePost,
     loadPost,
+    resetPost,
     savePost,
-    togglePost,
-    deletePost
+    togglePost
 } from "../../store/post/actions";
 import { Post as PostType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
 import { Dispatch, bindActionCreators } from "redux";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import Loading from "../shared/loading";
 import Zone, { ZoneType } from "../shared/zone";
 import MarkdownEditor from "../shared/markdown-editor";
@@ -46,7 +46,7 @@ interface State {
 class Post extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
-        this.state = { id: '', title: '', linkText: '', previewText: '', fullText: '', tags: '' };
+        this.state = { id: "", title: "", linkText: "", previewText: "", fullText: "", tags: "" };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
@@ -65,7 +65,7 @@ class Post extends React.Component<AllProps, State> {
 
     public componentDidUpdate(prev: Readonly<AllProps>): void {
         if (this.props.entityId && !prev.post.isFetched && this.props.post.isFetched) {
-            const tags = this.props.post.tags.join(' ');
+            const tags = this.props.post.tags.join(" ");
             this.setState({ ...this.props.post, tags: tags });
         }
     }
@@ -79,15 +79,15 @@ class Post extends React.Component<AllProps, State> {
     };
 
     private handleSave = (): void => {
-        const record: PostType = { ...this.state, tags: this.state.tags.split(' ') };
+        const record: PostType = { ...this.state, tags: this.state.tags.split(" ") };
         this.props.savePost(record);
     };
 
     private handleTogglePublish = (): void => {
         const publish = !this.props.post.isPublished;
         const message = publish
-            ? 'This post will be available for everyone. Make sure all changes are saved.'
-            : 'This post will be hidden for everyone. This can negatively impact on users. Try to avoid this action.';
+            ? "This post will be available for everyone. Make sure all changes are saved."
+            : "This post will be hidden for everyone. This can negatively impact on users. Try to avoid this action.";
 
         if (confirm(message)) {
             this.props.togglePost(this.props.post.id, publish);
@@ -95,7 +95,7 @@ class Post extends React.Component<AllProps, State> {
     };
 
     private handleDelete = (id: string):void => {
-        if (confirm('Are you sure want to delete this post?')) {
+        if (confirm("Are you sure want to delete this post?")) {
             this.props.deletePost(id);
         }
     };
@@ -116,8 +116,8 @@ class Post extends React.Component<AllProps, State> {
         const isPublished = isEdit && this.props.post.isPublished;
 
         const publishZoneText = isPublished
-            ? 'This post is currently public. By pressing this button you will hide post from everyone.'
-            : 'This post is currently hidden. Publish this post for everyone by pressing button.';
+            ? "This post is currently public. By pressing this button you will hide post from everyone."
+            : "This post is currently hidden. Publish this post for everyone by pressing button.";
 
         return (
             <div>
@@ -176,7 +176,7 @@ class Post extends React.Component<AllProps, State> {
                         type="button"
                         disabled={isSaving}
                         onClick={this.handleSave}>
-                        {isSaving ? 'Saving' : 'Save'}
+                        {isSaving ? "Saving" : "Save"}
                     </button>
                 </div>
 
@@ -184,7 +184,7 @@ class Post extends React.Component<AllProps, State> {
                     <Zone
                         type={isPublished ? ZoneType.danger : ZoneType.success}
                         text={publishZoneText}
-                        buttonText={isPublished ? 'Unpublish' : 'Publish'}
+                        buttonText={isPublished ? "Unpublish" : "Publish"}
                         onClick={this.handleTogglePublish} />}
 
                 {isEdit && !isPublished &&

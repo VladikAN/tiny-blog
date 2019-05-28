@@ -1,15 +1,15 @@
-import { Thread } from './types';
+import { Thread } from "./types";
 import {
-    ThreadActionTypes,
     LOAD_THREAD_COMPLETED_MESSAGE,
-    LOAD_THREAD_STARTED_MESSAGE 
-} from './actions';
+    LOAD_THREAD_STARTED_MESSAGE,
+    ThreadActionTypes 
+} from "./actions";
 import {
+    DELETE_POST_COMPLETED_MESSAGE,
     PostActionTypes,
     SAVE_POST_COMPLETED_MESSAGE,
-    TOGGLE_POST_COMPLETED_MESSAGE,
-    DELETE_POST_COMPLETED_MESSAGE
-} from './../post/actions';
+    TOGGLE_POST_COMPLETED_MESSAGE
+} from "./../post/actions";
 
 export interface ThreadState extends Thread {
     isFetching: boolean;

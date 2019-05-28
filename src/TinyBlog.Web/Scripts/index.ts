@@ -1,6 +1,6 @@
 /* styles */
-import 'Styles/main.scss';
-import 'Styles/vendor.scss';
+import "Styles/main.scss";
+import "Styles/vendor.scss";
 
 /* scripts */
-import 'app.tsx';
+import "app.tsx";

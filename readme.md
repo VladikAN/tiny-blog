@@ -6,4 +6,3 @@ TO DO:
 - unit/integration tests
 - better MD editor
 - prepare for localization
-- eslint imports, quotes

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Markdown } from 'react-showdown';
+import { Markdown } from "react-showdown";
 
 interface OwnProps {
     text: string;
@@ -13,7 +13,7 @@ class MarkdownView extends React.Component<AllProps> {
 
         return (
             <div className="markdown">
-                <Markdown markup={text || ''} />
+                <Markdown markup={text || ""} />
             </div>);
     };
 }

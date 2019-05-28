@@ -1,7 +1,7 @@
 import { Action } from "redux";
 
 /* Messages */
-export const REQUEST_FAILED_MESSAGE = 'REQUEST_FAILED';
+export const REQUEST_FAILED_MESSAGE = "REQUEST_FAILED";
 
 /* Actions */
 interface RequestFailedAction extends Action<typeof REQUEST_FAILED_MESSAGE> { reason: any }

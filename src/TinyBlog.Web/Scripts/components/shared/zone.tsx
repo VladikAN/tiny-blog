@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import 'Styles/zone.scss';
+import "Styles/zone.scss";
 
 export enum ZoneType {
     success,
@@ -23,11 +23,11 @@ class Zone extends React.Component<AllProps> {
     public render(): React.ReactNode {
         const { type, text, buttonText } = this.props;
         const className = type == ZoneType.success
-            ? 'zone-success'
-            : 'zone-danger';
+            ? "zone-success"
+            : "zone-danger";
         const btnClassName = type == ZoneType.success
-            ? 'btn-success'
-            : 'btn-danger';
+            ? "btn-success"
+            : "btn-danger";
 
         return (
             <div className={`zone ${className}`}>
