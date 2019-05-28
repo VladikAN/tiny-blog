@@ -4,4 +4,3 @@ TO DO:
 - readme
 - unit/integration tests
 - better MD editor
-- rename email to username
