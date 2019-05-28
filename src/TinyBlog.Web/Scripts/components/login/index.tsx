@@ -19,7 +19,7 @@ interface DispatchProps {
 type AllProps = StateProps & DispatchProps;
 
 interface State {
-    email: string;
+    username: string;
     password: string;
 }
 
@@ -27,7 +27,7 @@ class Login extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
-        this.state = { email: "", password: "" };
+        this.state = { username: "", password: "" };
 
         this.props.getToken();
         
@@ -40,9 +40,9 @@ class Login extends React.Component<AllProps, State> {
     };
 
     private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        const { email, password } = this.state;
-        this.props.authCredentials(email, password);
-        this.setState({ email: "", password: "" });
+        const { username, password } = this.state;
+        this.props.authCredentials(username, password);
+        this.setState({ username: "", password: "" });
         event.preventDefault();
     };
 
@@ -57,15 +57,15 @@ class Login extends React.Component<AllProps, State> {
                 {isAuthorized && this.props.children}
                 {!isAuthorized && <div className="login">
                     <form onSubmit={this.handleSubmit}>
-                        <div className="login__email">
+                        <div className="login__username">
                             <label>
                                 <span>{strings.login_username}</span>
                                 <input
                                     type="text"
                                     autoComplete="off"
                                     autoFocus
-                                    name="email"
-                                    value={this.state.email}
+                                    name="username"
+                                    value={this.state.username}
                                     onChange={this.handleChange} />
                             </label>
                         </div>

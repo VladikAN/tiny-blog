@@ -4,8 +4,8 @@ namespace TinyBlog.DataServices.Entities
 {
     public class User : BaseEntity
     {
-        [BsonElement("userName")]
-        public string UserName { get; set; }
+        [BsonElement("username")]
+        public string Username { get; set; }
 
         [BsonElement("email")]
         public string Email { get; set; }

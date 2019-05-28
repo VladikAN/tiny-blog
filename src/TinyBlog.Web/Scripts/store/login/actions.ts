@@ -47,7 +47,7 @@ const authSuccessCreator = (): AuthSuccessAction => { return { type: AUTH_SUCCES
 const authLogoutCreator = (): AuthLogoutAction => { return { type: AUTH_LOGOUT_MESSAGE }; };
 
 interface AuthResponseModel {
-    email: string;
+    username: string;
     token: string;
 }
 
@@ -61,12 +61,12 @@ export const getToken = () => async (dispatch: Dispatch): Promise<void> => {
     }
 };
 
-export const authCredentials = (email: string, password: string) => async (dispatch: Dispatch): Promise<void> => {
+export const authCredentials = (username: string, password: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(authStartedCreator());
     
     const request = new Request(AuthUrl, {
         method: "POST",
-        body: JSON.stringify({ email: email, password: password })
+        body: JSON.stringify({ username: username, password: password })
     });
     
     return await http<{ isSuccess: boolean; payload: AuthResponseModel }>(request).then(response => {

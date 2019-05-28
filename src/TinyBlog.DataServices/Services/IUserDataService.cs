@@ -5,6 +5,6 @@ namespace TinyBlog.DataServices.Services
 {
     public interface IUserDataService
     {
-        Task<UserDto> GetCredentials(string email);
+        Task<UserDto> GetCredentials(string username);
     }
 }

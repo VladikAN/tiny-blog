@@ -21,10 +21,10 @@ namespace TinyBlog.DataServices.Services
             _logger = logger;
         }
 
-        public async Task<UserDto> GetCredentials(string email)
+        public async Task<UserDto> GetCredentials(string username)
         {
-            var queryParam = email.Trim().ToLower();
-            var userQuery = await UserCollection().FindAsync(usr => !usr.IsDeleted && usr.Email == queryParam && usr.IsActive);
+            var queryParam = username.Trim().ToLower();
+            var userQuery = await UserCollection().FindAsync(usr => !usr.IsDeleted && usr.Username == queryParam && usr.IsActive);
             var user = await userQuery.FirstOrDefaultAsync();
             return user?.BuildDto();
         }

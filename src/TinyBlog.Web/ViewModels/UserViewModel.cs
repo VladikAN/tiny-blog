@@ -6,13 +6,13 @@
         {
         }
 
-        public UserViewModel(string email, string token)
+        public UserViewModel(string username, string token)
         {
-            Email = email;
+            Username = username;
             Token = token;
         }
 
-        public string Email { get; set; }
+        public string Username { get; set; }
         public string Token { get; set; }
     }
 }

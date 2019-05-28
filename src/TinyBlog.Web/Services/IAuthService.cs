@@ -5,6 +5,6 @@ namespace TinyBlog.Web.Services
 {
     public interface IAuthService
     {
-        Task<UserViewModel> TryAuthorize(string email, string password);
+        Task<UserViewModel> TryAuthorize(string username, string password);
     }
 }
