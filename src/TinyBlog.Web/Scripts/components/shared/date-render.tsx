@@ -6,7 +6,7 @@ interface OwnProps {
 
 type AllProps = OwnProps;
 
-const months: string[] = ['jan', 'feb', 'mar', 'apr','may', 'jun', 'jul', 'aug', 'sept', 'okt', 'nov', 'dec'];
+const months: string[] = ["jan", "feb", "mar", "apr","may", "jun", "jul", "aug", "sept", "okt", "nov", "dec"];
 
 export default class DateRender extends React.Component<AllProps> {
     public render(): React.ReactNode {

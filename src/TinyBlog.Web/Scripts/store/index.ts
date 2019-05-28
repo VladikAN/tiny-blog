@@ -1,11 +1,11 @@
-import { createStore, applyMiddleware, combineReducers, compose, Store } from 'redux';
-import thunk from 'redux-thunk';
+import { Store, applyMiddleware, combineReducers, compose, createStore } from "redux";
+import thunk from "redux-thunk";
 
-import { threadReducer } from './thread/reducers';
-import { postReducer } from './post/reducers';
-import { loginReducer } from './login/reducers';
+import { threadReducer } from "./thread/reducers";
+import { postReducer } from "./post/reducers";
+import { loginReducer } from "./login/reducers";
 
-import {reducer as toastrReducer} from 'react-redux-toastr';
+import {reducer as toastrReducer} from "react-redux-toastr";
 
 const rootReducer = combineReducers({
     thread: threadReducer,

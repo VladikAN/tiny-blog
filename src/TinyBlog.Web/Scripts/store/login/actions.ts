@@ -1,19 +1,19 @@
-import { AuthUrl } from './../../api/urls';
-import { getJwtToken, setJwtToken, dropJwtToken } from "./../../api/jwt";
-import { http } from './../../api/http';
-import { Dispatch, Action } from 'redux';
-import { requestFailedCreator } from '../shared/actions';
+import { AuthUrl } from "./../../api/urls";
+import { dropJwtToken, getJwtToken, setJwtToken } from "./../../api/jwt";
+import { http } from "./../../api/http";
+import { Action, Dispatch } from "redux";
+import { requestFailedCreator } from "../shared/actions";
 
 /* Messages */
-export const GET_TOKEN_STARTED_MESSAGE = 'GET_TOKEN_STARTED';
-export const GET_TOKEN_FAILED_MESSAGE = 'GET_TOKEN_FAILED';
-export const GET_TOKEN_SUCCESS_MESSAGE = 'GET_TOKEN_SUCCESS';
+export const GET_TOKEN_STARTED_MESSAGE = "GET_TOKEN_STARTED";
+export const GET_TOKEN_FAILED_MESSAGE = "GET_TOKEN_FAILED";
+export const GET_TOKEN_SUCCESS_MESSAGE = "GET_TOKEN_SUCCESS";
 
-export const AUTH_STARTED_MESSAGE = 'AUTH_STARTED';
-export const AUTH_FAILED_MESSAGE = 'AUTH_FAILED';
-export const AUTH_SUCCESS_MESSAGE = 'AUTH_SUCCESS';
+export const AUTH_STARTED_MESSAGE = "AUTH_STARTED";
+export const AUTH_FAILED_MESSAGE = "AUTH_FAILED";
+export const AUTH_SUCCESS_MESSAGE = "AUTH_SUCCESS";
 
-export const AUTH_LOGOUT_MESSAGE = 'AUTH_LOGOUT';
+export const AUTH_LOGOUT_MESSAGE = "AUTH_LOGOUT";
 
 /* Actions */
 interface GetTokenStartedAction extends Action<typeof GET_TOKEN_STARTED_MESSAGE> {}
@@ -65,7 +65,7 @@ export const authCredentials = (email: string, password: string) => async (dispa
     dispatch(authStartedCreator());
     
     const request = new Request(AuthUrl, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({ email: email, password: password })
     });
     

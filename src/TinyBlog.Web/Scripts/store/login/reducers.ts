@@ -1,17 +1,17 @@
 import {
-    LoginActionTypes,
-    GET_TOKEN_STARTED_MESSAGE,
-    GET_TOKEN_FAILED_MESSAGE,
-    GET_TOKEN_SUCCESS_MESSAGE,
-    AUTH_STARTED_MESSAGE,
     AUTH_FAILED_MESSAGE,
+    AUTH_LOGOUT_MESSAGE,
+    AUTH_STARTED_MESSAGE,
     AUTH_SUCCESS_MESSAGE,
-    AUTH_LOGOUT_MESSAGE
-} from './actions';
+    GET_TOKEN_FAILED_MESSAGE,
+    GET_TOKEN_STARTED_MESSAGE,
+    GET_TOKEN_SUCCESS_MESSAGE,
+    LoginActionTypes
+} from "./actions";
 import {
-    SharedActionTypes,
-    REQUEST_FAILED_MESSAGE
-} from './../shared/actions';
+    REQUEST_FAILED_MESSAGE,
+    SharedActionTypes
+} from "./../shared/actions";
 
 export interface AuthState {
     isAuthorized?: boolean;

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { AppState } from "../../store";
-import { getToken, authCredentials } from './../../store/login/actions';
+import { authCredentials, getToken } from "./../../store/login/actions";
 import { AuthState } from "../../store/login/reducers";
 
-import 'Styles/login.scss';
+import "Styles/login.scss";
 
 interface StateProps {
     auth: AuthState;
@@ -27,7 +27,7 @@ class Login extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
-        this.state = { email: '', password: '' };
+        this.state = { email: "", password: "" };
 
         this.props.getToken();
         
@@ -42,7 +42,7 @@ class Login extends React.Component<AllProps, State> {
     private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         const { email, password } = this.state;
         this.props.authCredentials(email, password);
-        this.setState({ email: '', password: '' });
+        this.setState({ email: "", password: "" });
         event.preventDefault();
     };
 
