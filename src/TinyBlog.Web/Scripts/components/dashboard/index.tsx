@@ -8,6 +8,7 @@ import Post from "./../shared/post";
 import Loading from "./../shared/loading";
 import { Link } from "react-router-dom";
 import { logout } from "../../store/login/actions";
+import { strings } from "../../localization";
 
 interface StateProps extends ThreadState {}
 
@@ -49,12 +50,12 @@ class Dashboard extends React.Component<AllProps> {
                 <div className="controls">
                     <div className="controls__btn">
                         <Link to="/admin/post">
-                            <span className="typcn typcn-document-add"></span>&nbsp;Add
+                            <span className="typcn typcn-document-add"></span>&nbsp;{strings.dashboard_add}
                         </Link>
                     </div>
                     <div className="controls__btn">
                         <a href={null} onClick={this.handleLogout}>
-                            <span className="typcn typcn-key"></span>&nbsp;logout
+                            <span className="typcn typcn-key"></span>&nbsp;{strings.dashboard_logout}
                         </a>
                     </div>
                 </div>

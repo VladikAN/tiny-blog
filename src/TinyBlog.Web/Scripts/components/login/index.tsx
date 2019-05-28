@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { AppState } from "../../store";
 import { authCredentials, getToken } from "./../../store/login/actions";
 import { AuthState } from "../../store/login/reducers";
-
 import "Styles/login.scss";
+import { strings } from "../../localization";
 
 interface StateProps {
     auth: AuthState;
@@ -59,7 +59,7 @@ class Login extends React.Component<AllProps, State> {
                     <form onSubmit={this.handleSubmit}>
                         <div className="login__email">
                             <label>
-                                <span>Email</span>
+                                <span>{strings.login_username}</span>
                                 <input
                                     type="text"
                                     autoComplete="off"
@@ -71,7 +71,7 @@ class Login extends React.Component<AllProps, State> {
                         </div>
                         <div className="login__password">
                             <label>
-                                <span>Password</span>
+                                <span>{strings.login_password}</span>
                                 <input
                                     type="password"
                                     autoComplete="off"
@@ -83,7 +83,7 @@ class Login extends React.Component<AllProps, State> {
                         <div className="login__buttons">
                             <button
                                 className="btn-login"
-                                type="submit">Sign In</button>
+                                type="submit">{strings.login_signIn}</button>
                         </div>
                     </form>
                 </div>}
