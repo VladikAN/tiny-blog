@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import "Styles/zone.scss";
-
 export enum ZoneType {
     success,
     danger

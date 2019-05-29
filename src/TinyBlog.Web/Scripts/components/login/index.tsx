@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { AppState } from "../../store";
 import { authCredentials, getToken } from "./../../store/login/actions";
 import { AuthState } from "../../store/login/reducers";
-import "Styles/login.scss";
 import { strings } from "../../localization";
 
 interface StateProps {
@@ -16,14 +15,14 @@ interface DispatchProps {
     authCredentials: typeof authCredentials;
 }
 
-type AllProps = StateProps & DispatchProps;
+export type AllProps = StateProps & DispatchProps;
 
 interface State {
     username: string;
     password: string;
 }
 
-class Login extends React.Component<AllProps, State> {
+export class Login extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
