@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "webpack --color --progress",
     "dev:watch": "npm run dev -- --watch",
-    "release": "npm run lint && webpack --config webpack.prod.config.js --progress",
+    "release": "npm run lint && npm run test && webpack --config webpack.prod.config.js --progress",
     "lint": "eslint --ext ts,tsx Scripts/",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "test": "jest"
   },
   "author": "https://github.com/vladikan/tiny-blog.git",
   "license": "ISC",
@@ -25,6 +26,9 @@
     "typicons.font": "^2.0.9"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.9.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.13",
     "@types/react": "^16.8.16",
     "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^7.0.8",
@@ -35,9 +39,12 @@
     "awesome-typescript-loader": "^5.2.1",
     "clean-webpack-plugin": "^2.0.1",
     "css-loader": "^2.1.1",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.2",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.13.0",
     "file-loader": "^3.0.1",
+    "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
@@ -45,10 +52,22 @@
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.2.3",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.4.5",
     "webpack": "^4.30.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.1",
     "webpack-merge": "^4.2.1"
+  },
+  "jest": {
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "transform": {
+      "\\.(ts|tsx)$": "ts-jest"
+    },
+    "setupFiles": [
+      "raf/polyfill"
+    ],
+    "testRegex": "/__tests__/.*\\.(ts|tsx|js)$",
+    "setupFilesAfterEnv": ["<rootDir>/Scripts/setupTests.ts"]
   }
 }

@@ -4,3 +4,4 @@ TO DO:
 - readme
 - unit/integration tests
 - better MD editor
+- npm warnings

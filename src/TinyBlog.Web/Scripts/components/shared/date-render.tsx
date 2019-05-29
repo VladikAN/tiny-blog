@@ -5,7 +5,7 @@ interface OwnProps {
     date?: Date;
 }
 
-type AllProps = OwnProps;
+export type AllProps = OwnProps;
 
 const months: string[] = [
     strings.shared_month_jan,
