@@ -18,6 +18,9 @@
         "react-dom",
         "react-redux",
         "react-redux-toastr",
-        "react-router-dom"
+        "react-router-dom",
+        "jest",
+        "enzyme",
+        "enzyme-adapter-react-16"
     ]
 }
