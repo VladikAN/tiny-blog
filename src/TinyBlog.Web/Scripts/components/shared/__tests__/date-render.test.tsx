@@ -6,7 +6,7 @@ describe("<DateRender />", () => {
     it("should render month name and year", () => {
         const props: AllProps = { date: new Date(2019, 4, 1) };
         const wrapper = shallow(<DateRender {...props} />);
-        expect(wrapper.find("span").text()).toEqual("may 2019");
+        expect(wrapper.find("span").text().toLowerCase()).toEqual("may 2019");
     });
 
     it ("should not render for null props", () => {

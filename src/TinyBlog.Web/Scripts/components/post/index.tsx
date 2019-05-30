@@ -1,21 +1,16 @@
 import * as React from "react";
-import {
-    deletePost,
-    loadPost,
-    resetPost,
-    savePost,
-    togglePost
-} from "../../store/post/actions";
+import { loadPost, resetPost, savePost } from "../../store/post/actions";
 import { Post as PostType } from "../../store/post/types";
 import { PostState } from "../../store/post/reducers";
 import { AppState } from "../../store";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Loading from "../shared/loading";
-import Zone, { ZoneType } from "../shared/zone";
 import MarkdownEditor from "../shared/markdown-editor";
 import { Link, Redirect } from "react-router-dom";
 import { strings } from "../../localization";
+import ZonePostPublish from "../shared/zone-post-publish";
+import ZonePostDelete from "../shared/zone-post-delete";
 
 interface StateProps {
     post: PostState;
@@ -25,15 +20,13 @@ interface DispatchProps {
     resetPost: typeof resetPost;
     loadPost: typeof loadPost;
     savePost: typeof savePost;
-    togglePost: typeof togglePost;
-    deletePost: typeof deletePost;
 }
 
 interface OwnProps {
     entityId?: string;
 }
 
-type AllProps = OwnProps & StateProps & DispatchProps;
+export type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {
     id: string;
@@ -44,7 +37,7 @@ interface State {
     tags: string;
 }
 
-class Post extends React.Component<AllProps, State> {
+export class Post extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
         this.state = { id: "", title: "", linkText: "", previewText: "", fullText: "", tags: "" };
@@ -52,8 +45,6 @@ class Post extends React.Component<AllProps, State> {
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        this.handleTogglePublish = this.handleTogglePublish.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
     }
 
     public componentDidMount(): void {
@@ -84,20 +75,6 @@ class Post extends React.Component<AllProps, State> {
         this.props.savePost(record);
     };
 
-    private handleTogglePublish = (): void => {
-        const publish = !this.props.post.isPublished;
-        const message = publish ? strings.post_zone_publish_confirm : strings.post_zone_unpublish_confirm;
-        if (confirm(message)) {
-            this.props.togglePost(this.props.post.id, publish);
-        }
-    };
-
-    private handleDelete = (id: string):void => {
-        if (confirm(strings.post_zone_delete_confirm)) {
-            this.props.deletePost(id);
-        }
-    };
-
     public render(): React.ReactNode {
         if (this.props.post.isFetching) {
             return (<Loading />);
@@ -112,7 +89,6 @@ class Post extends React.Component<AllProps, State> {
 
         const isEdit = this.props.entityId;
         const isPublished = isEdit && this.props.post.isPublished;
-        const publishZoneText = isPublished ? strings.post_zone_unpublish_description : strings.post_zone_publish_description;
 
         return (
             <div>
@@ -175,19 +151,8 @@ class Post extends React.Component<AllProps, State> {
                     </button>
                 </div>
 
-                {isEdit &&
-                    <Zone
-                        type={isPublished ? ZoneType.danger : ZoneType.success}
-                        text={publishZoneText}
-                        buttonText={isPublished ? strings.post_zone_unpublish_button : strings.post_zone_publish_button}
-                        onClick={this.handleTogglePublish} />}
-
-                {isEdit && !isPublished &&
-                    <Zone
-                        type={ZoneType.danger}
-                        text={strings.post_zone_delete_description}
-                        buttonText={strings.post_zone_delete_button}
-                        onClick={() => this.handleDelete(id)} />}
+                {isEdit && <ZonePostPublish id={id} isPublished={isPublished} />}
+                {isEdit && !isPublished && <ZonePostDelete id={id} />}
             </div>);
     };
 }
@@ -200,9 +165,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({
         resetPost,
         loadPost,
-        savePost,
-        togglePost,
-        deletePost
+        savePost
     }, dispatch)
 });
 
