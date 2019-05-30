@@ -1,7 +1,7 @@
 {
   "name": "tinyblog",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple blog engine",
   "main": "index.js",
   "scripts": {
     "dev": "webpack --color --progress",
@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "author": "https://github.com/vladikan/tiny-blog.git",
+  "repository": "https://github.com/vladikan/tiny-blog.git",
   "license": "ISC",
   "dependencies": {
     "react": "^16.8.6",
@@ -29,15 +30,15 @@
     "@types/enzyme": "^3.9.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "^24.0.13",
-    "@types/react": "^16.8.16",
+    "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
-    "@types/react-redux": "^7.0.8",
+    "@types/react-redux": "^7.0.9",
     "@types/react-redux-toastr": "^7.4.1",
     "@types/react-router-dom": "^4.3.3",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "awesome-typescript-loader": "^5.2.1",
-    "clean-webpack-plugin": "^2.0.1",
+    "clean-webpack-plugin": "^2.0.2",
     "css-loader": "^2.1.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.2",
@@ -51,12 +52,12 @@
     "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
-    "terser-webpack-plugin": "^1.2.3",
+    "terser-webpack-plugin": "^1.3.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.5",
-    "webpack": "^4.30.0",
+    "typescript": "^3.5.1",
+    "webpack": "^4.32.2",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cli": "^3.3.1",
+    "webpack-cli": "^3.3.2",
     "webpack-merge": "^4.2.1"
   },
   "jest": {
