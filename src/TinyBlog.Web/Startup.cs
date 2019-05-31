@@ -1,8 +1,8 @@
-﻿using TinyBlog.Web.Configuration;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TinyBlog.Web.Configuration;
 
 namespace TinyBlog.Web
 {
@@ -18,6 +18,7 @@ namespace TinyBlog.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddAppHeathCheck(_configuration)
                 .AddServices(_configuration)
                 .AddApplicationInsights(_configuration)
                 .AddResponseCompression(options => options.EnableForHttps = true)
@@ -29,6 +30,7 @@ namespace TinyBlog.Web
         {
             app
                 .UseForwardedHeaders()
+                .UseHealthChecks("/health")
                 .UseResponseCompression()
                 .UseCustomErrorHandling(env)
                 .UseStaticFiles()
