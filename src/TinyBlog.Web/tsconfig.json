@@ -19,6 +19,7 @@
         "react-redux",
         "react-redux-toastr",
         "react-router-dom",
+        "query-string",
         "jest",
         "enzyme",
         "enzyme-adapter-react-16"
