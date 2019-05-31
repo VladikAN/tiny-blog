@@ -1,14 +1,14 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch, bindActionCreators } from "redux";
-import { AppState } from "../../store";
-import { ThreadState } from "../../store/thread/reducers";
-import { loadThread } from "../../store/thread/actions";
-import Post from "./../shared/post";
-import Loading from "./../shared/loading";
-import { Link } from "react-router-dom";
-import { logout } from "../../store/login/actions";
-import { strings } from "../../localization";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import { AppState } from '../../store';
+import { ThreadState } from '../../store/thread/reducers';
+import { loadThread } from '../../store/thread/actions';
+import Post from './../shared/post';
+import Loading from './../shared/loading';
+import { Link } from 'react-router-dom';
+import { logout } from '../../store/login/actions';
+import { strings } from '../../localization';
 
 interface StateProps extends ThreadState {}
 

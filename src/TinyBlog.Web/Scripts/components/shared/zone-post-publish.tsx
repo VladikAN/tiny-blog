@@ -1,9 +1,9 @@
-import * as React from "react";
-import { togglePost } from "../../store/post/actions";
-import { Dispatch, bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import Zone, { ZoneType } from "../shared/zone";
-import { strings } from "../../localization";
+import * as React from 'react';
+import { togglePost } from '../../store/post/actions';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Zone, { ZoneType } from '../shared/zone';
+import { strings } from '../../localization';
 
 interface DispatchProps {
     togglePost: typeof togglePost;

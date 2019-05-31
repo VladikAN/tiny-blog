@@ -1,16 +1,16 @@
-import * as React from "react";
-import { loadPost, resetPost, savePost } from "../../store/post/actions";
-import { Post as PostType } from "../../store/post/types";
-import { PostState } from "../../store/post/reducers";
-import { AppState } from "../../store";
-import { Dispatch, bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import Loading from "../shared/loading";
-import MarkdownEditor from "../shared/markdown-editor";
-import { Link, Redirect } from "react-router-dom";
-import { strings } from "../../localization";
-import ZonePostPublish from "../shared/zone-post-publish";
-import ZonePostDelete from "../shared/zone-post-delete";
+import * as React from 'react';
+import { loadPost, resetPost, savePost } from '../../store/post/actions';
+import { Post as PostType } from '../../store/post/types';
+import { PostState } from '../../store/post/reducers';
+import { AppState } from '../../store';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Loading from '../shared/loading';
+import MarkdownEditor from '../shared/markdown-editor';
+import { Link, Redirect } from 'react-router-dom';
+import { strings } from '../../localization';
+import ZonePostPublish from '../shared/zone-post-publish';
+import ZonePostDelete from '../shared/zone-post-delete';
 
 interface StateProps {
     post: PostState;
@@ -40,7 +40,7 @@ interface State {
 export class Post extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
-        this.state = { id: "", title: "", linkText: "", previewText: "", fullText: "", tags: "" };
+        this.state = { id: '', title: '', linkText: '', previewText: '', fullText: '', tags: '' };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
@@ -57,7 +57,7 @@ export class Post extends React.Component<AllProps, State> {
 
     public componentDidUpdate(prev: Readonly<AllProps>): void {
         if (this.props.entityId && !prev.post.isFetched && this.props.post.isFetched) {
-            const tags = this.props.post.tags.join(" ");
+            const tags = this.props.post.tags.join(' ');
             this.setState({ ...this.props.post, tags: tags });
         }
     }
@@ -71,7 +71,7 @@ export class Post extends React.Component<AllProps, State> {
     };
 
     private handleSave = (): void => {
-        const record: PostType = { ...this.state, tags: this.state.tags.split(" ") };
+        const record: PostType = { ...this.state, tags: this.state.tags.split(' ') };
         this.props.savePost(record);
     };
 

@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import MarkdownView from "./markdown-view";
-import DateRender from "./date-render";
-import { Post as PostType } from "../../store/post/types";
-import { strings } from "../../localization";
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import MarkdownView from './markdown-view';
+import DateRender from './date-render';
+import { Post as PostType } from '../../store/post/types';
+import { strings } from '../../localization';
 
 interface StateProps extends PostType {}
 type AllProps = StateProps;

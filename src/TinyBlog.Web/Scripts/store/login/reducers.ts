@@ -7,11 +7,11 @@ import {
     GET_TOKEN_STARTED_MESSAGE,
     GET_TOKEN_SUCCESS_MESSAGE,
     LoginActionTypes
-} from "./actions";
+} from './actions';
 import {
     REQUEST_FAILED_MESSAGE,
     SharedActionTypes
-} from "./../shared/actions";
+} from './../shared/actions';
 
 export interface AuthState {
     isAuthorized?: boolean;

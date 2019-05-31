@@ -1,1 +1,1 @@
-declare module "react-showdown";
+declare module 'react-showdown';
