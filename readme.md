@@ -46,6 +46,10 @@ Optional settings under *SiteSettings* section can be left blank or default:
 
 Such settings as: Author, Description, FooterContent and other can be moved to admin UI in order to simplify management.
 
-#### Better markdown editor
+## Better markdown editor
 
 Admin UI contains of markdown editor with live preview. This editor is not handy and needs to be changed to some other npm package or custom implementation. Most of the packages are heavy by size or required dependencies, so I've put basic implementation for now.
+
+## Consider about unit tests
+
+There is nothing really to unit test. Probably integration tests or end-to-end tests will give more benefit.
