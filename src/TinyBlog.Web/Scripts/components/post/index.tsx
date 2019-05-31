@@ -1,20 +1,16 @@
-import * as React from "react";
-import {
-    resetPost,
-    loadPost,
-    savePost,
-    togglePost,
-    deletePost
-} from "../../store/post/actions";
-import { Post as PostType } from "../../store/post/types";
-import { PostState } from "../../store/post/reducers";
-import { AppState } from "../../store";
-import { Dispatch, bindActionCreators } from "redux";
+import * as React from 'react';
+import { loadPost, resetPost, savePost } from '../../store/post/actions';
+import { Post as PostType } from '../../store/post/types';
+import { PostState } from '../../store/post/reducers';
+import { AppState } from '../../store';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Loading from "../shared/loading";
-import Zone, { ZoneType } from "../shared/zone";
-import MarkdownEditor from "../shared/markdown-editor";
-import { Link, Redirect } from "react-router-dom";
+import Loading from '../shared/loading';
+import MarkdownEditor from '../shared/markdown-editor';
+import { Link, Redirect } from 'react-router-dom';
+import { strings } from '../../localization';
+import ZonePostPublish from '../shared/zone-post-publish';
+import ZonePostDelete from '../shared/zone-post-delete';
 
 interface StateProps {
     post: PostState;
@@ -24,15 +20,13 @@ interface DispatchProps {
     resetPost: typeof resetPost;
     loadPost: typeof loadPost;
     savePost: typeof savePost;
-    togglePost: typeof togglePost;
-    deletePost: typeof deletePost;
 }
 
 interface OwnProps {
     entityId?: string;
 }
 
-type AllProps = OwnProps & StateProps & DispatchProps;
+export type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {
     id: string;
@@ -43,7 +37,7 @@ interface State {
     tags: string;
 }
 
-class Post extends React.Component<AllProps, State> {
+export class Post extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
         this.state = { id: '', title: '', linkText: '', previewText: '', fullText: '', tags: '' };
@@ -51,8 +45,6 @@ class Post extends React.Component<AllProps, State> {
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        this.handleTogglePublish = this.handleTogglePublish.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
     }
 
     public componentDidMount(): void {
@@ -83,23 +75,6 @@ class Post extends React.Component<AllProps, State> {
         this.props.savePost(record);
     };
 
-    private handleTogglePublish = (): void => {
-        const publish = !this.props.post.isPublished;
-        const message = publish
-            ? 'This post will be available for everyone. Make sure all changes are saved.'
-            : 'This post will be hidden for everyone. This can negatively impact on users. Try to avoid this action.';
-
-        if (confirm(message)) {
-            this.props.togglePost(this.props.post.id, publish);
-        }
-    };
-
-    private handleDelete = (id: string):void => {
-        if (confirm('Are you sure want to delete this post?')) {
-            this.props.deletePost(id);
-        }
-    };
-
     public render(): React.ReactNode {
         if (this.props.post.isFetching) {
             return (<Loading />);
@@ -115,16 +90,12 @@ class Post extends React.Component<AllProps, State> {
         const isEdit = this.props.entityId;
         const isPublished = isEdit && this.props.post.isPublished;
 
-        const publishZoneText = isPublished
-            ? 'This post is currently public. By pressing this button you will hide post from everyone.'
-            : 'This post is currently hidden. Publish this post for everyone by pressing button.';
-
         return (
             <div>
-                <Link to="/admin">back to thread</Link>
+                <Link to="/admin">{strings.post_link_back}</Link>
                 <div className="editor-field">
                     <label>
-                        <span>Title</span>
+                        <span>{strings.post_form_title}</span>
                         <input
                             type="text"
                             name="title"
@@ -134,25 +105,25 @@ class Post extends React.Component<AllProps, State> {
                 </div>
                 <div className="editor-field">
                     <label>
-                        <span>Link</span>
+                        <span>{strings.post_form_link}</span>
                         <input
                             type="text"
                             name="linkText"
                             disabled={isPublished}
                             value={linkText}
                             onChange={this.handleChange} />
-                        <span className="editor-field__help">Link can be changed only for draft posts</span>
+                        <span className="editor-field__help">{strings.post_form_link_description}</span>
                     </label>
                 </div>
                 <div className="editor-field">
-                    <span>Preview Text</span>
+                    <span>{strings.post_form_previewText}</span>
                     <MarkdownEditor 
                         name="previewText"
                         text={previewText}
                         onChange={this.handleMdChange} />
                 </div>
                 <div className="editor-field">
-                    <span>Full Text</span>
+                    <span>{strings.post_form_fullText}</span>
                     <MarkdownEditor 
                         name="fullText"
                         text={fullText}
@@ -160,14 +131,14 @@ class Post extends React.Component<AllProps, State> {
                 </div>
                 <div className="editor-field">
                     <label>
-                        <span>Tags</span>
+                        <span>{strings.post_form_tags}</span>
                         <input
                             type="text"
                             name="tags"
                             value={tags}
                             onChange={this.handleChange} />
                     </label>
-                    <span className="editor-field__help">Each tag is separated by single space</span>
+                    <span className="editor-field__help">{strings.post_form_tags_description}</span>
                 </div>
 
                 <div className="align-right">
@@ -176,23 +147,12 @@ class Post extends React.Component<AllProps, State> {
                         type="button"
                         disabled={isSaving}
                         onClick={this.handleSave}>
-                        {isSaving ? 'Saving' : 'Save'}
+                        {strings.post_form_save}
                     </button>
                 </div>
 
-                {isEdit &&
-                    <Zone
-                        type={isPublished ? ZoneType.danger : ZoneType.success}
-                        text={publishZoneText}
-                        buttonText={isPublished ? 'Unpublish' : 'Publish'}
-                        onClick={this.handleTogglePublish} />}
-
-                {isEdit && !isPublished &&
-                    <Zone
-                        type={ZoneType.danger}
-                        text="Delete this post. No one will see it."
-                        buttonText="Delete"
-                        onClick={() => this.handleDelete(id)} />}
+                {isEdit && <ZonePostPublish id={id} isPublished={isPublished} />}
+                {isEdit && !isPublished && <ZonePostDelete id={id} />}
             </div>);
     };
 }
@@ -205,9 +165,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({
         resetPost,
         loadPost,
-        savePost,
-        togglePost,
-        deletePost
+        savePost
     }, dispatch)
 });
 

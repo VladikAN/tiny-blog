@@ -15,7 +15,7 @@
     <div class="tags">
         @foreach (var tag in Model.Tags)
         {
-            <a href="/tag/@(tag)">@tag</a>
+            <a href="/tag/@(tag)" title="Tag: @(tag)">@tag</a>
         }
     </div>
 }

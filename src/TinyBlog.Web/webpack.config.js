@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     mode: 'development',
@@ -27,8 +28,8 @@ module.exports = {
             cacheGroups: {
                 vendor: {
 					test: /node_modules/,
-					chunks: "initial",
-					name: "vendor",
+					chunks: 'initial',
+					name: 'vendor',
 					priority: 10,
 					enforce: true
 				}
@@ -64,6 +65,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new MiniCssExtractPlugin({ filename: '../css/main.css' })
+        new MiniCssExtractPlugin({ filename: '../css/[name].css' }),
+        new BundleAnalyzerPlugin({ analyzerMode: 'disabled' /* 'static' */ })
     ]
 };

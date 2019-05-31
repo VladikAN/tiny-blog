@@ -7,7 +7,7 @@ namespace TinyBlog.DataServices.Extensions
     {
         internal static UserDto BuildDto(this User user)
         {
-            return new UserDto(user.Email, user.PasswordHash, user.PasswordSalt);
+            return new UserDto(user.Username, user.Email, user.PasswordHash, user.PasswordSalt);
         }
     }
 }

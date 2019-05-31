@@ -30,12 +30,12 @@ namespace TinyBlog.Web.Services
             _logger = logger;
         }
 
-        public async Task<UserViewModel> TryAuthorize(string email, string password)
+        public async Task<UserViewModel> TryAuthorize(string username, string password)
         {
-            var user = await _userDataSerice.GetCredentials(email);
+            var user = await _userDataSerice.GetCredentials(username);
             if (user == null)
             {
-                _logger.LogInformation($"Failed authorize attempt with '{email}'. User not found or not active.");
+                _logger.LogInformation($"Failed authorize attempt with '{username}'. User not found or not active.");
                 return null;
             }
 
@@ -50,13 +50,13 @@ namespace TinyBlog.Web.Services
 
             var success = user.PasswordHash.Equals(hashed, StringComparison.Ordinal);
             _logger.LogInformation(success
-                ? $"Successful autorize attempt with '{email}'."
-                : $"Failed authorize attempt with '{email}'. Wrong password");
+                ? $"Successful autorize attempt with '{username}'."
+                : $"Failed authorize attempt with '{username}'. Wrong password");
             
             if (success)
             {
                 var token = GetToken(user);
-                return new UserViewModel(email, token);
+                return new UserViewModel(username, token);
             }
             
             return null;
@@ -71,7 +71,7 @@ namespace TinyBlog.Web.Services
                 Audience = _authSettings.Audience,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Email)
+                    new Claim(ClaimTypes.Name, user.Username)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

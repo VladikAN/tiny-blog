@@ -7,7 +7,7 @@ namespace TinyBlog.Web.Configuration
 {
     public static class WebHostExtensions
     {
-        private const string ConfigPrefix = "BNR_WEB_";
+        private const string ConfigPrefix = "WEB_";
 
         public static IWebHostBuilder UseCustomConfiguration(this IWebHostBuilder host)
         {

@@ -1,11 +1,10 @@
-import * as React from "react";
-import { Dispatch, bindActionCreators } from "redux";
+import * as React from 'react';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AppState } from "../../store";
-import { getToken, authCredentials } from './../../store/login/actions';
-import { AuthState } from "../../store/login/reducers";
-
-import 'Styles/login.scss';
+import { AppState } from '../../store';
+import { authCredentials, getToken } from './../../store/login/actions';
+import { AuthState } from '../../store/login/reducers';
+import { strings } from '../../localization';
 
 interface StateProps {
     auth: AuthState;
@@ -16,18 +15,18 @@ interface DispatchProps {
     authCredentials: typeof authCredentials;
 }
 
-type AllProps = StateProps & DispatchProps;
+export type AllProps = StateProps & DispatchProps;
 
 interface State {
-    email: string;
+    username: string;
     password: string;
 }
 
-class Login extends React.Component<AllProps, State> {
+export class Login extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
-        this.state = { email: '', password: '' };
+        this.state = { username: '', password: '' };
 
         this.props.getToken();
         
@@ -40,9 +39,9 @@ class Login extends React.Component<AllProps, State> {
     };
 
     private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        const { email, password } = this.state;
-        this.props.authCredentials(email, password);
-        this.setState({ email: '', password: '' });
+        const { username, password } = this.state;
+        this.props.authCredentials(username, password);
+        this.setState({ username: '', password: '' });
         event.preventDefault();
     };
 
@@ -57,21 +56,21 @@ class Login extends React.Component<AllProps, State> {
                 {isAuthorized && this.props.children}
                 {!isAuthorized && <div className="login">
                     <form onSubmit={this.handleSubmit}>
-                        <div className="login__email">
+                        <div className="login__username">
                             <label>
-                                <span>Email</span>
+                                <span>{strings.login_username}</span>
                                 <input
                                     type="text"
                                     autoComplete="off"
                                     autoFocus
-                                    name="email"
-                                    value={this.state.email}
+                                    name="username"
+                                    value={this.state.username}
                                     onChange={this.handleChange} />
                             </label>
                         </div>
                         <div className="login__password">
                             <label>
-                                <span>Password</span>
+                                <span>{strings.login_password}</span>
                                 <input
                                     type="password"
                                     autoComplete="off"
@@ -83,7 +82,7 @@ class Login extends React.Component<AllProps, State> {
                         <div className="login__buttons">
                             <button
                                 className="btn-login"
-                                type="submit">Sign In</button>
+                                type="submit">{strings.login_signIn}</button>
                         </div>
                     </form>
                 </div>}

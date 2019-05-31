@@ -1,16 +1,17 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter, Route } from 'react-router-dom';
 import configureStore from './store';
 import Dashboard from './components/dashboard';
 import Post from './components/post';
 import Login from './components/login';
+import ReduxToastr from 'react-redux-toastr';
 
 ReactDOM.render(
     <Provider store={configureStore()}>
         <Login>
-            <Router>
+            <BrowserRouter>
                 <Route 
                     path="/admin" 
                     exact={true} 
@@ -21,9 +22,17 @@ ReactDOM.render(
                     component={Post} />
                 <Route 
                     path="/admin/post/:id">
-                    {({ match:match }) => (match && <Post entityId={match.params['id']} />)}
+                    {({ match }) => (match && <Post entityId={match.params['id']} />)}
                 </Route>
-            </Router>
+            </BrowserRouter>
+
+            <ReduxToastr
+                timeOut={2000}
+                newestOnTop={true}
+                preventDuplicates={true}
+                position='top-center'
+                transitionIn="fadeIn"
+                transitionOut="fadeOut" />
         </Login>
     </Provider>,
     document.getElementById('root')
