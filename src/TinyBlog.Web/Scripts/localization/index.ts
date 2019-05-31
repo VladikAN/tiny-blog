@@ -5,6 +5,8 @@ interface Strings extends LocalizedStringsMethods {
     login_username: string;
     login_password: string;
     login_signIn: string;
+    login_invalid_creds_title: string;
+    login_invalid_creds_msg: string;
 
     dashboard_add: string;
     dashboard_logout: string;
@@ -27,6 +29,15 @@ interface Strings extends LocalizedStringsMethods {
     post_form_tags: string;
     post_form_tags_description: string;
     post_form_save: string;
+    post_operation_title: string;
+    post_save_response_success: string;
+    post_save_response_failed: string;
+    post_publish_response_success: string;
+    post_publish_response_failed: string;
+    post_unpublish_response_success: string;
+    post_unpublish_response_failed: string;
+    post_delete_response_success: string;
+    post_delete_response_failed: string;
 
     shared_month_jan: string;
     shared_month_feb: string;
@@ -46,6 +57,9 @@ interface Strings extends LocalizedStringsMethods {
     shared_post_tagTitle_format: string;
     shared_post_notPublished: string;
     shared_post_editLink: string;
+
+    shared_server_error_title: string;
+    shared_server_error_msg: string;
 };
 
 export const strings: Strings = new LocalizedStrings({
@@ -53,6 +67,8 @@ export const strings: Strings = new LocalizedStrings({
         login_username: 'Username',
         login_password: 'Password',
         login_signIn: 'Sign In',
+        login_invalid_creds_title: 'Login',
+        login_invalid_creds_msg: 'username or password is incorrect',
 
         dashboard_add: 'Add',
         dashboard_logout: 'Logout',
@@ -75,6 +91,15 @@ export const strings: Strings = new LocalizedStrings({
         post_form_tags: 'Tags',
         post_form_tags_description: 'Each tag is separated by single space',
         post_form_save: 'Save',
+        post_operation_title: 'Post',
+        post_save_response_success: 'Changes successfully saved',
+        post_save_response_failed: 'Failed to save changes',
+        post_publish_response_success: 'Post successfully published',
+        post_publish_response_failed: 'Failed to publish post',
+        post_unpublish_response_success: 'Post successfully unpublished',
+        post_unpublish_response_failed: 'Failed to unpublish post',
+        post_delete_response_success: 'Post successfully deleted',
+        post_delete_response_failed: 'Failed to delete this post',
 
         shared_month_jan: 'jan',
         shared_month_feb: 'feb',
@@ -93,7 +118,10 @@ export const strings: Strings = new LocalizedStrings({
 
         shared_post_tagTitle_format: 'Tag: {0}',
         shared_post_notPublished: 'Not Published',
-        shared_post_editLink: '[Edit]'
+        shared_post_editLink: '[Edit]',
+
+        shared_server_error_title: 'Error',
+        shared_server_error_msg: 'Server responded with error'
     }
 });
 /* eslint-enable @typescript-eslint/camelcase */

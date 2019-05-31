@@ -3,6 +3,8 @@ import { dropJwtToken, getJwtToken, setJwtToken } from './../../api/jwt';
 import { http } from './../../api/http';
 import { Action, Dispatch } from 'redux';
 import { requestFailedCreator } from '../shared/actions';
+import { toastr } from 'react-redux-toastr';
+import { strings } from '../../localization';
 
 /* Messages */
 export const GET_TOKEN_STARTED_MESSAGE = 'GET_TOKEN_STARTED';
@@ -75,6 +77,7 @@ export const authCredentials = (username: string, password: string) => async (di
             dispatch(authSuccessCreator());
         } else {
             dispatch(authFailedCreator());
+            toastr.error(strings.login_invalid_creds_title, strings.login_invalid_creds_msg);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
