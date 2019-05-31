@@ -1,5 +1,5 @@
-import * as React from "react";
-import { strings } from "../../localization";
+import * as React from 'react';
+import { strings } from '../../localization';
 
 interface OwnProps {
     date?: Date;

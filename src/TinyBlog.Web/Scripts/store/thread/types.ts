@@ -1,4 +1,4 @@
-import { Post } from "./../post/types";
+import { Post } from './../post/types';
 
 export interface Thread {
     posts: Post[];

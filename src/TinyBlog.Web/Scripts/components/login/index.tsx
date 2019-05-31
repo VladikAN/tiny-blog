@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Dispatch, bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { AppState } from "../../store";
-import { authCredentials, getToken } from "./../../store/login/actions";
-import { AuthState } from "../../store/login/reducers";
-import { strings } from "../../localization";
+import * as React from 'react';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { AppState } from '../../store';
+import { authCredentials, getToken } from './../../store/login/actions';
+import { AuthState } from '../../store/login/reducers';
+import { strings } from '../../localization';
 
 interface StateProps {
     auth: AuthState;
@@ -26,7 +26,7 @@ export class Login extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
-        this.state = { username: "", password: "" };
+        this.state = { username: '', password: '' };
 
         this.props.getToken();
         
@@ -41,7 +41,7 @@ export class Login extends React.Component<AllProps, State> {
     private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         const { username, password } = this.state;
         this.props.authCredentials(username, password);
-        this.setState({ username: "", password: "" });
+        this.setState({ username: '', password: '' });
         event.preventDefault();
     };
 

@@ -28,8 +28,8 @@ module.exports = {
             cacheGroups: {
                 vendor: {
 					test: /node_modules/,
-					chunks: "initial",
-					name: "vendor",
+					chunks: 'initial',
+					name: 'vendor',
 					priority: 10,
 					enforce: true
 				}

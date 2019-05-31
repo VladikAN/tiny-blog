@@ -1,4 +1,4 @@
-const tokenName = "jwtToken";
+const tokenName = 'jwtToken';
 
 export function getJwtToken():string {
     return localStorage.getItem(tokenName);

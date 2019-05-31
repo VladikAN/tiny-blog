@@ -20,7 +20,7 @@
         "@typescript-eslint/semi": "warn",
         "no-duplicate-imports": "warn",
         "no-useless-rename": "warn",
-        "quotes": "warn"
+        "quotes": ["warn", "single"]
     },
     "settings": {
         "react": {

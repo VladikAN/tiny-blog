@@ -1,4 +1,4 @@
-import { Post } from "./types";
+import { Post } from './types';
 import {
     DELETE_POST_COMPLETED_MESSAGE,
     DELETE_POST_STARTED_MESSAGE,
@@ -10,7 +10,7 @@ import {
     SAVE_POST_STARTED_MESSAGE,
     TOGGLE_POST_COMPLETED_MESSAGE,
     TOGGLE_POST_STARTED_MESSAGE
-} from "./actions";
+} from './actions';
 
 export interface PostState extends Post {
     isFetching?: boolean;

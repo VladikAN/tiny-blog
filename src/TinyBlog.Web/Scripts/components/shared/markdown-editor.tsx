@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Markdown } from "react-showdown";
+import * as React from 'react';
+import { Markdown } from 'react-showdown';
 
 interface OwnProps {
     name: string;
@@ -45,10 +45,10 @@ class MarkdownEditor extends React.Component<AllProps, State> {
         return (
             <div className="md-editor">
                 <div className="md-editor__window md-editor__window-left">
-                    <textarea value={newText || ""} onChange={this.handleChange} />
+                    <textarea value={newText || ''} onChange={this.handleChange} />
                 </div>
                 <div className="md-editor__window md-editor__window-right markdown">
-                    <Markdown markup={newText || ""} />
+                    <Markdown markup={newText || ''} />
                 </div>
             </div>);
     };
