@@ -1,6 +1,12 @@
 bin/
 obj/
 publish/
+node_modules/
+*.csproj.user
+
+**/wwwroot/js
+**/wwwroot/css
+**/wwwroot/fonts
 
 .vs/
 .idea/
