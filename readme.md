@@ -2,7 +2,7 @@
 
 The original idea is to implement basic blog engine on dotnet core. I'm using it for myself and going to support this further.
 
-Everything is written with mantra 'keep it simple' in mind. All parts of code is expected to be simple and understandable for new developers.
+Everything is written with mantra 'keep it simple' in mind. All parts of code is expected to be simple, understandable and serve as started guide for new developers.
 
 ## Known hosts
 
