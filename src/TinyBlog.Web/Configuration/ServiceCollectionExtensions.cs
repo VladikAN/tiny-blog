@@ -1,17 +1,17 @@
-﻿using TinyBlog.DataServices.Services;
-using TinyBlog.DataServices.Settings;
-using TinyBlog.Web.Configuration.Settings;
-using TinyBlog.Web.Filters;
-using TinyBlog.Web.Services;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using TinyBlog.DataServices.Services;
+using TinyBlog.DataServices.Settings;
+using TinyBlog.Web.Configuration.Settings;
+using TinyBlog.Web.Filters;
+using TinyBlog.Web.Services;
 
 namespace TinyBlog.Web.Configuration
 {
@@ -28,6 +28,16 @@ namespace TinyBlog.Web.Configuration
                 });
 
             return services;
+        }
+
+        public static IServiceCollection AddAppHeathCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            return services
+                .AddHealthChecks()
+                .AddMongoDb(
+                    mongodbConnectionString: configuration["ConnectionStrings:Blog"],
+                    name: "database-health-check")
+                .Services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
