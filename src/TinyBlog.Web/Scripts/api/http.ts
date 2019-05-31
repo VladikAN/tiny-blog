@@ -1,5 +1,7 @@
+import { getJwtToken } from './jwt';
+
 export const http = <T>(request: RequestInfo): Promise<T> => {
-    const token = localStorage.getItem('jwtToken');
+    const token = getJwtToken();
     const merged = new Request(request, {
         headers: { 
             'Accept': 'application/json',
@@ -8,21 +10,15 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
         }
     });
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         fetch(merged)
             .then(response => {
                 if (!response.ok) {
-                    if (response.status == 401) {
-                        // force reload page to bring login screen again
-                        localStorage.removeItem('jwtToken');
-                        (window as any).location = '/admin';
-                        return;
-                    }
-
-                    throw new Error(response.statusText);
+                    reject(response);
+                } else {
+                    resolve(response.json());
                 }
-                
-                resolve(response.json());
-            });
+            })
+            .catch(err => reject(err));
     });
 };

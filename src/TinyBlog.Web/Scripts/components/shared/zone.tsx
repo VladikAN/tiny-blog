@@ -1,6 +1,4 @@
-import * as React from "react";
-
-import 'Styles/zone.scss';
+import * as React from 'react';
 
 export enum ZoneType {
     success,

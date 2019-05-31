@@ -1,0 +1,14 @@
+# common
+.vs/
+.idea/
+.git/
+
+# dotnet
+**/bin/
+**/obj/
+
+# frontend
+**/node_modules/
+**/wwwroot/css/
+**/wwwroot/fonts/
+**/wwwroot/js/

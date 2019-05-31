@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 import MarkdownView from './markdown-view';
 import DateRender from './date-render';
 import { Post as PostType } from '../../store/post/types';
-import { npost } from "q";
+import { strings } from '../../localization';
 
 interface StateProps extends PostType {}
 type AllProps = StateProps;
@@ -13,15 +13,18 @@ class Post extends React.Component<AllProps> {
         const { title, id, publishedAt, previewText, tags, isPublished } = this.props;
         
         const tagsRender = tags.map<React.ReactNode>(tg => (
-            <a key={tg} href={null}>{tg}</a>
+            <a
+                key={tg}
+                href={null}
+                title={strings.formatString(strings.shared_post_tagTitle_format, tg).toString()}>{tg}</a>
         ));
 
         return (
             <div className="thread__post">
                 <h2>
-                    {!isPublished && <span className="typcn typcn-eye-outline" title="not published"></span>}
+                    {!isPublished && <span className="typcn typcn-eye-outline" title={strings.shared_post_notPublished}></span>}
                     {title}&nbsp;
-                    <Link className="link-header" to={`/admin/post/${id}`}>[Edit]</Link></h2>
+                    <Link className="link-header" to={`/admin/post/${id}`}>{strings.shared_post_editLink}</Link></h2>
                 <div className="thread__post_info">
                     <DateRender date={publishedAt} />
                 </div>

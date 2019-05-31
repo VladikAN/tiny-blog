@@ -1,17 +1,20 @@
-import * as React from "react";
+import * as React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from "redux";
+import { Dispatch, bindActionCreators } from 'redux';
 import { AppState } from '../../store';
 import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
 import Post from './../shared/post';
 import Loading from './../shared/loading';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { logout } from '../../store/login/actions';
+import { strings } from '../../localization';
 
 interface StateProps extends ThreadState {}
 
 interface DispatchProps {
     loadThread: typeof loadThread;
+    logout: typeof logout;
 }
 
 type AllProps = StateProps & DispatchProps;
@@ -30,8 +33,7 @@ class Dashboard extends React.Component<AllProps> {
     }
 
     private handleLogout(): void {
-        localStorage.removeItem('jwtToken');
-        (window as any).location = '/admin';
+        this.props.logout();
     }
 
     public render(): React.ReactNode {
@@ -48,12 +50,12 @@ class Dashboard extends React.Component<AllProps> {
                 <div className="controls">
                     <div className="controls__btn">
                         <Link to="/admin/post">
-                            <span className="typcn typcn-document-add"></span>&nbsp;Add
+                            <span className="typcn typcn-document-add"></span>&nbsp;{strings.dashboard_add}
                         </Link>
                     </div>
                     <div className="controls__btn">
                         <a href={null} onClick={this.handleLogout}>
-                            <span className="typcn typcn-key"></span>&nbsp;logout
+                            <span className="typcn typcn-key"></span>&nbsp;{strings.dashboard_logout}
                         </a>
                     </div>
                 </div>
@@ -69,7 +71,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-    ...bindActionCreators({ loadThread }, dispatch)
+    ...bindActionCreators({ loadThread, logout }, dispatch)
 });
 
 export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -7,7 +7,7 @@ using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Controllers
 {
-    [Authorize]
+    [RequireHttps, Authorize]
     [ApiController]
     public class ApiController : Controller
     {
@@ -27,7 +27,7 @@ namespace TinyBlog.Web.Controllers
         {
             if (model != null && ModelState.IsValid)
             {
-                var user = await _authService.TryAuthorize(model.Email, model.Password);
+                var user = await _authService.TryAuthorize(model.Username, model.Password);
                 if (user != null)
                 {
                     return ApiResponseViewModel.Success(user);
