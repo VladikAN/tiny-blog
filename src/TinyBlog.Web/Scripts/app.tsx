@@ -27,15 +27,15 @@ ReactDOM.render(
                     {({ match } : RouteComponentProps<EditRouteParams>) => (match && <Post entityId={match.params.id} />)}
                 </Route>
             </BrowserRouter>
+        </Login>
 
-            <ReduxToastr
+        <ReduxToastr
                 timeOut={2000}
                 newestOnTop={true}
                 preventDuplicates={true}
                 position='top-center'
                 transitionIn="fadeIn"
                 transitionOut="fadeOut" />
-        </Login>
     </Provider>,
     document.getElementById('root')
 );
