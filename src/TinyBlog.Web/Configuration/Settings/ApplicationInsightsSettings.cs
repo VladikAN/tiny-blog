@@ -10,7 +10,10 @@ namespace TinyBlog.Web.Configuration.Settings
         {
             var section = configuration.GetSection(SectionName);
             Enabled = section.GetValue<bool>(nameof(Enabled));
-            Key = section.GetValue<string>(nameof(Key));
+            if (Enabled)
+            {
+                Key = section.GetValue<string>(nameof(Key));
+            }
         }
 
         public bool Enabled { get; }
