@@ -10,9 +10,12 @@ namespace TinyBlog.Web.Configuration.Settings
         {
             var section = configuration.GetSection(SectionName);
             Enabled = section.GetValue<bool>(nameof(Enabled));
-            Vault = section.GetValue<string>(nameof(Vault));
-            ClientId = section.GetValue<string>(nameof(ClientId));
-            ClientSecret = section.GetValue<string>(nameof(ClientSecret));
+            if (Enabled)
+            {
+                Vault = section.GetValue<string>(nameof(Vault));
+                ClientId = section.GetValue<string>(nameof(ClientId));
+                ClientSecret = section.GetValue<string>(nameof(ClientSecret));
+            }
         }
 
         public bool Enabled { get; }
