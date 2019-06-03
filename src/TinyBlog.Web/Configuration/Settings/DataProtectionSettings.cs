@@ -13,13 +13,13 @@ namespace TinyBlog.Web.Configuration.Settings
             Enabled = section.GetValue<bool>(nameof(Enabled));
             if (Enabled)
             {
-                BlobUriWithSas = new Uri(
-                    section.GetValue<string>(nameof(BlobUriWithSas)),
-                    UriKind.Absolute);
+                BlobUriWithSas = new Uri(section.GetValue<string>(nameof(BlobUriWithSas)), UriKind.Absolute);
+                VaultKeyIdentifier = section.GetValue<string>(nameof(VaultKeyIdentifier));
             }
         }
 
         public bool Enabled { get; }
         public Uri BlobUriWithSas { get; }
+        public string VaultKeyIdentifier { get; }
     }
 }

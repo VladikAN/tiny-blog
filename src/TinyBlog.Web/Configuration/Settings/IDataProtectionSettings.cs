@@ -6,5 +6,6 @@ namespace TinyBlog.Web.Configuration.Settings
     {
         bool Enabled { get; }
         Uri BlobUriWithSas { get; }
+        string VaultKeyIdentifier { get; }
     }
 }

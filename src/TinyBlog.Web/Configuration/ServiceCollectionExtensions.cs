@@ -98,7 +98,7 @@ namespace TinyBlog.Web.Configuration
                 if (vaultSettings.Enabled)
                 {
                     protection.ProtectKeysWithAzureKeyVault(
-                        vaultSettings.Vault,
+                        protectionSettings.VaultKeyIdentifier,
                         vaultSettings.ClientId,
                         vaultSettings.ClientSecret);
                 }
