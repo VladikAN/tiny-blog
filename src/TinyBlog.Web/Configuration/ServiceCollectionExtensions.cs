@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -79,6 +80,30 @@ namespace TinyBlog.Web.Configuration
             {
                 services
                     .AddApplicationInsightsTelemetry(settings.Key);
+            }
+
+            return services;
+        }
+
+        public static IServiceCollection AddDataProtection(this IServiceCollection services, IConfiguration configuration)
+        {
+            var protectionSettings = new DataProtectionSettings(configuration);
+            if (protectionSettings.Enabled)
+            {
+                var protection = services
+                    .AddDataProtection()
+                    .PersistKeysToAzureBlobStorage(protectionSettings.BlobUriWithSas);
+
+                var vaultSettings = new KeyVaultSettings(configuration);
+                if (vaultSettings.Enabled)
+                {
+                    protection.ProtectKeysWithAzureKeyVault(
+                        vaultSettings.Vault,
+                        vaultSettings.ClientId,
+                        vaultSettings.ClientSecret);
+                }
+
+                return protection.Services;
             }
 
             return services;
