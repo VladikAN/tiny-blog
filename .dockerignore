@@ -6,6 +6,7 @@
 # dotnet
 **/bin/
 **/obj/
+*.csproj.user
 
 # frontend
 **/node_modules/
