@@ -1,11 +1,10 @@
-version: '2'
+version: '3'
 
 services:
   tinyblog:
-    build: .
     image: vladikan/tinyblog:latest
-    container_name: "tinyblog-web"
-    hostname: "tinyblog-web"
+    container_name: "tinyblog"
+    hostname: "tinyblog"
     restart: always
 
     logging:

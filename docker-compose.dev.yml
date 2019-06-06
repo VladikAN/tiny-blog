@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  tinyblog:
+    build: .
+    depends_on:
+      - mongo
+    environment:
+      - WEB_ConnectionStrings__Blog=mongodb://webapp:password@mongo/blog
+
+  mongo:
+    image: mongo:3.6
+    container_name: "mongo"
+    hostname: "mongo"
+    restart: always
+    volumes:
+      - ./var:/data/db
+      - ./dev/mongo:/docker-entrypoint-initdb.d/
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=blog
