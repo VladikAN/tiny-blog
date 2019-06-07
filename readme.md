@@ -21,6 +21,20 @@ Frontent part of the code is presented by:
 * Regular user will see already rendered page. Implemented by using pure AspNet MVC Razor views. User gets basic html and css only without any javascript.
 * Admin area is implemented by using typescript, react and redux.
 
+### Docker
+
+You can build and run entire application by simple docker-compose command:
+
+```docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -D```
+
+Command will build and run the application. Application will be available at [8080](http://localhost:8080/) port.
+
+To access admin page use [/admin](http://localhost:8080/admin) path and *admin* / *admin* user credentials. Remember, this is DEV instance, avoid similar settings for PROD instance.
+
+Stop application be this command line:
+
+```docker-compose down```
+
 ### Configuration
 
 Configuration is possible by using (from lowest priority): appsettings.json file, environment variables or Azure Key Vault.

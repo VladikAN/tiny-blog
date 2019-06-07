@@ -11,4 +11,5 @@ db.createUser(
     }
 );
 
-print('User created');
+db.createCollection("posts");
+db.createCollection("users");
