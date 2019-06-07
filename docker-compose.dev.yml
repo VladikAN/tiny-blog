@@ -3,10 +3,13 @@ version: '3'
 services:
   tinyblog:
     build: .
+    ports:
+      - 8080:80
     depends_on:
       - mongo
     environment:
       - WEB_ConnectionStrings__Blog=mongodb://webapp:password@mongo/blog
+      - WEB_SiteSettings__Title=Tiny-Blog
 
   mongo:
     image: mongo:3.6
@@ -14,9 +17,22 @@ services:
     hostname: "mongo"
     restart: always
     volumes:
-      - ./var:/data/db
+      #- ./var:/data/db
       - ./dev/mongo:/docker-entrypoint-initdb.d/
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
       - MONGO_INITDB_DATABASE=blog
+  
+#  mongo-express:
+#    image: mongo-express:latest
+#    container_name: "mongo-express"
+#    hostname: "mongo-express"
+#    restart: always
+#    ports:
+#      - 8081:8081
+#    depends_on:
+#      - mongo
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
