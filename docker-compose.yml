@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  tinyblog:
+    image: vladikan/tinyblog:latest
+    container_name: "tinyblog"
+    hostname: "tinyblog"
+    restart: always
+
+    logging:
+      driver: json-file
+      options:
+          max-size: "5m"
+          max-file: "5"
+
+    environment:
+      - WEB_ConnectionStrings__Blog
+      
+      - WEB_Auth__Secret
+      - WEB_Auth__Issuer
+      - WEB_Auth__Audience
+
+      - WEB_SiteSettings__Title
+      - WEB_SiteSettings__Description
+      - WEB_SiteSettings__Url
+      - WEB_SiteSettings__Author
+      - WEB_SiteSettings__Language
+      - WEB_SiteSettings__GoogleTagsCode
+      - WEB_SiteSettings__FooterContent
+
+      - WEB_KeyVault__Enabled
+      - WEB_KeyVault__Vault
+      - WEB_KeyVault__ClientId
+      - WEB_KeyVault__ClientSecret
