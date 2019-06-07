@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -33,11 +35,14 @@ namespace TinyBlog.Web.Configuration
 
         public static IServiceCollection AddAppHeathCheck(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetValue<string>("ConnectionStrings:Blog");
+            var databaseName = connectionString
+                ?.Split("/", StringSplitOptions.RemoveEmptyEntries).LastOrDefault()
+                ?.Split("?", StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+            
             return services
                 .AddHealthChecks()
-                .AddMongoDb(
-                    mongodbConnectionString: configuration["ConnectionStrings:Blog"],
-                    name: "database-health-check")
+                .AddMongoDb(connectionString, databaseName, name: "database-health-check")
                 .Services;
         }
 
