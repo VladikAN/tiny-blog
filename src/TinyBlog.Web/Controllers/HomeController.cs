@@ -25,6 +25,17 @@ namespace TinyBlog.Web.Controllers
             return View(model);
         }
 
+        [HttpGet, Route("error/{statusCode:required}")]
+        public IActionResult Error(int statusCode)
+        {
+            if (statusCode >= 400 && statusCode <= 599)
+            {
+                return View("Error", statusCode);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet, Route("admin/{*internal}")]
         public IActionResult Admin()
         {
@@ -37,7 +48,7 @@ namespace TinyBlog.Web.Controllers
             var post = await _postDataService.GetByLinkText(linkText);
             if (post == null || !post.IsPublished)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
 
             var model = new PostViewModel(post);
@@ -53,6 +64,11 @@ namespace TinyBlog.Web.Controllers
             }
 
             var posts = (await _postDataService.GetByTag(name)).Where(x => x.IsPublished).ToArray();
+            if (posts.Length == 0)
+            {
+                return NotFound();
+            }
+
             var model = new ThreadViewModel(posts);
             return View(nameof(Index), model);
         }
