@@ -25,6 +25,17 @@ namespace TinyBlog.Web.Controllers
             return View(model);
         }
 
+        [HttpGet, Route("error/{statusCode:required}")]
+        public IActionResult Error(int statusCode)
+        {
+            if (statusCode >= 400 && statusCode <= 599)
+            {
+                return View("Error", statusCode);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet, Route("admin/{*internal}")]
         public IActionResult Admin()
         {

@@ -17,7 +17,7 @@ namespace TinyBlog.Web.Configuration
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error"); //TODO!!
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
                 app.UseHsts();
             }
 
