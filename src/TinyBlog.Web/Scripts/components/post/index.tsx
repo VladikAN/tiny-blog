@@ -44,7 +44,7 @@ export class Post extends React.Component<AllProps, State> {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMdChange = this.handleMdChange.bind(this);
-        this.handleSave = this.handleSave.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     public componentDidMount(): void {
@@ -70,9 +70,10 @@ export class Post extends React.Component<AllProps, State> {
         this.setState({ [name] : value } as React.ComponentState);
     };
 
-    private handleSave = (): void => {
+    private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         const record: PostType = { ...this.state, tags: this.state.tags.split(' ') };
         this.props.savePost(record);
+        event.preventDefault();
     };
 
     public render(): React.ReactNode {
@@ -93,63 +94,66 @@ export class Post extends React.Component<AllProps, State> {
         return (
             <div>
                 <Link to="/admin">{strings.post_link_back}</Link>
-                <div className="editor-field">
-                    <label>
-                        <span>{strings.post_form_title}</span>
-                        <input
-                            type="text"
-                            name="title"
-                            value={title}
-                            onChange={this.handleChange} />
-                    </label>
-                </div>
-                <div className="editor-field">
-                    <label>
-                        <span>{strings.post_form_link}</span>
-                        <input
-                            type="text"
-                            name="linkText"
-                            disabled={isPublished}
-                            value={linkText}
-                            onChange={this.handleChange} />
-                        <span className="editor-field__help">{strings.post_form_link_description}</span>
-                    </label>
-                </div>
-                <div className="editor-field">
-                    <span>{strings.post_form_previewText}</span>
-                    <MarkdownEditor 
-                        name="previewText"
-                        text={previewText}
-                        onChange={this.handleMdChange} />
-                </div>
-                <div className="editor-field">
-                    <span>{strings.post_form_fullText}</span>
-                    <MarkdownEditor 
-                        name="fullText"
-                        text={fullText}
-                        onChange={this.handleMdChange} />
-                </div>
-                <div className="editor-field">
-                    <label>
-                        <span>{strings.post_form_tags}</span>
-                        <input
-                            type="text"
-                            name="tags"
-                            value={tags}
-                            onChange={this.handleChange} />
-                    </label>
-                    <span className="editor-field__help">{strings.post_form_tags_description}</span>
-                </div>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.post_form_title}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="title"
+                                value={title}
+                                onChange={this.handleChange} />
+                        </label>
+                    </div>
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.post_form_link}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="linkText"
+                                disabled={isPublished}
+                                value={linkText}
+                                onChange={this.handleChange} />
+                            <span className="editor-field__help">{strings.post_form_link_description}</span>
+                        </label>
+                    </div>
+                    <div className="editor-field">
+                        <span>{strings.post_form_previewText}</span>
+                        <MarkdownEditor
+                            name="previewText"
+                            text={previewText}
+                            onChange={this.handleMdChange} />
+                    </div>
+                    <div className="editor-field">
+                        <span>{strings.post_form_fullText}</span>
+                        <MarkdownEditor 
+                            name="fullText"
+                            text={fullText}
+                            onChange={this.handleMdChange} />
+                    </div>
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.post_form_tags}</span>
+                            <input
+                                type="text"
+                                name="tags"
+                                value={tags}
+                                onChange={this.handleChange} />
+                        </label>
+                        <span className="editor-field__help">{strings.post_form_tags_description}</span>
+                    </div>
 
-                <div className="align-right">
-                    <button
-                        className="btn-success"
-                        type="button"
-                        disabled={isSaving}
-                        onClick={this.handleSave}>
-                        {strings.post_form_save}
-                    </button>
-                </div>
+                    <div className="align-right">
+                        <button
+                            className="btn-success"
+                            type="submit"
+                            disabled={isSaving}>
+                            {strings.post_form_save}
+                        </button>
+                    </div>
+                </form>
 
                 {isEdit && <ZonePostPublish id={id} isPublished={isPublished} />}
                 {isEdit && !isPublished && <ZonePostDelete id={id} />}

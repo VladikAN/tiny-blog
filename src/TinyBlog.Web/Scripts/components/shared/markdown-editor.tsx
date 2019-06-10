@@ -45,7 +45,7 @@ class MarkdownEditor extends React.Component<AllProps, State> {
         return (
             <div className="md-editor">
                 <div className="md-editor__window md-editor__window-left">
-                    <textarea value={newText || ''} onChange={this.handleChange} />
+                    <textarea required={true} value={newText || ''} onChange={this.handleChange} />
                 </div>
                 <div className="md-editor__window md-editor__window-right markdown">
                     <Markdown markup={newText || ''} />
