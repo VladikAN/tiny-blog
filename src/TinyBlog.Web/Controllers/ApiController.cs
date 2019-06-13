@@ -38,6 +38,9 @@ namespace TinyBlog.Web.Controllers
             return ApiResponseViewModel.Failed();
         }
 
+        [HttpGet, Route("api/auth/verify")]
+        public IActionResult Verify() => Ok();
+
         [HttpGet, Route("api/posts")]
         public async Task<IActionResult> Posts()
         {
