@@ -32,7 +32,7 @@ export function loginReducer(state = initialState, action: LoginActionTypes | Sh
                 }
             }
 
-            return state;
+            return { ...state, isFetching: false };
             
         case GET_TOKEN_STARTED_MESSAGE:
             return { ...state };

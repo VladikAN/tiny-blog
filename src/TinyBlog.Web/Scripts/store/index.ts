@@ -1,11 +1,11 @@
-import { Store, applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { Store, applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { reducer as toastrReducer } from 'react-redux-toastr';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import { threadReducer } from './thread/reducers';
 import { postReducer } from './post/reducers';
 import { loginReducer } from './login/reducers';
-
-import {reducer as toastrReducer} from 'react-redux-toastr';
 
 const rootReducer = combineReducers({
     thread: threadReducer,
@@ -14,14 +14,13 @@ const rootReducer = combineReducers({
     toastr: toastrReducer
 });
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 let middleware = [thunk];
 
 export default function configureStore(initialState={}): Store {
     return createStore(
         rootReducer,
         initialState,
-        composeEnhancers(applyMiddleware(...middleware))
+        composeWithDevTools(applyMiddleware(...middleware))
     );
 }
 
