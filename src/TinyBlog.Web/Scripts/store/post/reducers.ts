@@ -11,6 +11,10 @@ import {
     TOGGLE_POST_COMPLETED_MESSAGE,
     TOGGLE_POST_STARTED_MESSAGE
 } from './actions';
+import {
+    REQUEST_FAILED_MESSAGE,
+    SharedActionTypes
+} from './../shared/actions';
 
 export interface PostState extends Post {
     isFetching?: boolean;
@@ -31,8 +35,10 @@ const initialState: PostState = {
     isPublished: false
 };
 
-export function postReducer(state = initialState, action: PostActionTypes): PostState {
+export function postReducer(state = initialState, action: PostActionTypes | SharedActionTypes): PostState {
     switch (action.type) {
+        case REQUEST_FAILED_MESSAGE:
+            return { ...state, isFetching: false, isSaving: false };
         case RESET_POST_MESSAGE: 
             return {
                 ...initialState,
