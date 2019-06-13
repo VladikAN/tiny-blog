@@ -6,7 +6,8 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
         headers: { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': token ? `Bearer ${token}` : ''
+            'Authorization': token ? `Bearer ${token}` : '',
+            'X-Requested-With': 'XMLHttpRequest'
         }
     });
 
