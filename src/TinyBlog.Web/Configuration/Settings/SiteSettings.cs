@@ -16,6 +16,7 @@ namespace TinyBlog.Web.Configuration.Settings
             Language = section.GetValue<string>(nameof(Language));
             GoogleTagsCode = section.GetValue<string>(nameof(GoogleTagsCode));
             FooterContent = section.GetValue<string>(nameof(FooterContent));
+            DefaultCacheDuration = section.GetValue<int>(nameof(DefaultCacheDuration));
         }
 
         public string Title { get; }
@@ -25,5 +26,6 @@ namespace TinyBlog.Web.Configuration.Settings
         public string Language { get; }
         public string GoogleTagsCode { get; }
         public string FooterContent { get; }
+        public int DefaultCacheDuration { get; }
     }
 }
