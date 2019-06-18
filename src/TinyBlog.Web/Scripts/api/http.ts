@@ -17,7 +17,12 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
                 if (!response.ok) {
                     reject(response);
                 } else {
-                    resolve(response.json());
+                    if (response.headers.has('content-length') 
+                        && response.headers.get('content-length') == '0') {
+                        resolve();
+                    } else {
+                        resolve(response.json());
+                    }
                 }
             })
             .catch(err => reject(err));
