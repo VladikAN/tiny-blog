@@ -52,7 +52,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<PostDto> Get(string id)
         {
             var entity = await GetById(id);
-            return entity?.BuildDto();
+            return entity?.BuildDto(includeText: true);
         }
 
         public async Task<string> Upsert(PostDto post)

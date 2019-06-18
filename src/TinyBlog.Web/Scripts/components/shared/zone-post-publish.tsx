@@ -52,4 +52,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ togglePost }, dispatch)
 });
 
-export default connect<DispatchProps, OwnProps>(mapDispatchToProps)(ZonePostPublish);
+export default connect<{}, DispatchProps, OwnProps>(null, mapDispatchToProps)(ZonePostPublish);
