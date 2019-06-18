@@ -9,5 +9,6 @@
         string Language { get; }
         string GoogleTagsCode { get; }
         string FooterContent { get; }
+        int DefaultCacheDuration { get; }
     }
 }

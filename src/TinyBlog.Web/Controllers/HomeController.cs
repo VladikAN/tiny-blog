@@ -18,6 +18,7 @@ namespace TinyBlog.Web.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(CacheProfileName = "Default")]
         public async Task<IActionResult> Index()
         {
             var posts = (await _postDataService.GetAll()).Where(x => x.IsPublished).ToArray();
@@ -43,6 +44,7 @@ namespace TinyBlog.Web.Controllers
         }
 
         [HttpGet, Route("post/{linkText:required}")]
+        [ResponseCache(CacheProfileName = "Default")]
         public async Task<IActionResult> Post(string linkText)
         {
             var post = await _postDataService.GetByLinkText(linkText);
@@ -56,6 +58,7 @@ namespace TinyBlog.Web.Controllers
         }
 
         [HttpGet, Route("tag/{name}")]
+        [ResponseCache(CacheProfileName = "Default")]
         public async Task<IActionResult> Tag(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
