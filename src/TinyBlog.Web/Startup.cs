@@ -24,7 +24,7 @@ namespace TinyBlog.Web
                 .AddDataProtection(_configuration)
                 .AddResponseCompression(options => options.EnableForHttps = true)
                 .AddJwtAuthentication(_configuration)
-                .AddMvcWithFilters();
+                .AddMvcWithFilters(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
