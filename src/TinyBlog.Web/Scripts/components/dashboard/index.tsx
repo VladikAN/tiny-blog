@@ -41,9 +41,9 @@ class Dashboard extends React.Component<AllProps> {
             return (<Loading />);
         }
 
-        const posts = this.props.posts.map(ps => (
-            <Post key={ps.linkText} {...ps} />
-        ));
+        const posts = this.props.posts.length > 0 
+            ? this.props.posts.map(ps => (<Post key={ps.linkText} {...ps} /> ))
+            : <div className="thread__no-records">{strings.dashboard_no_records}</div>;
 
         return (
             <React.Fragment>
