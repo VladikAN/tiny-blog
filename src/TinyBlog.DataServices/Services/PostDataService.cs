@@ -65,8 +65,12 @@ namespace TinyBlog.DataServices.Services
                     .Set(x => x.LinkText, domain.LinkText)
                     .Set(x => x.PreviewText, domain.PreviewText)
                     .Set(x => x.FullText, domain.FullText)
-                    .Set(x => x.Tags, domain.Tags)
                     .Set(x => x.PublishedAt, domain.IsPublished ? domain.PublishedAt : DateTime.UtcNow);
+
+                if (domain.Tags != null && domain.Tags.Length > 0)
+                {
+                    definition = definition.Set(x => x.Tags, domain.Tags);
+                }
 
                 var options = new UpdateOptions { IsUpsert = true };
                 var result = await PostCollection().UpdateOneAsync(pst => pst.EntityId == domain.EntityId, definition, options);

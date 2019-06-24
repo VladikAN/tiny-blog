@@ -10,6 +10,7 @@ interface Strings extends LocalizedStringsMethods {
 
     dashboard_add: string;
     dashboard_logout: string;
+    dashboard_no_records: string;
 
     post_link_back: string;
     post_zone_delete_description: string;
@@ -72,6 +73,7 @@ export const strings: Strings = new LocalizedStrings({
 
         dashboard_add: 'Add',
         dashboard_logout: 'Logout',
+        dashboard_no_records: 'No records so far. Use \'+Add\' button to start writing.',
 
         post_link_back: 'back to thread',
         post_zone_delete_description: 'Delete this post. No one will see it.',
