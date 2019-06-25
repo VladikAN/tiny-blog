@@ -8,19 +8,22 @@
     .md-editor__window {
         min-height: 256px;
         flex: 1 1;
+        overflow-x: auto;
+        overflow-y: hidden;
 
         &.md-editor__window-left {
+            padding: 1px 5px 1px 1px;
+
             textarea {
-                width: 90%;
-                height: 90%;
-                margin: 5%;
+                width: 100%;
+                height: 100%;
             }
         }
 
         &.md-editor__window-right {
             border: 1px dashed #ccc;
             background-color: #fff;
-            padding: 5px;
+            margin: 0;
         }
     }
 }
