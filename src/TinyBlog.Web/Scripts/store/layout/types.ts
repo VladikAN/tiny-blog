@@ -5,5 +5,6 @@ export interface Layout {
     author: string;
     language: string;
     googleTagsCode: string;
+    headerContent: string;
     footerContent: string;
 }

@@ -3,9 +3,11 @@ import { AppState } from '../../store';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getLayout, saveLayout } from '../../store/layout/actions';
+import { Layout as LayoutType } from '../../store/layout/types';
 import { LayoutState } from '../../store/layout/reducers';
 import Loading from '../shared/loading';
 import { strings } from '../../localization';
+import MarkdownEditor from '../shared/markdown-editor';
 
 interface StateProps {
     layout: LayoutState;
@@ -21,14 +23,7 @@ interface OwnProps {
 
 export type AllProps = OwnProps & StateProps & DispatchProps;
 
-interface State {
-    title: string;
-    description: string;
-    uri: string;
-    author: string;
-    language: string;
-    googleTagsCode: string;
-    footerContent: string;
+interface State extends LayoutType {
 }
 
 export class Layout extends React.Component<AllProps, State> {
@@ -41,6 +36,7 @@ export class Layout extends React.Component<AllProps, State> {
             author: '',
             language: '',
             googleTagsCode: '',
+            headerContent: '',
             footerContent: ''
         };
 
@@ -70,7 +66,8 @@ export class Layout extends React.Component<AllProps, State> {
     };
 
     private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        
+        const record: LayoutType = { ...this.state };
+        this.props.saveLayout(record);
         event.preventDefault();
     };
 
@@ -79,7 +76,7 @@ export class Layout extends React.Component<AllProps, State> {
             return (<Loading />);
         }
 
-        const { title, description, uri, author, language, googleTagsCode, footerContent } = this.state;
+        const { title, description, uri, author, language, googleTagsCode, headerContent, footerContent } = this.state;
         const { isSaving } = this.props.layout;
 
         return (
@@ -154,13 +151,33 @@ export class Layout extends React.Component<AllProps, State> {
                         <label>
                             <span>{strings.layout_form_googleTagCode}</span>
                             <input
-                                required={true}
+                                required={false}
                                 type="text"
                                 name="googleTagsCode"
                                 value={googleTagsCode}
                                 onChange={this.handleChange} />
                             <span className="editor-field__help">{strings.layout_form_googleTagCode_description}</span>
                         </label>
+                    </div>
+
+                    <div className="editor-field">
+                        <span>{strings.layout_form_headerContent}</span>
+                        <MarkdownEditor
+                            name="headerContent"
+                            text={headerContent}
+                            required={false}
+                            onChange={this.handleMdChange} />
+                        <span className="editor-field__help">{strings.layout_form_headerContent_description}</span>
+                    </div>
+
+                    <div className="editor-field">
+                        <span>{strings.layout_form_footerContent}</span>
+                        <MarkdownEditor
+                            name="footerContent"
+                            text={footerContent}
+                            required={false}
+                            onChange={this.handleMdChange} />
+                        <span className="editor-field__help">{strings.layout_form_footerContent_description}</span>
                     </div>
 
                     <div className="align-right">

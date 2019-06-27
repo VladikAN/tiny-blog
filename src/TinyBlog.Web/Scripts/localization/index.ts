@@ -52,6 +52,10 @@ interface Strings extends LocalizedStringsMethods {
     layout_form_language_description: string;
     layout_form_googleTagCode: string;
     layout_form_googleTagCode_description: string;
+    layout_form_headerContent: string;
+    layout_form_headerContent_description: string;
+    layout_form_footerContent: string;
+    layout_form_footerContent_description: string;
     layout_form_save: string;
     layout_operation_title: string;
     layout_save_response_success: string;
@@ -132,6 +136,10 @@ export const strings: Strings = new LocalizedStrings({
         layout_form_language_description: 'Site main language. To be used in site <meta> tag and atom feed metadata',
         layout_form_googleTagCode: 'Google Tags Code',
         layout_form_googleTagCode_description: 'Optional. Put Google Tag Code here to enable external service integration',
+        layout_form_headerContent: 'Header Content (Markdown)',
+        layout_form_headerContent_description: 'This content will be placed to main page beginning',
+        layout_form_footerContent: 'Footer Content (Markdown)',
+        layout_form_footerContent_description: 'This content will be placed to the footer block at the end of the every page',
         layout_form_save: 'Save',
         layout_operation_title: 'Site layout',
         layout_save_response_success: 'Site layout successfully saved',

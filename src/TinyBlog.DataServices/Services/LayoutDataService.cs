@@ -41,6 +41,7 @@ namespace TinyBlog.DataServices.Services
                     .Set(x => x.Author, domain.Author)
                     .Set(x => x.Language, domain.Language)
                     .Set(x => x.GoogleTagsCode, domain.GoogleTagsCode)
+                    .Set(x => x.HeaderContent, domain.HeaderContent)
                     .Set(x => x.FooterContent, domain.FooterContent);
 
                 var options = new UpdateOptions { IsUpsert = true };

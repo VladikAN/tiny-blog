@@ -19,6 +19,7 @@ namespace TinyBlog.DataServices.Extensions
                 domain.Author,
                 domain.Language,
                 domain.GoogleTagsCode,
+                domain.HeaderContent,
                 domain.FooterContent);
         }
 
@@ -37,6 +38,7 @@ namespace TinyBlog.DataServices.Extensions
                 Author = dto.Author,
                 Language = dto.Language,
                 GoogleTagsCode = dto.GoogleTagsCode,
+                HeaderContent = dto.HeaderContent,
                 FooterContent = dto.FooterContent
             };
         }
