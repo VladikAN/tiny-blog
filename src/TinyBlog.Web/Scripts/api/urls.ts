@@ -6,3 +6,6 @@ export const LoadPostUrl = '/api/post';
 export const SavePostUrl = '/api/post/save';
 export const TogglePostUrl = '/api/post/publish';
 export const DeletePostUrl = '/api/post/delete';
+
+export const GetLayoutUrl = '/api/layout';
+export const SaveLayoutUrl = '/api/layout/save';

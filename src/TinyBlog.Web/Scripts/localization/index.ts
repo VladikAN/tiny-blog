@@ -40,6 +40,10 @@ interface Strings extends LocalizedStringsMethods {
     post_delete_response_success: string;
     post_delete_response_failed: string;
 
+    layout_operation_title: string;
+    layout_save_response_success: string;
+    layout_save_response_failed: string;
+
     shared_month_jan: string;
     shared_month_feb: string;
     shared_month_mar: string;
@@ -102,6 +106,10 @@ export const strings: Strings = new LocalizedStrings({
         post_unpublish_response_failed: 'Failed to unpublish post',
         post_delete_response_success: 'Post successfully deleted',
         post_delete_response_failed: 'Failed to delete this post',
+
+        layout_operation_title: 'Site layout',
+        layout_save_response_success: 'Site layout successfully saved',
+        layout_save_response_failed: 'Failed to save site layout',
 
         shared_month_jan: 'jan',
         shared_month_feb: 'feb',
