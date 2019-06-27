@@ -12,13 +12,16 @@ namespace TinyBlog.Web.Controllers
     public class ApiController : Controller
     {
         private readonly IPostDataService _postDataService;
+        private readonly ILayoutDataService _layoutDataService;
         private readonly IAuthService _authService;
 
         public ApiController(
             IPostDataService postDataService,
+            ILayoutDataService layoutDataService,
             IAuthService authService)
         {
             _postDataService = postDataService;
+            _layoutDataService = layoutDataService;
             _authService = authService;
         }
 
@@ -61,7 +64,7 @@ namespace TinyBlog.Web.Controllers
         }
 
         [HttpPost, Route("api/post/save")]
-        public async Task<IActionResult> Save([FromBody] PostViewModel model)
+        public async Task<IActionResult> SavePost([FromBody] PostViewModel model)
         {
             var dto = model.ToDto();
             var id = await _postDataService.Upsert(dto);
@@ -80,17 +83,31 @@ namespace TinyBlog.Web.Controllers
         }
 
         [HttpPost, Route("api/post/publish")]
-        public async Task<IActionResult> Publish([FromBody] PublishPostViewModel model)
+        public async Task<IActionResult> PublishPost([FromBody] PublishPostViewModel model)
         {
             var success = await _postDataService.TogglePublish(model.Id, model.Publish);
             return Json(success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
 
         [HttpPost, Route("api/post/delete/{id:required}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeletePost(string id)
         {
             var success = await _postDataService.Delete(id);
             return Json(success ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
+        }
+
+        [HttpGet, Route("api/layout")]
+        public async Task<IActionResult> Layout()
+        {
+            var dto = await _layoutDataService.Get();
+            return Json(new LayoutViewModel(dto));
+        }
+
+        [HttpPost, Route("api/layout/save")]
+        public async Task<IActionResult> SaveLayout([FromBody] LayoutViewModel model)
+        {
+            var result = await _layoutDataService.Save(model.BuildDto());
+            return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
     }
 }
