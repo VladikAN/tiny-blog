@@ -40,6 +40,9 @@ interface Strings extends LocalizedStringsMethods {
     post_delete_response_success: string;
     post_delete_response_failed: string;
 
+    layout_form_title: string;
+    layout_form_title_description: string;
+    layout_form_save: string;
     layout_operation_title: string;
     layout_save_response_success: string;
     layout_save_response_failed: string;
@@ -107,6 +110,9 @@ export const strings: Strings = new LocalizedStrings({
         post_delete_response_success: 'Post successfully deleted',
         post_delete_response_failed: 'Failed to delete this post',
 
+        layout_form_title: 'Title',
+        layout_form_title_description: 'Main site title. The same as browser title, feed title',
+        layout_form_save: 'Save',
         layout_operation_title: 'Site layout',
         layout_save_response_success: 'Site layout successfully saved',
         layout_save_response_failed: 'Failed to save site layout',
