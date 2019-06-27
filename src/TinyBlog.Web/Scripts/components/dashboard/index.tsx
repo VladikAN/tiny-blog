@@ -6,7 +6,7 @@ import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
 import Post from './../shared/post';
 import Loading from './../shared/loading';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { logout } from '../../store/login/actions';
 import { strings } from '../../localization';
 
@@ -49,9 +49,9 @@ class Dashboard extends React.Component<AllProps> {
             <React.Fragment>
                 <div className="controls">
                     <div className="controls__btn">
-                        <Link to="/admin/post">
+                        <NavLink to="/admin/post">
                             <span className="typcn typcn-document-add"></span>&nbsp;{strings.dashboard_add}
-                        </Link>
+                        </NavLink>
                     </div>
                     <div className="controls__btn">
                         <a href={null} onClick={this.handleLogout}>

@@ -8,6 +8,8 @@ interface Strings extends LocalizedStringsMethods {
     login_invalid_creds_title: string;
     login_invalid_creds_msg: string;
 
+    dashboard_link_posts: string;
+    dashboard_link_layout: string;
     dashboard_add: string;
     dashboard_logout: string;
     dashboard_no_records: string;
@@ -92,6 +94,8 @@ export const strings: Strings = new LocalizedStrings({
         login_invalid_creds_title: 'Login',
         login_invalid_creds_msg: 'username or password is incorrect',
 
+        dashboard_link_posts: 'Posts',
+        dashboard_link_layout: 'Settings',
         dashboard_add: 'Add',
         dashboard_logout: 'Logout',
         dashboard_no_records: 'No records so far. Use \'+Add\' button to start writing.',
