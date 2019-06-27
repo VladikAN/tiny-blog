@@ -18,6 +18,7 @@ namespace TinyBlog.Web.ViewModels
                 Author = string.Empty;
                 Language = string.Empty;
                 GoogleTagsCode = string.Empty;
+                HeaderContent = string.Empty;
                 FooterContent = string.Empty;
 
                 return;
@@ -29,6 +30,7 @@ namespace TinyBlog.Web.ViewModels
             Author = dto.Author;
             Language = dto.Language;
             GoogleTagsCode = dto.GoogleTagsCode;
+            HeaderContent = dto.HeaderContent;
             FooterContent = dto.FooterContent;
         }
 
@@ -38,6 +40,7 @@ namespace TinyBlog.Web.ViewModels
         public string Author { get; set; }
         public string Language { get; set; }
         public string GoogleTagsCode { get; set; }
+        public string HeaderContent { get; set; }
         public string FooterContent { get; set; }
 
         public LayoutDto BuildDto()
@@ -49,6 +52,7 @@ namespace TinyBlog.Web.ViewModels
                 Author,
                 Language,
                 GoogleTagsCode,
+                HeaderContent,
                 FooterContent);
         }
     }

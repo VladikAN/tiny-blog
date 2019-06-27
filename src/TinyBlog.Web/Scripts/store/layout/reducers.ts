@@ -24,6 +24,7 @@ const initialState: LayoutState = {
     author: '',
     language: '',
     googleTagsCode: '',
+    headerContent: '',
     footerContent: '',
     isFetching: false,
     isFetched: false,

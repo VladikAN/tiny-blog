@@ -22,6 +22,9 @@ namespace TinyBlog.DataServices.Entities
         [BsonElement("googleTagsCode")]
         public string GoogleTagsCode { get; set; }
 
+        [BsonElement("headerContent")]
+        public string HeaderContent { get; set; }
+
         [BsonElement("footerContent")]
         public string FooterContent { get; set; }
     }
