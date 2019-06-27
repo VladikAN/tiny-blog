@@ -10,6 +10,19 @@ namespace TinyBlog.Web.ViewModels
 
         public LayoutViewModel(LayoutDto dto)
         {
+            if (dto == null)
+            {
+                Title = string.Empty;
+                Description = string.Empty;
+                Uri = string.Empty;
+                Author = string.Empty;
+                Language = string.Empty;
+                GoogleTagsCode = string.Empty;
+                FooterContent = string.Empty;
+
+                return;
+            }
+
             Title = dto.Language;
             Description = dto.Description;
             Uri = dto.Uri;

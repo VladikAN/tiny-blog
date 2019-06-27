@@ -11,13 +11,13 @@ namespace TinyBlog.DataServices.Services
 {
     public class LayoutDataService : BaseDataService, ILayoutDataService
     {
-        private const string CollectionName = "posts";
+        private const string CollectionName = "layout";
 
         private ILogger _logger;
 
         public LayoutDataService(
             IDatabaseSettings settings,
-            ILogger<PostDataService> logger) : base(settings)
+            ILogger<LayoutDataService> logger) : base(settings)
         {
             _logger = logger;
         }
