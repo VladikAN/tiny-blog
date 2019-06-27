@@ -42,6 +42,16 @@ interface Strings extends LocalizedStringsMethods {
 
     layout_form_title: string;
     layout_form_title_description: string;
+    layout_form_description: string;
+    layout_form_description_description: string;
+    layout_form_uri: string;
+    layout_form_uri_description: string;
+    layout_form_author: string;
+    layout_form_author_description: string;
+    layout_form_language: string;
+    layout_form_language_description: string;
+    layout_form_googleTagCode: string;
+    layout_form_googleTagCode_description: string;
     layout_form_save: string;
     layout_operation_title: string;
     layout_save_response_success: string;
@@ -112,6 +122,16 @@ export const strings: Strings = new LocalizedStrings({
 
         layout_form_title: 'Title',
         layout_form_title_description: 'Main site title. The same as browser title, feed title',
+        layout_form_description: 'Description',
+        layout_form_description_description: 'Description to be placed in <meta> tag',
+        layout_form_uri: 'Site URI',
+        layout_form_uri_description: 'Site full uri address. Example, https://example.com/',
+        layout_form_author: 'Author',
+        layout_form_author_description: 'Author name to be placed into feed metadata',
+        layout_form_language: 'Language',
+        layout_form_language_description: 'Site main language. To be used in site <meta> tag and atom feed metadata',
+        layout_form_googleTagCode: 'Google Tags Code',
+        layout_form_googleTagCode_description: 'Optional. Put Google Tag Code here to enable external service integration',
         layout_form_save: 'Save',
         layout_operation_title: 'Site layout',
         layout_save_response_success: 'Site layout successfully saved',
