@@ -83,31 +83,96 @@ export class Layout extends React.Component<AllProps, State> {
         const { isSaving } = this.props.layout;
 
         return (
-        <div>
-            <form onSubmit={this.handleSubmit}>
-                <div className="editor-field">
-                    <label>
-                        <span>{strings.layout_form_title}</span>
-                        <input
-                            required={true}
-                            type="text"
-                            name="title"
-                            value={title}
-                            onChange={this.handleChange} />
-                        <span className="editor-field__help">{strings.layout_form_title_description}</span>
-                    </label>
-                </div>
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.layout_form_title}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="title"
+                                value={title}
+                                onChange={this.handleChange} />
+                            <span className="editor-field__help">{strings.layout_form_title_description}</span>
+                        </label>
+                    </div>
 
-                <div className="align-right">
-                    <button
-                        className="btn-success"
-                        type="submit"
-                        disabled={isSaving}>
-                        {strings.layout_form_save}
-                    </button>
-                </div>
-            </form>
-        </div>);
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.layout_form_description}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="description"
+                                value={description}
+                                onChange={this.handleChange} />
+                            <span className="editor-field__help">{strings.layout_form_description_description}</span>
+                        </label>
+                    </div>
+
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.layout_form_uri}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="uri"
+                                value={uri}
+                                onChange={this.handleChange} />
+                            <span className="editor-field__help">{strings.layout_form_uri_description}</span>
+                        </label>
+                    </div>
+
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.layout_form_author}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="author"
+                                value={author}
+                                onChange={this.handleChange} />
+                            <span className="editor-field__help">{strings.layout_form_author_description}</span>
+                        </label>
+                    </div>
+
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.layout_form_language}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="language"
+                                value={language}
+                                onChange={this.handleChange} />
+                            <span className="editor-field__help">{strings.layout_form_language_description}</span>
+                        </label>
+                    </div>
+
+                    <div className="editor-field">
+                        <label>
+                            <span>{strings.layout_form_googleTagCode}</span>
+                            <input
+                                required={true}
+                                type="text"
+                                name="googleTagsCode"
+                                value={googleTagsCode}
+                                onChange={this.handleChange} />
+                            <span className="editor-field__help">{strings.layout_form_googleTagCode_description}</span>
+                        </label>
+                    </div>
+
+                    <div className="align-right">
+                        <button
+                            className="btn-success"
+                            type="submit"
+                            disabled={isSaving}>
+                            {strings.layout_form_save}
+                        </button>
+                    </div>
+                </form>
+            </div>);
     }
 }
 
