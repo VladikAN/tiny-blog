@@ -40,6 +40,7 @@ namespace TinyBlog.Web.Controllers
         [HttpGet, Route("admin/{*internal}")]
         public IActionResult Admin()
         {
+            ViewData["IsAdmin"] = true;
             return View();
         }
 

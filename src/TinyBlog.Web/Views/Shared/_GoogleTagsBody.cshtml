@@ -1,9 +1,11 @@
 ﻿@{
     var enableGoogleTags = ViewData[nameof(LayoutViewModel.GoogleTagsCode)] != null
         && ViewData[nameof(LayoutViewModel.GoogleTagsCode)] is string;
+
+    var isAdmin = ViewData["IsAdmin"] is bool ? (bool)ViewData["IsAdmin"] : false;
 }
 
-@if (enableGoogleTags)
+@if (!isAdmin && enableGoogleTags)
 {
     var code = ViewData[nameof(LayoutViewModel.GoogleTagsCode)] as string;
 

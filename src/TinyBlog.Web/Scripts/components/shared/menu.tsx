@@ -12,14 +12,14 @@ interface DispatchProps {
 type AllProps = DispatchProps;
 
 interface State {
-    isOpen: boolean
+    isOpen: boolean;
 }
 
 class Menu extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
-        this.state = { isOpen: true };
+        this.state = { isOpen: false };
 
         this.handleLogout = this.handleLogout.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
@@ -45,24 +45,24 @@ class Menu extends React.Component<AllProps, State> {
                     className="dashboard__menu__toggle"
                     onClick={this.handleToggle}
                     title={strings.dashboard_toggle}>
-                        <span className={`typcn ${toggleClassName}`}/>
-                    </div>
+                    <span className={`typcn ${toggleClassName}`}/>
+                </div>
                 <NavLink
-                    className={`dashboard__menu__link ${!isOpen && "link-no-text"}`}
+                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
                     activeClassName="link-active"
                     to="/admin"
                     title={strings.dashboard_link_posts}>
-                        <span className="typcn typcn-document-text"/>{isOpen && strings.dashboard_link_posts}
-                    </NavLink>
+                    <span className="typcn typcn-document-text"/>{isOpen && strings.dashboard_link_posts}
+                </NavLink>
                 <NavLink
-                    className={`dashboard__menu__link ${!isOpen && "link-no-text"}`}
+                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
                     activeClassName="link-active"
                     to="/admin/layout"
                     title={strings.dashboard_link_layout}>
-                        <span className="typcn typcn-spanner"/>{isOpen && strings.dashboard_link_layout}
-                    </NavLink>
+                    <span className="typcn typcn-spanner"/>{isOpen && strings.dashboard_link_layout}
+                </NavLink>
                 <a
-                    className={`dashboard__menu__link ${!isOpen && "link-no-text"}`}
+                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
                     title={strings.dashboard_logout}
                     onClick={this.handleLogout}>
                     <span className="typcn typcn-key"/>{isOpen && strings.dashboard_logout}
