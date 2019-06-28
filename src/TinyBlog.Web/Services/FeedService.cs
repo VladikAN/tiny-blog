@@ -4,32 +4,35 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Services;
-using TinyBlog.Web.Configuration.Settings;
 
 namespace TinyBlog.Web.Services
 {
     public class FeedService : IFeedService
     {
         private IPostDataService _postDataService;
-        private ISiteSettings _siteSettings;
+        private ILayoutDataService _layoutDataService;
 
         public FeedService(
             IPostDataService postDataService,
-            ISiteSettings siteSettings)
+            ILayoutDataService siteSettings)
         {
             _postDataService = postDataService;
-            _siteSettings = siteSettings;
+            _layoutDataService = siteSettings;
         }
 
         public async Task<Atom10FeedFormatter> BuildFeed()
         {
-            var posts = await _postDataService.GetAll();
+            var postsTask = _postDataService.GetAll();
+            var layoutTask = _layoutDataService.Get();
+            await Task.WhenAll(postsTask, layoutTask);
+            var posts = await postsTask;
+            var layout = await layoutTask;
 
-            var baseUri = new Uri(_siteSettings.Uri, UriKind.Absolute);
-            var feed = new SyndicationFeed(_siteSettings.Title, _siteSettings.Description, baseUri);
-            feed.Language = _siteSettings.Language;
-            feed.Authors.Add(new SyndicationPerson(_siteSettings.Author));
-            feed.Description = new TextSyndicationContent(_siteSettings.Description);
+            var baseUri = new Uri(layout.Uri, UriKind.Absolute);
+            var feed = new SyndicationFeed(layout.Title, layout.Description, baseUri);
+            feed.Language = layout.Language;
+            feed.Authors.Add(new SyndicationPerson(layout.Author));
+            feed.Description = new TextSyndicationContent(layout.Description);
 
             // Tags
             var tags = posts
