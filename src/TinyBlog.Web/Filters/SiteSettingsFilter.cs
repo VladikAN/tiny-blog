@@ -10,7 +10,7 @@ namespace TinyBlog.Web.Filters
     {
         private readonly ILayoutDataService _layoutDataService;
 
-        public SiteSettingsFilter(LayoutDataService layoutDataService)
+        public SiteSettingsFilter(ILayoutDataService layoutDataService)
         {
             _layoutDataService = layoutDataService;
         }
@@ -34,6 +34,7 @@ namespace TinyBlog.Web.Filters
             }
 
             // Did not expect anything else here
+            await next();
         }
     }
 }

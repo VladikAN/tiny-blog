@@ -1,8 +1,11 @@
 ﻿@{
     var siteTitle = ViewData[nameof(LayoutViewModel.Title)]?.ToString() ?? string.Empty;
-    var header = ViewData["header"]?.ToString() ?? string.Empty;
-    var metaTitle = !string.IsNullOrWhiteSpace(header) ? $"{header} - {siteTitle}" : siteTitle;
+    var title = ViewData["header"]?.ToString() ?? string.Empty;
+    var fullTitle = !string.IsNullOrWhiteSpace(title) ? $"{title} - {siteTitle}" : siteTitle;
 
+    var author = ViewData[nameof(LayoutViewModel.Author)]?.ToString() ?? string.Empty;
+    var description = ViewData[nameof(LayoutViewModel.Description)]?.ToString() ?? string.Empty;
+    var header = ViewData[nameof(LayoutViewModel.HeaderContent)]?.ToString() ?? string.Empty;
     var footer = ViewData[nameof(LayoutViewModel.FooterContent)]?.ToString() ?? string.Empty;
 }
 
@@ -12,9 +15,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    @if (!string.IsNullOrWhiteSpace(author))
+    {
+        <meta name="author" content="@author">
+    }
+
+    @if (!string.IsNullOrWhiteSpace(description))
+    {
+        <meta name="description" content="@description">
+    }
+
     @{await Html.RenderPartialAsync("_GoogleTagsHead", ViewData); }
 
-    <title>@metaTitle</title>
+    <title>@fullTitle</title>
     <link rel="stylesheet" asp-href-include="~/css/*.css" asp-append-version="true" />
 </head>
 <body>
@@ -29,19 +42,22 @@
 
     <div class="wrapper">
         <div class="content">
+            @if (!string.IsNullOrWhiteSpace(header))
+            {
+                <div>@Html.Markdown(header)</div>
+            }
+
             @RenderBody()
         </div>
 
-        <div class="footer">
-            <div class="footer__body">
-                @if (!string.IsNullOrWhiteSpace(footer))
-                {
-                    <div>@Html.Markdown(footer)</div>
-                }
-                <div>Source code available at <a href="https://github.com/vladikan/tiny-blog">github.com</a></div>
+        @if (!string.IsNullOrWhiteSpace(footer))
+        {
+            <div class="footer">
+                <div class="footer__body">
+                    @Html.Markdown(footer)
+                </div>
             </div>
-        </div>
-    </div>
+        }
 
     @RenderSection("scripts", false)
 </body>

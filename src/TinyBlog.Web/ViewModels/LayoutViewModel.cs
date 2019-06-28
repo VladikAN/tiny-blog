@@ -24,7 +24,7 @@ namespace TinyBlog.Web.ViewModels
                 return;
             }
 
-            Title = dto.Language;
+            Title = dto.Title;
             Description = dto.Description;
             Uri = dto.Uri;
             Author = dto.Author;
@@ -46,14 +46,14 @@ namespace TinyBlog.Web.ViewModels
         public LayoutDto BuildDto()
         {
             return new LayoutDto(
-                Title,
-                Description,
-                Uri,
-                Author,
-                Language,
-                GoogleTagsCode,
-                HeaderContent,
-                FooterContent);
+                Title?.Trim() ?? string.Empty,
+                Description?.Trim() ?? string.Empty,
+                Uri?.Trim() ?? string.Empty,
+                Author?.Trim() ?? string.Empty,
+                Language?.Trim() ?? string.Empty,
+                GoogleTagsCode?.Trim() ?? string.Empty,
+                HeaderContent?.Trim() ?? string.Empty,
+                FooterContent?.Trim() ?? string.Empty);
         }
     }
 }

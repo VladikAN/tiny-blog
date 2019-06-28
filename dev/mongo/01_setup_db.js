@@ -13,3 +13,4 @@ db.createUser(
 
 db.createCollection("posts");
 db.createCollection("users");
+db.createCollection("layout");
