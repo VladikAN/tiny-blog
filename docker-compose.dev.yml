@@ -9,13 +9,14 @@ services:
       - mongo
     environment:
       - WEB_ConnectionStrings__Blog=mongodb://webapp:password@mongo/blog
-      - WEB_SiteSettings__Title=Tiny-Blog
 
   mongo:
     image: mongo:3.6
     container_name: "mongo"
     hostname: "mongo"
     restart: always
+    ports:
+      - 27017:27017
     volumes:
       #- ./var:/data/db
       - ./dev/mongo:/docker-entrypoint-initdb.d/

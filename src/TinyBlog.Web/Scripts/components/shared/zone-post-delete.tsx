@@ -41,4 +41,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ deletePost }, dispatch)
 });
 
-export default connect<DispatchProps, OwnProps>(mapDispatchToProps)(ZonePostDelete);
+export default connect<{}, DispatchProps, OwnProps>(null, mapDispatchToProps)(ZonePostDelete);

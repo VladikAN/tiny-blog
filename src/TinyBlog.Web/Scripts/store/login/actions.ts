@@ -1,5 +1,5 @@
-import { AuthUrl } from './../../api/urls';
-import { dropJwtToken, getJwtToken, setJwtToken } from './../../api/jwt';
+import { AuthUrl, TokenVerifyUrl } from './../../api/urls';
+import { dropJwtToken, setJwtToken } from './../../api/jwt';
 import { http } from './../../api/http';
 import { Action, Dispatch } from 'redux';
 import { requestFailedCreator } from '../shared/actions';
@@ -55,12 +55,10 @@ interface AuthResponseModel {
 
 export const getToken = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(getTokenStartedCreator());
-    const token = getJwtToken();
-    if (token) {
-        dispatch(getTokenSuccessCreator());
-    } else {
-        dispatch(getTokenFailedCreator());
-    }
+
+    return await http(TokenVerifyUrl).then(
+        () => { dispatch(getTokenSuccessCreator()); },
+        () => { dispatch(getTokenFailedCreator()); });
 };
 
 export const authCredentials = (username: string, password: string) => async (dispatch: Dispatch): Promise<void> => {

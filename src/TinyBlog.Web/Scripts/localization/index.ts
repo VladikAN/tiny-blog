@@ -8,9 +8,14 @@ interface Strings extends LocalizedStringsMethods {
     login_invalid_creds_title: string;
     login_invalid_creds_msg: string;
 
+    dashboard_toggle: string;
+    dashboard_link_posts: string;
+    dashboard_link_layout: string;
     dashboard_add: string;
     dashboard_logout: string;
+    dashboard_no_records: string;
 
+    post_page_title: string;
     post_link_back: string;
     post_zone_delete_description: string;
     post_zone_delete_button: string;
@@ -38,6 +43,28 @@ interface Strings extends LocalizedStringsMethods {
     post_unpublish_response_failed: string;
     post_delete_response_success: string;
     post_delete_response_failed: string;
+
+    layout_page_title: string;
+    layout_form_title: string;
+    layout_form_title_description: string;
+    layout_form_description: string;
+    layout_form_description_description: string;
+    layout_form_uri: string;
+    layout_form_uri_description: string;
+    layout_form_author: string;
+    layout_form_author_description: string;
+    layout_form_language: string;
+    layout_form_language_description: string;
+    layout_form_googleTagCode: string;
+    layout_form_googleTagCode_description: string;
+    layout_form_headerContent: string;
+    layout_form_headerContent_description: string;
+    layout_form_footerContent: string;
+    layout_form_footerContent_description: string;
+    layout_form_save: string;
+    layout_operation_title: string;
+    layout_save_response_success: string;
+    layout_save_response_failed: string;
 
     shared_month_jan: string;
     shared_month_feb: string;
@@ -70,9 +97,14 @@ export const strings: Strings = new LocalizedStrings({
         login_invalid_creds_title: 'Login',
         login_invalid_creds_msg: 'username or password is incorrect',
 
+        dashboard_toggle: 'Toggle panel',
+        dashboard_link_posts: 'Posts',
+        dashboard_link_layout: 'Settings',
         dashboard_add: 'Add',
         dashboard_logout: 'Logout',
+        dashboard_no_records: 'No records so far. Use \'+Add\' button to start writing.',
 
+        post_page_title: 'Thread',
         post_link_back: 'back to thread',
         post_zone_delete_description: 'Delete this post. No one will see it.',
         post_zone_delete_button: 'Delete',
@@ -100,6 +132,28 @@ export const strings: Strings = new LocalizedStrings({
         post_unpublish_response_failed: 'Failed to unpublish post',
         post_delete_response_success: 'Post successfully deleted',
         post_delete_response_failed: 'Failed to delete this post',
+
+        layout_page_title: 'Site Settings',
+        layout_form_title: 'Title',
+        layout_form_title_description: 'Main site title. The same as browser title, feed title',
+        layout_form_description: 'Description',
+        layout_form_description_description: 'Description to be placed in <meta> tag',
+        layout_form_uri: 'Site URI',
+        layout_form_uri_description: 'Site full uri address. Example, https://example.com/',
+        layout_form_author: 'Author',
+        layout_form_author_description: 'Author name to be placed into feed metadata',
+        layout_form_language: 'Language',
+        layout_form_language_description: 'Site main language. To be used in site <meta> tag and atom feed metadata',
+        layout_form_googleTagCode: 'Google Tags Code',
+        layout_form_googleTagCode_description: 'Optional. Put Google Tag Code here to enable external service integration',
+        layout_form_headerContent: 'Header Content (Markdown)',
+        layout_form_headerContent_description: 'This content will be placed to main page beginning',
+        layout_form_footerContent: 'Footer Content (Markdown)',
+        layout_form_footerContent_description: 'This content will be placed to the footer block at the end of the every page',
+        layout_form_save: 'Save',
+        layout_operation_title: 'Site layout',
+        layout_save_response_success: 'Site layout successfully saved',
+        layout_save_response_failed: 'Failed to save site layout',
 
         shared_month_jan: 'jan',
         shared_month_feb: 'feb',

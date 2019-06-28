@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Xml;
+using Microsoft.AspNetCore.Diagnostics;
+using System;
+using System.Threading.Tasks;
 
 namespace TinyBlog.Web.Configuration
 {
@@ -17,7 +20,19 @@ namespace TinyBlog.Web.Configuration
             }
             else
             {
-                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+                app.UseStatusCodePages(context =>
+                {
+                    var headers = context.HttpContext.Request.Headers;
+                    if (headers.ContainsKey("X-Requested-With")
+                        && headers["X-Requested-With"].ToString().Equals("XMLHttpRequest", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return Task.CompletedTask;
+                    }
+
+                    var statusCode = context.HttpContext.Response.StatusCode;
+                    context.HttpContext.Response.Redirect($"/Error/{statusCode}");
+                    return Task.CompletedTask;
+                });
                 app.UseHsts();
             }
 
