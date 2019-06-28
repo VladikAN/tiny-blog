@@ -20,13 +20,6 @@ services:
       - WEB_Auth__Issuer
       - WEB_Auth__Audience
 
-      - WEB_SiteSettings__Title
-      - WEB_SiteSettings__Description
-      - WEB_SiteSettings__Url
-      - WEB_SiteSettings__Author
-      - WEB_SiteSettings__Language
-      - WEB_SiteSettings__GoogleTagsCode
-      - WEB_SiteSettings__FooterContent
       - WEB_SiteSettings__DefaultCacheDuration
 
       - WEB_KeyVault__Enabled

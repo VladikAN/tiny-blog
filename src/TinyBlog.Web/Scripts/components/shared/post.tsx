@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import MarkdownView from './markdown-view';
 import DateRender from './date-render';
 import { Post as PostType } from '../../store/post/types';
@@ -24,7 +24,7 @@ class Post extends React.Component<AllProps> {
                 <h2>
                     {!isPublished && <span className="typcn typcn-eye-outline" title={strings.shared_post_notPublished}></span>}
                     {title}&nbsp;
-                    <Link className="link-header" to={`/admin/post/${id}`}>{strings.shared_post_editLink}</Link></h2>
+                    <NavLink className="link-header" to={`/admin/post/${id}`}>{strings.shared_post_editLink}</NavLink></h2>
                 <div className="thread__post_info">
                     <DateRender date={publishedAt} />
                 </div>

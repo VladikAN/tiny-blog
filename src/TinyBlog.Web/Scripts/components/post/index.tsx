@@ -7,7 +7,7 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Loading from '../shared/loading';
 import MarkdownEditor from '../shared/markdown-editor';
-import { Link, Redirect } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { strings } from '../../localization';
 import ZonePostPublish from '../shared/zone-post-publish';
 import ZonePostDelete from '../shared/zone-post-delete';
@@ -93,7 +93,7 @@ export class Post extends React.Component<AllProps, State> {
 
         return (
             <div>
-                <Link to="/admin">{strings.post_link_back}</Link>
+                <NavLink to="/admin">{strings.post_link_back}</NavLink>
                 <form onSubmit={this.handleSubmit}>
                     <div className="editor-field">
                         <label>

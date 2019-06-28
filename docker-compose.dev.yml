@@ -9,7 +9,6 @@ services:
       - mongo
     environment:
       - WEB_ConnectionStrings__Blog=mongodb://webapp:password@mongo/blog
-      - WEB_SiteSettings__Title=Tiny-Blog
 
   mongo:
     image: mongo:3.6
