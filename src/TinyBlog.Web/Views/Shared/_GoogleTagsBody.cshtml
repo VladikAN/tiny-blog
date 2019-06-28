@@ -1,13 +1,13 @@
-﻿@using TinyBlog.Web.Configuration.Settings
+﻿@{
+    var enableGoogleTags = ViewData[nameof(LayoutViewModel.GoogleTagsCode)] != null
+        && ViewData[nameof(LayoutViewModel.GoogleTagsCode)] is string;
 
-@{
-    var enableGoogleTags = ViewData[nameof(ISiteSettings.GoogleTagsCode)] != null
-        && ViewData[nameof(ISiteSettings.GoogleTagsCode)] is string;
+    var isAdmin = ViewData["IsAdmin"] is bool ? (bool)ViewData["IsAdmin"] : false;
 }
 
-@if (enableGoogleTags)
+@if (!isAdmin && enableGoogleTags)
 {
-    var code = ViewData[nameof(ISiteSettings.GoogleTagsCode)] as string;
+    var code = ViewData[nameof(LayoutViewModel.GoogleTagsCode)] as string;
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=@(code)"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

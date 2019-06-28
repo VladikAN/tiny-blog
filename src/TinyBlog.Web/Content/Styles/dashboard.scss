@@ -1,0 +1,46 @@
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    .dashboard__menu {
+        flex: 0 0;
+        padding: 10px 20px;
+
+        .dashboard__menu__toggle {
+            text-align: right;
+            font-size: 150%;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .dashboard__menu__link {
+            display: block;
+            padding: 5px 0;
+            white-space: nowrap;
+
+            .typcn {
+                margin-right: 5px;
+            }
+
+            &.link-no-text {
+                font-size: 150%;
+
+                .typcn {
+                    margin-right: 0px;
+                }
+            }
+
+            &.link-active {
+                
+            }
+        }
+    }
+
+    .dashboard__content {
+        flex: 1 1 auto;
+        padding: 10px 20px;
+    }
+}

@@ -1,37 +1,40 @@
-﻿using TinyBlog.Web.Configuration.Settings;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Threading.Tasks;
+using TinyBlog.DataServices.Services;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Filters
 {
-    public class SiteSettingsFilter : IActionFilter
+    public class SiteSettingsFilter : IAsyncActionFilter
     {
-        private readonly ISiteSettings _settings;
+        private readonly ILayoutDataService _layoutDataService;
 
-        public SiteSettingsFilter(ISiteSettings settings)
+        public SiteSettingsFilter(ILayoutDataService layoutDataService)
         {
-            _settings = settings;
+            _layoutDataService = layoutDataService;
         }
 
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var controller = context.Controller as Controller;
             if (controller != null)
             {
-                controller.ViewData[nameof(ISiteSettings.Title)] = !string.IsNullOrWhiteSpace(_settings.Title) ? _settings.Title : null;
-                controller.ViewData[nameof(ISiteSettings.Description)] = !string.IsNullOrWhiteSpace(_settings.Description) ? _settings.Description : null;
-                controller.ViewData[nameof(ISiteSettings.Uri)] = !string.IsNullOrWhiteSpace(_settings.Uri) ? _settings.Uri : null;
-                controller.ViewData[nameof(ISiteSettings.Author)] = !string.IsNullOrWhiteSpace(_settings.Author) ? _settings.Author : null;
-                controller.ViewData[nameof(ISiteSettings.Language)] = !string.IsNullOrWhiteSpace(_settings.Language) ? _settings.Language : null;
-                controller.ViewData[nameof(ISiteSettings.GoogleTagsCode)] = !string.IsNullOrWhiteSpace(_settings.GoogleTagsCode) ? _settings.GoogleTagsCode: null;
-                controller.ViewData[nameof(ISiteSettings.FooterContent)] = !string.IsNullOrWhiteSpace(_settings.FooterContent) ? _settings.FooterContent : null;
+                var layout = await _layoutDataService.Get();
+                var model = new LayoutViewModel(layout);
+
+                controller.ViewData[nameof(LayoutViewModel.Title)] = model.Title;
+                controller.ViewData[nameof(LayoutViewModel.Description)] = model.Description;
+                controller.ViewData[nameof(LayoutViewModel.Uri)] = model.Uri;
+                controller.ViewData[nameof(LayoutViewModel.Author)] = model.Author;
+                controller.ViewData[nameof(LayoutViewModel.Language)] = model.Language;
+                controller.ViewData[nameof(LayoutViewModel.GoogleTagsCode)] = model.GoogleTagsCode;
+                controller.ViewData[nameof(LayoutViewModel.HeaderContent)] = model.HeaderContent;
+                controller.ViewData[nameof(LayoutViewModel.FooterContent)] = model.FooterContent;
             }
 
             // Did not expect anything else here
+            await next();
         }
     }
 }

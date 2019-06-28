@@ -44,21 +44,18 @@ Configuration is possible by using (from lowest priority): appsettings.json file
 Please provide this value to start application:
 * **ConnectionStrings/Blog** connection string to MongoDB database with read and write rights. Put database name to the same connection string.
 * **Auth/Secret** put your own Base64 string for JWT token signature. At least 256 symbols long.
-* **SiteSettings/Title** will be show on web page header and used inside of atom feed.
 
-Optional settings under *SiteSettings* section can be left blank or default:
+After application start you can login as admin by using /admin uri and specify general site settings:
+* **SiteSettings/Title** will be show on web page header and used inside of atom feed.
 * **Description** is used to populate html meta tag for search engines and atom feed metadata.
 * **Uri** is used to populate atom feed metadata. Tthis is your site address or domain.
 * **Author** is used to populate atom feed metadata.
 * **Language** is used to populate html meta tag for search engines.
 * **GoogleTagsCode** special [GoogleTags](https://tagmanager.google.com/) code. You can used it for additional html meta tags management. Blank value means disabled.
-* **FooterContent** this field supports markdown syntax and used to populate web page footer content.
-
+* **HeaderContent** this field supports markdown syntax and used to populate web page header section.
+* **FooterContent** this field supports markdown syntax and used to populate web page footer section.
 
 # Development TODO list
-## Move general site settings to admin area instead of configuration variables.
-
-Such settings as: Author, Description, FooterContent and other can be moved to admin UI in order to simplify management.
 
 ## Better markdown editor
 
