@@ -8,12 +8,14 @@ interface Strings extends LocalizedStringsMethods {
     login_invalid_creds_title: string;
     login_invalid_creds_msg: string;
 
+    dashboard_toggle: string;
     dashboard_link_posts: string;
     dashboard_link_layout: string;
     dashboard_add: string;
     dashboard_logout: string;
     dashboard_no_records: string;
 
+    post_page_title: string;
     post_link_back: string;
     post_zone_delete_description: string;
     post_zone_delete_button: string;
@@ -42,6 +44,7 @@ interface Strings extends LocalizedStringsMethods {
     post_delete_response_success: string;
     post_delete_response_failed: string;
 
+    layout_page_title: string;
     layout_form_title: string;
     layout_form_title_description: string;
     layout_form_description: string;
@@ -94,12 +97,14 @@ export const strings: Strings = new LocalizedStrings({
         login_invalid_creds_title: 'Login',
         login_invalid_creds_msg: 'username or password is incorrect',
 
+        dashboard_toggle: 'Toggle panel',
         dashboard_link_posts: 'Posts',
         dashboard_link_layout: 'Settings',
         dashboard_add: 'Add',
         dashboard_logout: 'Logout',
         dashboard_no_records: 'No records so far. Use \'+Add\' button to start writing.',
 
+        post_page_title: 'Thread',
         post_link_back: 'back to thread',
         post_zone_delete_description: 'Delete this post. No one will see it.',
         post_zone_delete_button: 'Delete',
@@ -128,6 +133,7 @@ export const strings: Strings = new LocalizedStrings({
         post_delete_response_success: 'Post successfully deleted',
         post_delete_response_failed: 'Failed to delete this post',
 
+        layout_page_title: 'Site Settings',
         layout_form_title: 'Title',
         layout_form_title_description: 'Main site title. The same as browser title, feed title',
         layout_form_description: 'Description',

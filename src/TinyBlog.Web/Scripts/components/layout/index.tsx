@@ -48,6 +48,8 @@ export class Layout extends React.Component<AllProps, State> {
     public componentDidMount(): void {
         if (!this.props.layout.isFetching && !this.props.layout.isFetched) {
             this.props.getLayout();
+        } else if (this.props.layout.isFetched) {
+            this.setState({ ...this.props.layout });
         }
     }
 
@@ -81,6 +83,8 @@ export class Layout extends React.Component<AllProps, State> {
 
         return (
             <div>
+                <h1>{strings.layout_page_title}</h1>
+
                 <form onSubmit={this.handleSubmit}>
                     <div className="editor-field">
                         <label>
