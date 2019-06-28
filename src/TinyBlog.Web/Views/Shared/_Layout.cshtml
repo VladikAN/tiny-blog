@@ -1,11 +1,9 @@
-﻿@using TinyBlog.Web.Configuration.Settings
-
-@{
-    var siteTitle = ViewData[nameof(ISiteSettings.Title)]?.ToString() ?? string.Empty;
+﻿@{
+    var siteTitle = ViewData[nameof(LayoutViewModel.Title)]?.ToString() ?? string.Empty;
     var header = ViewData["header"]?.ToString() ?? string.Empty;
     var metaTitle = !string.IsNullOrWhiteSpace(header) ? $"{header} - {siteTitle}" : siteTitle;
 
-    var footer = ViewData[nameof(ISiteSettings.FooterContent)]?.ToString() ?? string.Empty;
+    var footer = ViewData[nameof(LayoutViewModel.FooterContent)]?.ToString() ?? string.Empty;
 }
 
 <!DOCTYPE html>
