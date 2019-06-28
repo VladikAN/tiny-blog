@@ -9,6 +9,7 @@
 
         .dashboard__menu__toggle {
             text-align: right;
+            font-size: 150%;
 
             &:hover {
                 cursor: pointer;
@@ -25,6 +26,8 @@
             }
 
             &.link-no-text {
+                font-size: 150%;
+
                 .typcn {
                     margin-right: 0px;
                 }
