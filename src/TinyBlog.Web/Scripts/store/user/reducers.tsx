@@ -44,7 +44,7 @@ const initialState: UsersState = {
     isFetched: false
 };
 
-export function layoutReducer(state = initialState, action: UserActionTypes | SharedActionTypes): UsersState {
+export function userReducer(state = initialState, action: UserActionTypes | SharedActionTypes): UsersState {
     switch (action.type) {
         case REQUEST_FAILED_MESSAGE:
             return { ...state, operation: null, isFetching: false, isFetched: false };

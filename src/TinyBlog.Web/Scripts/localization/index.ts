@@ -10,6 +10,7 @@ interface Strings extends LocalizedStringsMethods {
 
     dashboard_toggle: string;
     dashboard_link_posts: string;
+    dashboard_link_user: string;
     dashboard_link_layout: string;
     dashboard_add: string;
     dashboard_logout: string;
@@ -66,6 +67,7 @@ interface Strings extends LocalizedStringsMethods {
     layout_save_response_success: string;
     layout_save_response_failed: string;
 
+    user_page_title: string;
     user_operation_title: string;
     user_activate_reponse_success: string;
     user_activate_reponse_failed: string;
@@ -109,6 +111,7 @@ export const strings: Strings = new LocalizedStrings({
 
         dashboard_toggle: 'Toggle panel',
         dashboard_link_posts: 'Posts',
+        dashboard_link_user: 'Users',
         dashboard_link_layout: 'Settings',
         dashboard_add: 'Add',
         dashboard_logout: 'Logout',
@@ -165,6 +168,7 @@ export const strings: Strings = new LocalizedStrings({
         layout_save_response_success: 'Site settings successfully saved',
         layout_save_response_failed: 'Failed to save site settings',
 
+        user_page_title: 'User Management',
         user_operation_title: 'User',
         user_activate_reponse_success: 'User was activated',
         user_activate_reponse_failed: 'Failed to activate user',

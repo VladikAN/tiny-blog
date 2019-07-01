@@ -1,4 +1,4 @@
-﻿namespace TinyBlog.DataServices.Services.Dto
+namespace TinyBlog.DataServices.Services.Dto
 {
     public class UserDto
     {
@@ -6,17 +6,15 @@
         {
         }
 
-        public UserDto(string username, string email, string hash, string salt)
+        public UserDto(string username, string email, bool isActive)
         {
             Username = username;
             Email = email;
-            PasswordHash = hash;
-            PasswordSalt = salt;
+            IsActive = isActive;
         }
-
+        
         public string Username { get; set; }
         public string Email { get; set; }
-        public string PasswordHash { get; set; }
-        public string PasswordSalt { get; set; }
+        public bool IsActive { get; set; }
     }
 }

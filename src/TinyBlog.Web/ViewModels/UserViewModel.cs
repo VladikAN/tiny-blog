@@ -1,4 +1,6 @@
-﻿namespace TinyBlog.Web.ViewModels
+using TinyBlog.DataServices.Services.Dto;
+
+namespace TinyBlog.Web.ViewModels
 {
     public class UserViewModel
     {
@@ -6,13 +8,25 @@
         {
         }
 
-        public UserViewModel(string username, string token)
+        public UserViewModel(UserDto dto)
         {
-            Username = username;
-            Token = token;
+            Username = dto.Username;
+            Email = dto.Email;
+            IsActive = dto.IsActive;
         }
-
+        
         public string Username { get; set; }
-        public string Token { get; set; }
+        public string Email { get; set; }
+        public bool IsActive { get; set; }
+
+        public UserDto BuildDto()
+        {
+            return new UserDto
+            {
+                Username = Username,
+                Email = Email,
+                IsActive = IsActive
+            };
+        }
     }
 }

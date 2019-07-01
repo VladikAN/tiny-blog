@@ -6,6 +6,7 @@ import configureStore from './store';
 import Dashboard from './components/dashboard';
 import Post from './components/post';
 import Login from './components/login';
+import User from './components/user';
 import Layout from './components/layout';
 import Menu from './components/shared/menu';
 import ReduxToastr from 'react-redux-toastr';
@@ -31,6 +32,10 @@ ReactDOM.render(
                             path="/admin/post/:id">
                             {({ match } : RouteComponentProps<EditRouteParams>) => (match && <Post entityId={match.params.id} />)}
                         </Route>
+                        <Route
+                            path="/admin/user"
+                            exact={true}
+                            component={User} />
                         <Route
                             path="/admin/layout"
                             exact={true}

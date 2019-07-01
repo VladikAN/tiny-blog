@@ -3,9 +3,9 @@ using TinyBlog.DataServices.Services.Dto;
 
 namespace TinyBlog.DataServices.Extensions
 {
-    public static class LayoutExtensions
+    internal static class LayoutExtensions
     {
-        public static LayoutDto BuildDto(this Layout domain)
+        internal static LayoutDto BuildDto(this Layout domain)
         {
             if (domain == null)
             {
@@ -23,7 +23,7 @@ namespace TinyBlog.DataServices.Extensions
                 domain.FooterContent);
         }
 
-        public static Layout BuildDomain(this LayoutDto dto)
+        internal static Layout BuildDomain(this LayoutDto dto)
         {
             if (dto == null)
             {

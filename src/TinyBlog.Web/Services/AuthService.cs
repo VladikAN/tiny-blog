@@ -30,7 +30,7 @@ namespace TinyBlog.Web.Services
             _logger = logger;
         }
 
-        public async Task<UserViewModel> TryAuthorize(string username, string password)
+        public async Task<AuthResponseViewModel> TryAuthorize(string username, string password)
         {
             var user = await _userDataSerice.GetCredentials(username);
             if (user == null)
@@ -56,13 +56,13 @@ namespace TinyBlog.Web.Services
             if (success)
             {
                 var token = GetToken(user);
-                return new UserViewModel(username, token);
+                return new AuthResponseViewModel(username, token);
             }
             
             return null;
         }
 
-        private string GetToken(UserDto user)
+        private string GetToken(AuthDto auth)
         {
             var key = Encoding.UTF8.GetBytes(_authSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -71,7 +71,7 @@ namespace TinyBlog.Web.Services
                 Audience = _authSettings.Audience,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Username)
+                    new Claim(ClaimTypes.Name, auth.Username)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
