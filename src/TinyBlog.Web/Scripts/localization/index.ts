@@ -68,6 +68,15 @@ interface Strings extends LocalizedStringsMethods {
     layout_save_response_failed: string;
 
     user_page_title: string;
+    user_form_username_title: string;
+    user_form_email_title: string;
+    user_form_edit_action: string;
+    user_form_activate_action: string;
+    user_form_activate_confirm: string;
+    user_form_deactivate_action: string;
+    user_form_deactivate_confirm: string;
+    user_form_delete_action: string;
+    user_form_delete_confirm: string;
     user_operation_title: string;
     user_activate_reponse_success: string;
     user_activate_reponse_failed: string;
@@ -169,6 +178,15 @@ export const strings: Strings = new LocalizedStrings({
         layout_save_response_failed: 'Failed to save site settings',
 
         user_page_title: 'User Management',
+        user_form_username_title: 'Username',
+        user_form_email_title: 'Email',
+        user_form_edit_action: 'Edit user',
+        user_form_activate_action: 'Activate user',
+        user_form_activate_confirm: 'Are you sure want to activate this user? This user will be able to login',
+        user_form_deactivate_action: 'Deactivate user',
+        user_form_deactivate_confirm: 'Are you sure want to deactivate this user? This user will be unable to login',
+        user_form_delete_action: 'Delete user',
+        user_form_delete_confirm: 'Are you sure want to delete this user completly?',
         user_operation_title: 'User',
         user_activate_reponse_success: 'User was activated',
         user_activate_reponse_failed: 'Failed to activate user',

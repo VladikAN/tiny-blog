@@ -249,3 +249,13 @@ a.site-title {
         }
     }
 }
+
+.action {
+    color: $linkColor;
+    font-size: 150%;
+    padding-left: 10px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
