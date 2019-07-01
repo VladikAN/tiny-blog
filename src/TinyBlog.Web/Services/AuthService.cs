@@ -39,15 +39,7 @@ namespace TinyBlog.Web.Services
                 return null;
             }
 
-            var salt = Convert.FromBase64String(user.PasswordSalt);
-            var hashed = Convert.ToBase64String(
-                KeyDerivation.Pbkdf2(
-                    password,
-                    salt,
-                    KeyDerivationPrf.HMACSHA1,
-                    iterationCount: 10000,
-                    numBytesRequested: 256 / 8));
-
+            var hashed = GetHash(password, user.PasswordSalt);
             var success = user.PasswordHash.Equals(hashed, StringComparison.Ordinal);
             _logger.LogInformation(success
                 ? $"Successful autorize attempt with '{username}'."
@@ -60,6 +52,23 @@ namespace TinyBlog.Web.Services
             }
             
             return null;
+        }
+
+        public async Task<bool> UpdateUser(UserViewModel model)
+        {
+            var dto = model.BuildDto();
+
+            var user = await _userDataSerice.Get(dto.Username);
+            if (user == null)
+            {
+                var salt = GetSalt();
+                var hash = GetHash(new Guid().ToString("N"), salt);
+                return await _userDataSerice.Save(dto, hash, salt);
+            }
+            else
+            {
+                return await _userDataSerice.Save(dto);
+            }
         }
 
         private string GetToken(AuthDto auth)
@@ -81,6 +90,17 @@ namespace TinyBlog.Web.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private string GetHash(string password, string salt)
+        {
+            return Convert.ToBase64String(
+                KeyDerivation.Pbkdf2(
+                    password,
+                    Convert.FromBase64String(salt),
+                    KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
         }
 
         private string GetSalt()

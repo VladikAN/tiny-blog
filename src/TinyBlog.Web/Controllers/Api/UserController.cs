@@ -1,8 +1,9 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Services;
+using TinyBlog.Web.Services;
 using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Controllers.Api
@@ -12,10 +13,14 @@ namespace TinyBlog.Web.Controllers.Api
     public class UserController : Controller
     {
         private readonly IUserDataService _userDataService;
+        private readonly IAuthService _authService;
 
-        public UserController(IUserDataService userDataService)
+        public UserController(
+            IUserDataService userDataService,
+            IAuthService authService)
         {
             _userDataService = userDataService;
+            _authService = authService;
         }
 
         [HttpGet, Route("all")]
@@ -24,6 +29,34 @@ namespace TinyBlog.Web.Controllers.Api
             var dto = await _userDataService.GetAll();
             var model = dto.Select(x => new UserViewModel(x)).ToArray();
             return Json(model);
+        }
+
+        [HttpPost, Route("activate")]
+        public async Task<IActionResult> Activate([FromBody] string username)
+        {
+            var result = await _userDataService.SetActivity(username, true);
+            return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
+        }
+
+        [HttpPost, Route("deactivate")]
+        public async Task<IActionResult> Deactivate([FromBody] string username)
+        {
+            var result = await _userDataService.SetActivity(username, false);
+            return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
+        }
+
+        [HttpPost, Route("delete")]
+        public async Task<IActionResult> Delete([FromBody] string username)
+        {
+            var result = await _userDataService.Delete(username);
+            return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
+        }
+
+        [HttpPost, Route("save")]
+        public async Task<IActionResult> Save([FromBody] UserViewModel model)
+        {
+            var result = await _authService.UpdateUser(model);
+            return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
     }
 }

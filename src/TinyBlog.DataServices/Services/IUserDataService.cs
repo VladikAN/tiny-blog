@@ -7,9 +7,9 @@ namespace TinyBlog.DataServices.Services
     {
         Task<AuthDto> GetCredentials(string username);
         Task<UserDto[]> GetAll();
-        Task<bool> Activate(string username);
-        Task<bool> Deactivate(string username);
+        Task<UserDto> Get(string username);
+        Task<bool> SetActivity(string username, bool isActive);
         Task<bool> Delete(string username);
-        Task<bool> Save(UserDto dto);
+        Task<bool> Save(UserDto dto, string hash = null, string salt = null);
     }
 }

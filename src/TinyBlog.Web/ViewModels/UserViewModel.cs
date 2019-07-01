@@ -23,8 +23,8 @@ namespace TinyBlog.Web.ViewModels
         {
             return new UserDto
             {
-                Username = Username,
-                Email = Email,
+                Username = Username.Trim().ToLower(),
+                Email = Email.Trim().ToLower(),
                 IsActive = IsActive
             };
         }
