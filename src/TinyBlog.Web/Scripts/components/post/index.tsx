@@ -128,7 +128,7 @@ export class Post extends React.Component<AllProps, State> {
                     </div>
                     <div className="editor-field">
                         <span>{strings.post_form_fullText}</span>
-                        <MarkdownEditor 
+                        <MarkdownEditor
                             name="fullText"
                             text={fullText}
                             onChange={this.handleMdChange} />

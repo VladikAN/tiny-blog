@@ -63,12 +63,12 @@ export const getToken = () => async (dispatch: Dispatch): Promise<void> => {
 
 export const authCredentials = (username: string, password: string) => async (dispatch: Dispatch): Promise<void> => {
     dispatch(authStartedCreator());
-    
+
     const request = new Request(AuthUrl, {
         method: 'POST',
         body: JSON.stringify({ username: username, password: password })
     });
-    
+
     return await http<{ isSuccess: boolean; payload: AuthResponseModel }>(request).then(response => {
         if (response.isSuccess) {
             setJwtToken(response.payload.token);

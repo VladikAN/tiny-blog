@@ -29,7 +29,7 @@ export class Login extends React.Component<AllProps, State> {
         this.state = { username: '', password: '' };
 
         this.props.getToken();
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }

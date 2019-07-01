@@ -66,6 +66,16 @@ interface Strings extends LocalizedStringsMethods {
     layout_save_response_success: string;
     layout_save_response_failed: string;
 
+    user_operation_title: string;
+    user_activate_reponse_success: string;
+    user_activate_reponse_failed: string;
+    user_deactivate_reponse_success: string;
+    user_deactivate_reponse_failed: string;
+    user_delete_reponse_success: string;
+    user_delete_reponse_failed: string;
+    user_save_reponse_success: string;
+    user_save_reponse_failed: string;
+
     shared_month_jan: string;
     shared_month_feb: string;
     shared_month_mar: string;
@@ -151,9 +161,19 @@ export const strings: Strings = new LocalizedStrings({
         layout_form_footerContent: 'Footer Content (Markdown)',
         layout_form_footerContent_description: 'This content will be placed to the footer block at the end of the every page',
         layout_form_save: 'Save',
-        layout_operation_title: 'Site layout',
-        layout_save_response_success: 'Site layout successfully saved',
-        layout_save_response_failed: 'Failed to save site layout',
+        layout_operation_title: 'Site Settings',
+        layout_save_response_success: 'Site settings successfully saved',
+        layout_save_response_failed: 'Failed to save site settings',
+
+        user_operation_title: 'User',
+        user_activate_reponse_success: 'User was activated',
+        user_activate_reponse_failed: 'Failed to activate user',
+        user_deactivate_reponse_success: 'User was deactivated',
+        user_deactivate_reponse_failed: 'Failed to deactivate user',
+        user_delete_reponse_success: 'User was deleted',
+        user_delete_reponse_failed: 'Failed to delete user',
+        user_save_reponse_success: 'User was saved',
+        user_save_reponse_failed: 'Failed to save user',
 
         shared_month_jan: 'jan',
         shared_month_feb: 'feb',

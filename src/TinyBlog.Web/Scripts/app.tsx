@@ -19,15 +19,15 @@ ReactDOM.render(
                 <div className="dashboard">
                     <Menu />
                     <div className="dashboard__content">
-                        <Route 
-                            path="/admin" 
-                            exact={true} 
+                        <Route
+                            path="/admin"
+                            exact={true}
                             component={Dashboard} />
-                        <Route 
+                        <Route
                             path="/admin/post"
                             exact={true}
                             component={Post} />
-                        <Route 
+                        <Route
                             path="/admin/post/:id">
                             {({ match } : RouteComponentProps<EditRouteParams>) => (match && <Post entityId={match.params.id} />)}
                         </Route>

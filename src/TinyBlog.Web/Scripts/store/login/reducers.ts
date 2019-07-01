@@ -25,7 +25,7 @@ const initialState: AuthState = {
 
 export function loginReducer(state = initialState, action: LoginActionTypes | SharedActionTypes): AuthState {
     switch (action.type) {
-        case REQUEST_FAILED_MESSAGE: 
+        case REQUEST_FAILED_MESSAGE:
             if (action.reason instanceof Response) {
                 if (action.reason.status == 401) {
                     return { ...state, isAuthorized: false, isFetching: false };
@@ -33,7 +33,7 @@ export function loginReducer(state = initialState, action: LoginActionTypes | Sh
             }
 
             return { ...state, isFetching: false };
-            
+
         case GET_TOKEN_STARTED_MESSAGE:
             return { ...state };
 

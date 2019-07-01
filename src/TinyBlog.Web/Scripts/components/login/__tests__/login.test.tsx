@@ -3,13 +3,13 @@ import { shallow } from 'enzyme';
 import { Login, AllProps } from '../index';
 
 describe('<Login />', () => {
-    const defaultProps: AllProps = { 
-        auth: { 
-            isAuthorized: false, 
-            isFetching: false 
-        }, 
-        getToken: jest.fn(), 
-        authCredentials: jest.fn()  };
+    const defaultProps: AllProps = {
+        auth: {
+            isAuthorized: false,
+            isFetching: false
+        },
+        getToken: jest.fn(),
+        authCredentials: jest.fn() };
 
     it('should render child component if authorized', () => {
         const props = { ...defaultProps, auth: {...defaultProps.auth, isAuthorized: true} };
