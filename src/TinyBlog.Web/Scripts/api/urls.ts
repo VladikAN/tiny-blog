@@ -9,3 +9,9 @@ export const DeletePostUrl = '/api/post/delete';
 
 export const GetLayoutUrl = '/api/layout';
 export const SaveLayoutUrl = '/api/layout/save';
+
+export const GetUsersUrl = '/api/user/all';
+export const ActivateUserUrl = '/api/user/activate';
+export const DeactivateUserUrl = '/api/user/deactivate';
+export const DeleteUserUrl = '/api/user/delete';
+export const SaveUserUrl = '/api/user/save';
