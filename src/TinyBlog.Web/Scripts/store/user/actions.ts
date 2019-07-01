@@ -25,7 +25,6 @@ export const SAVE_USER_COMPLETED_MESSAGE = 'SAVE_USER_COMPLETED';
 /* Actions */
 interface GetUsersStartedAction extends Action<typeof GET_USERS_STARTED_MESSAGE> {}
 interface GetUsersCompletedAction extends Action<typeof GET_USERS_COMPLETED_MESSAGE> {
-    isSuccess: boolean;
     users: User[];
 }
 
@@ -77,8 +76,8 @@ export type UserActionTypes =
 const GetUsersStartedCreator = (): GetUsersStartedAction => {
     return { type: GET_USERS_STARTED_MESSAGE };
 };
-const GetUsersCompletedCreator = (isSuccess: boolean, users: User[]): GetUsersCompletedAction => {
-    return { type: GET_USERS_COMPLETED_MESSAGE, isSuccess, users };
+const GetUsersCompletedCreator = (users: User[]): GetUsersCompletedAction => {
+    return { type: GET_USERS_COMPLETED_MESSAGE, users };
 };
 
 const ActivateUserStartedCreator = (username: string): ActivateUserStartedAction => {
@@ -113,8 +112,8 @@ const SaveUserCompletedCreator = (isSuccess: boolean, user: User): SaveUserCompl
 export const getUsers = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(GetUsersStartedCreator());
 
-    return await http<{ isSuccess: boolean; payload: User[] }>(GetUsersUrl).then(response => {
-        dispatch(GetUsersCompletedCreator(response.isSuccess, response.payload));
+    return await http<User[]>(GetUsersUrl).then(response => {
+        dispatch(GetUsersCompletedCreator(response));
     }, reject => {
         dispatch(requestFailedCreator(reject));
         toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);

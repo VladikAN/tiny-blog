@@ -39,9 +39,35 @@ export class Users extends React.Component<AllProps, State> {
             return (<Loading />);
         }
 
+        const lines = this.props.users.map(usr => {
+            const activeClass = usr.isActive
+                ? 'typcn-starburst'
+                : 'typcn-starburst-outline';
+
+            return (
+            <tr>
+                <td className="entities__prop">{usr.username}</td>
+                <td className="entities__prop">{usr.email}</td>
+                <td className="entities__actions">
+                    <span className="typcn typcn-edit"/>
+                    <span className={`typcn ${activeClass}`}/>
+                    <span className="typcn typcn-trash"/>
+                </td>
+            </tr>);
+        });
+
         return (
             <div>
                 <h1>{strings.user_page_title}</h1>
+
+                <table className="entities">
+                    <tr>
+                        <th className="entities__prop">Usermame</th>
+                        <th className="entities__prop">Email</th>
+                        <th className="entities__actions"></th>
+                    </tr>
+                    {lines}
+                </table>
             </div>);
     }
 }

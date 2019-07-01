@@ -64,7 +64,7 @@ class Menu extends React.Component<AllProps, State> {
                 <NavLink
                     className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
                     activeClassName="link-active"
-                    to="/admin/layout"
+                    to="/admin/user"
                     title={strings.dashboard_link_user}>
                     <span className="typcn typcn-user"/>{isOpen && strings.dashboard_link_user}
                 </NavLink>

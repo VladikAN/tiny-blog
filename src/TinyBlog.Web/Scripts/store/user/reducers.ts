@@ -52,10 +52,6 @@ export function userReducer(state = initialState, action: UserActionTypes | Shar
         case GET_USERS_STARTED_MESSAGE:
             return { ...state, isFetching: true };
         case GET_USERS_COMPLETED_MESSAGE:
-            if (!action.isSuccess) {
-                return { ...state, isFetching: false };
-            };
-
             return { ...state, users: action.users, isFetching: false, isFetched: true };
 
         case ACTIVATE_USER_STARTED_MESSAGE:

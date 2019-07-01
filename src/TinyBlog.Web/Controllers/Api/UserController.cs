@@ -18,7 +18,7 @@ namespace TinyBlog.Web.Controllers.Api
             _userDataService = userDataService;
         }
 
-        [HttpGet, Route("/all")]
+        [HttpGet, Route("all")]
         public async Task<IActionResult> Get()
         {
             var dto = await _userDataService.GetAll();
