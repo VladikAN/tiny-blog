@@ -15,6 +15,7 @@
   "repository": "https://github.com/vladikan/tiny-blog.git",
   "license": "ISC",
   "dependencies": {
+    "jwt-decode": "^2.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-localization": "^1.0.13",
@@ -30,6 +31,7 @@
     "@types/enzyme": "^3.9.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "^24.0.13",
+    "@types/jwt-decode": "^2.2.1",
     "@types/query-string": "^6.3.0",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",

@@ -5,6 +5,7 @@ import { Login, AllProps } from '../index';
 describe('<Login />', () => {
     const defaultProps: AllProps = {
         auth: {
+            username: '',
             isAuthorized: false,
             isFetching: false
         },

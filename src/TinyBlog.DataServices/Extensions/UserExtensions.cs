@@ -12,7 +12,7 @@ namespace TinyBlog.DataServices.Extensions
 
         internal static UserDto BuildDto(this User user)
         {
-            return  new UserDto(user.Username, user.Email, user.IsActive);
+            return  new UserDto(user.Username, user.Email, user.IsActive, user.IsSuper);
         }
     }
 }

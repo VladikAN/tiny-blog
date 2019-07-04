@@ -47,7 +47,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<bool> SetActivity(string username, bool isActive)
         {
             var entity = await GetByUsername(username);
-            if (entity == null)
+            if (entity == null|| entity.IsSuper)
             {
                 return false;
             }
@@ -65,7 +65,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<bool> Delete(string username)
         {
             var entity = await GetByUsername(username);
-            if (entity == null)
+            if (entity == null || entity.IsSuper)
             {
                 return false;
             }
@@ -86,10 +86,13 @@ namespace TinyBlog.DataServices.Services
             var isCreate = entity == null;
 
             var definition = Builders<User>.Update
-                .Set(x => x.Username, dto.Username)
-                .Set(x => x.Email, dto.Email)
-                .Set(x => x.IsActive, true)
-                .Set(x => x.IsDeleted, false);
+                .Set(x => x.Email, dto.Email);
+
+            if(isCreate || !entity.IsSuper)
+            {
+                definition
+                    .Set(x => x.Username, dto.Username);
+            }
 
             if (isCreate)
             {
@@ -104,6 +107,8 @@ namespace TinyBlog.DataServices.Services
                 }
 
                 definition
+                    .Set(x => x.IsActive, true)
+                    .Set(x => x.IsDeleted, false)
                     .Set(x => x.PasswordHash, hash)
                     .Set(x => x.PasswordSalt, salt);
             }

@@ -10,10 +10,11 @@ import { getUsers } from '../../store/user/actions';
 import ActionButton from '../shared/action-button';
 
 interface StateProps extends UsersState {
+    username: string;
 }
 
 interface DispatchProps {
-    getUsers: typeof getUsers
+    getUsers: typeof getUsers;
 }
 
 interface OwnProps {
@@ -67,47 +68,59 @@ export class Users extends React.Component<AllProps, State> {
                 ? 'typcn-starburst-outline'
                 : 'typcn-starburst';
             const activityTitle = usr.isActive
-            ? strings.user_form_deactivate_action
-            : strings.user_form_activate_action;
+                ? strings.user_form_deactivate_action
+                : strings.user_form_activate_action;
+            const isLimited = usr.username == this.props.username || usr.isSuper;
 
             return (
-            <tr key={usr.username}>
-                <td className="entities__prop">{usr.username}</td>
-                <td className="entities__prop">{usr.email}</td>
-                <td className="entities__actions">
-                    <ActionButton 
-                        className="typcn typcn-edit"
-                        title={strings.user_form_edit_action}
-                        onClick={() => this.handleEdit(usr.username)} />
-                    <ActionButton 
-                        className={`typcn ${activityClass}`}
-                        title={activityTitle}
-                        onClick={() => this.handleActivity(usr.username)} />
-                    <ActionButton 
-                        className="typcn typcn-trash"
-                        title={strings.user_form_delete_action}
-                        onClick={() => this.handleDelete(usr.username)} />
-                </td>
-            </tr>);
+                <tr key={usr.username}>
+                    <td className="entities__prop">{usr.username}</td>
+                    <td className="entities__prop">{usr.email}</td>
+                    <td className="entities__actions">
+                        <ActionButton
+                            className="typcn typcn-edit"
+                            title={strings.user_form_edit_action}
+                            onClick={() => this.handleEdit(usr.username)} />
+                        {!isLimited && <ActionButton
+                            className={`typcn ${activityClass}`}
+                            title={activityTitle}
+                            onClick={() => this.handleActivity(usr.username)} />}
+                        {!isLimited && <ActionButton
+                            className="typcn typcn-trash"
+                            title={strings.user_form_delete_action}
+                            onClick={() => this.handleDelete(usr.username)} /> }
+                    </td>
+                </tr>);
         });
 
         return (
             <div>
                 <h1>{strings.user_page_title}</h1>
 
+                <div className="controls">
+                    <div className="controls__btn">
+                        <span className="typcn typcn-document-add"></span>&nbsp;{strings.user_form_add_action}
+                    </div>
+                </div>
+
                 <table className="entities">
-                    <tr>
-                        <th className="entities__prop">{strings.user_form_username_title}</th>
-                        <th className="entities__prop">{strings.user_form_email_title}</th>
-                        <th className="entities__actions"></th>
-                    </tr>
-                    {lines}
+                    <thead>
+                        <tr>
+                            <th className="entities__prop">{strings.user_form_username_title}</th>
+                            <th className="entities__prop">{strings.user_form_email_title}</th>
+                            <th className="entities__actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {lines}
+                    </tbody>
                 </table>
             </div>);
     }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
+    username: state.login.username,
     ...state.user
 });
 

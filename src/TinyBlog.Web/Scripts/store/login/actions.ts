@@ -1,5 +1,5 @@
 import { AuthUrl, TokenVerifyUrl } from './../../api/urls';
-import { dropJwtToken, setJwtToken } from './../../api/jwt';
+import { dropJwtToken, setJwtToken, getUsername } from './../../api/jwt';
 import { http } from './../../api/http';
 import { Action, Dispatch } from 'redux';
 import { requestFailedCreator } from '../shared/actions';
@@ -20,11 +20,15 @@ export const AUTH_LOGOUT_MESSAGE = 'AUTH_LOGOUT';
 /* Actions */
 interface GetTokenStartedAction extends Action<typeof GET_TOKEN_STARTED_MESSAGE> {}
 interface GetTokenFailedAction extends Action<typeof GET_TOKEN_FAILED_MESSAGE> {}
-interface GetTokenSuccessAction extends Action<typeof GET_TOKEN_SUCCESS_MESSAGE> {}
+interface GetTokenSuccessAction extends Action<typeof GET_TOKEN_SUCCESS_MESSAGE> {
+    username: string;
+}
 
 interface AuthStartedAction extends Action<typeof AUTH_STARTED_MESSAGE> {}
 interface AuthFailedAction extends Action<typeof AUTH_FAILED_MESSAGE> {}
-interface AuthSuccessAction extends Action<typeof AUTH_SUCCESS_MESSAGE> {}
+interface AuthSuccessAction extends Action<typeof AUTH_SUCCESS_MESSAGE> {
+    username: string;
+}
 
 interface AuthLogoutAction extends Action<typeof AUTH_LOGOUT_MESSAGE> {}
 
@@ -40,11 +44,15 @@ export type LoginActionTypes =
 /* Action Creators */
 const getTokenStartedCreator = (): GetTokenStartedAction => { return { type: GET_TOKEN_STARTED_MESSAGE }; };
 const getTokenFailedCreator = (): GetTokenFailedAction => { return { type: GET_TOKEN_FAILED_MESSAGE }; };
-const getTokenSuccessCreator = (): GetTokenSuccessAction => { return { type: GET_TOKEN_SUCCESS_MESSAGE }; };
+const getTokenSuccessCreator = (username: string): GetTokenSuccessAction => {
+    return { type: GET_TOKEN_SUCCESS_MESSAGE, username: username };
+};
 
 const authStartedCreator = (): AuthStartedAction => { return { type: AUTH_STARTED_MESSAGE }; };
 const authFailedCreator = (): AuthFailedAction => { return { type: AUTH_FAILED_MESSAGE }; };
-const authSuccessCreator = (): AuthSuccessAction => { return { type: AUTH_SUCCESS_MESSAGE }; };
+const authSuccessCreator = (username: string): AuthSuccessAction => {
+    return { type: AUTH_SUCCESS_MESSAGE, username: username };
+};
 
 const authLogoutCreator = (): AuthLogoutAction => { return { type: AUTH_LOGOUT_MESSAGE }; };
 
@@ -57,7 +65,10 @@ export const getToken = () => async (dispatch: Dispatch): Promise<void> => {
     dispatch(getTokenStartedCreator());
 
     return await http(TokenVerifyUrl).then(
-        () => { dispatch(getTokenSuccessCreator()); },
+        () => {
+            const username = getUsername();
+            dispatch(getTokenSuccessCreator(username));
+        },
         () => { dispatch(getTokenFailedCreator()); });
 };
 
@@ -72,7 +83,7 @@ export const authCredentials = (username: string, password: string) => async (di
     return await http<{ isSuccess: boolean; payload: AuthResponseModel }>(request).then(response => {
         if (response.isSuccess) {
             setJwtToken(response.payload.token);
-            dispatch(authSuccessCreator());
+            dispatch(authSuccessCreator(response.payload.username));
         } else {
             dispatch(authFailedCreator());
             toastr.error(strings.login_invalid_creds_title, strings.login_invalid_creds_msg);
