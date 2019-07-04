@@ -52,17 +52,21 @@ namespace TinyBlog.Web.Configuration
             services
                 .AddSingleton(configuration)
                 .AddSingleton<ISiteSettings, SiteSettings>()
-                .AddSingleton<IAuthSettings, AuthSettings>();
+                .AddSingleton<IAuthSettings, AuthSettings>()
+                .AddSingleton<ISmtpSettings, SmtpSettings>();
 
             /* Data Services */
-            services.AddSingleton<IDatabaseSettings, DatabaseSettings>();
-            services.AddTransient<IPostDataService, PostDataService>();
-            services.AddTransient<IUserDataService, UserDataService>();
-            services.AddTransient<ILayoutDataService, LayoutDataService>();
+            services
+                .AddSingleton<IDatabaseSettings, DatabaseSettings>()
+                .AddTransient<IPostDataService, PostDataService>()
+                .AddTransient<IUserDataService, UserDataService>()
+                .AddTransient<ILayoutDataService, LayoutDataService>();
 
             /* Web Services */
-            services.AddTransient<IFeedService, FeedService>();
-            services.AddTransient<IAuthService, AuthService>();
+            services
+                .AddTransient<IFeedService, FeedService>()
+                .AddTransient<IAuthService, AuthService>()
+                .AddTransient<IEmailService, EmailService>();
 
             return services;
         }

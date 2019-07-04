@@ -16,15 +16,18 @@ namespace TinyBlog.Web.Services
 {
     public sealed class AuthService : IAuthService
     {
+        private readonly IEmailService _emailService;
         private readonly IUserDataService _userDataSerice;
         private readonly IAuthSettings _authSettings;
         private readonly ILogger _logger;
 
         public AuthService(
+            IEmailService emailService,
             IUserDataService userDataService,
             IAuthSettings authSettings,
             ILogger<AuthService> logger)
         {
+            _emailService = emailService;
             _userDataSerice = userDataService;
             _authSettings = authSettings;
             _logger = logger;
@@ -61,9 +64,17 @@ namespace TinyBlog.Web.Services
             var user = await _userDataSerice.Get(dto.Username);
             if (user == null)
             {
+                // New user flow
+                var tmpPassword = new Guid().ToString("N").Substring(0, 7);
                 var salt = GetSalt();
-                var hash = GetHash(new Guid().ToString("N"), salt);
-                return await _userDataSerice.Save(dto, hash, salt);
+                var hash = GetHash(tmpPassword, salt);
+                var created = await _userDataSerice.Save(dto, hash, salt);
+                if (created)
+                {
+                    await _emailService.NewUser(dto.Username, dto.Email, tmpPassword);
+                }
+
+                return created;
             }
             else
             {
