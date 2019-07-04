@@ -15,10 +15,11 @@ namespace TinyBlog.Web.Services
 
         public EmailService(
             ISmtpSettings settings,
-            ILayoutDataService _layoutDataService,
+            ILayoutDataService layoutDataService,
             ILogger<EmailService> logger)
         {
             _settings = settings;
+            _layoutDataService = layoutDataService;
             _logger = logger;
         }
 
@@ -35,7 +36,7 @@ namespace TinyBlog.Web.Services
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(_settings.FromEmail));
             message.To.Add(new MailboxAddress(email));
-            message.Subject = "Welcome to administrators";
+            message.Subject = $"Welcome to {siteSettings.Title} administrators";
 
             message.Body = new TextPart("plain")
             {
@@ -62,7 +63,13 @@ Thanks."
 
             using (var client = new SmtpClient())
             {
+                if (_settings.UseSsl)
+                {
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                }
+                
                 client.Connect(_settings.Address, _settings.Port, _settings.UseSsl);
+
                 if (!string.IsNullOrWhiteSpace(_settings.Username) && !string.IsNullOrWhiteSpace(_settings.Password))
                 {
                     client.Authenticate(_settings.Username, _settings.Password);

@@ -65,7 +65,7 @@ namespace TinyBlog.Web.Services
             if (user == null)
             {
                 // New user flow
-                var tmpPassword = new Guid().ToString("N").Substring(0, 7);
+                var tmpPassword = Guid.NewGuid().ToString("N").Substring(0, 7);
                 var salt = GetSalt();
                 var hash = GetHash(tmpPassword, salt);
                 var created = await _userDataSerice.Save(dto, hash, salt);
