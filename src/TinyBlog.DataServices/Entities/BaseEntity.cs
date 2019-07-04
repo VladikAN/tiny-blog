@@ -8,8 +8,5 @@ namespace TinyBlog.DataServices.Entities
     {
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         public ObjectId EntityId { get; set; }
-
-        [BsonElement("isDeleted"), BsonDefaultValue(false)]
-        public bool IsDeleted { get; set; }
     }
 }

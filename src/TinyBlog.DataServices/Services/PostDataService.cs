@@ -27,7 +27,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<PostDto[]> GetAll()
         {
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await DataCollection().FindAsync(pst => !pst.IsDeleted, options);
+            var data = await DataCollection().FindAsync(FilterDefinition<Post>.Empty, options);
             return data.ToList().Select(pst => pst.BuildDto()).ToArray();
         }
 
@@ -35,7 +35,7 @@ namespace TinyBlog.DataServices.Services
         {
             var queryParam = name.Trim().ToLower();
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await DataCollection().FindAsync(pst => !pst.IsDeleted && pst.Tags.Any(tg => tg == queryParam), options);
+            var data = await DataCollection().FindAsync(pst => pst.Tags.Any(tg => tg == queryParam), options);
 
             var result = data.ToList().Select(pst => pst.BuildDto()).ToArray();
             return result;
@@ -44,7 +44,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<PostDto> GetByLinkText(string linkText)
         {
             var queryParam = linkText.Trim().ToLower();
-            var data = await DataCollection().FindAsync(pst => !pst.IsDeleted && pst.LinkText == queryParam);
+            var data = await DataCollection().FindAsync(pst => pst.LinkText == queryParam);
             var post = await data.FirstOrDefaultAsync();
             return post?.BuildDto(includeText: true);
         }
@@ -113,7 +113,7 @@ namespace TinyBlog.DataServices.Services
         private async Task<Post> GetById(string id)
         {
             var queryParam = ObjectId.Parse(id);
-            var data = await DataCollection().FindAsync(pst => !pst.IsDeleted && pst.EntityId == queryParam);
+            var data = await DataCollection().FindAsync(pst => pst.EntityId == queryParam);
             return await data.FirstOrDefaultAsync();
         }
 

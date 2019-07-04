@@ -26,7 +26,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<AuthDto> GetCredentials(string username)
         {
             var queryParam = username.Trim().ToLower();
-            var userQuery = await DataCollection().FindAsync(usr => !usr.IsDeleted && usr.Username == queryParam && usr.IsActive);
+            var userQuery = await DataCollection().FindAsync(usr => usr.Username == queryParam && usr.IsActive);
             var user = await userQuery.FirstOrDefaultAsync();
             return user?.BuildAuthDto();
         }
@@ -34,7 +34,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<UserDto[]> GetAll()
         {
             var options = new FindOptions<User> { Sort = Builders<User>.Sort.Descending(x => x.Username) };
-            var data = await DataCollection().FindAsync(pst => !pst.IsDeleted, options);
+            var data = await DataCollection().FindAsync(FilterDefinition<User>.Empty, options);
             return data.ToList().Select(pst => pst.BuildDto()).ToArray();
         }
 
@@ -70,11 +70,8 @@ namespace TinyBlog.DataServices.Services
                 return false;
             }
 
-            var definition = Builders<User>.Update
-                .Set(x => x.IsDeleted, true);
-
             var options = new UpdateOptions { IsUpsert = false };
-            await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
+            await DataCollection().DeleteOneAsync(pst => pst.EntityId == entity.EntityId);
             _logger.LogInformation($"User '{entity.Username}' was deleted");
 
             return true;
@@ -108,7 +105,6 @@ namespace TinyBlog.DataServices.Services
 
                 definition
                     .Set(x => x.IsActive, true)
-                    .Set(x => x.IsDeleted, false)
                     .Set(x => x.PasswordHash, hash)
                     .Set(x => x.PasswordSalt, salt);
             }
@@ -123,7 +119,7 @@ namespace TinyBlog.DataServices.Services
         private async Task<User> GetByUsername(string username)
         {
             var queryParam = username.Trim().ToLower();
-            var data = await DataCollection().FindAsync(pst => !pst.IsDeleted && pst.Username == queryParam);
+            var data = await DataCollection().FindAsync(pst => pst.Username == queryParam);
             return await data.FirstOrDefaultAsync();
         }
 

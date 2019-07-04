@@ -5,7 +5,6 @@ db.users.update({ username: "admin" }, { $set: {
         passwordHash: "rWt1hG18e/3V6ShmwEHW7UZyXU0f5CtRAVZz4MmwAEA=",
         passwordSalt: "y+56USuj6xTRtTa8ln5AAw==",
         isActive: true,
-        isSuper: true,
-        isDeleted: false
+        isSuper: true
     }
 }, { upsert: true });

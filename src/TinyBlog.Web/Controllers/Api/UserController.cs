@@ -32,23 +32,23 @@ namespace TinyBlog.Web.Controllers.Api
         }
 
         [HttpPost, Route("activate")]
-        public async Task<IActionResult> Activate([FromBody] string username)
+        public async Task<IActionResult> Activate([FromBody] UserViewModel model)
         {
-            var result = await _userDataService.SetActivity(username, true);
+            var result = await _userDataService.SetActivity(model.Username, true);
             return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
 
         [HttpPost, Route("deactivate")]
-        public async Task<IActionResult> Deactivate([FromBody] string username)
+        public async Task<IActionResult> Deactivate([FromBody] UserViewModel model)
         {
-            var result = await _userDataService.SetActivity(username, false);
+            var result = await _userDataService.SetActivity(model.Username, false);
             return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
 
         [HttpPost, Route("delete")]
-        public async Task<IActionResult> Delete([FromBody] string username)
+        public async Task<IActionResult> Delete([FromBody] UserViewModel model)
         {
-            var result = await _userDataService.Delete(username);
+            var result = await _userDataService.Delete(model.Username);
             return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
 

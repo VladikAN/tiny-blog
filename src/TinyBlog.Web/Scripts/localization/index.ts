@@ -71,6 +71,8 @@ interface Strings extends LocalizedStringsMethods {
     user_form_username_title: string;
     user_form_email_title: string;
     user_form_add_action: string;
+    user_form_save_action: string;
+    user_form_cancel_action: string;
     user_form_edit_action: string;
     user_form_activate_action: string;
     user_form_activate_confirm: string;
@@ -182,6 +184,8 @@ export const strings: Strings = new LocalizedStrings({
         user_form_username_title: 'Username',
         user_form_email_title: 'Email',
         user_form_add_action: 'Add user',
+        user_form_save_action: 'Save user',
+        user_form_cancel_action: 'Cancel',
         user_form_edit_action: 'Edit user',
         user_form_activate_action: 'Activate user',
         user_form_activate_confirm: 'Are you sure want to activate this user? This user will be able to login',
