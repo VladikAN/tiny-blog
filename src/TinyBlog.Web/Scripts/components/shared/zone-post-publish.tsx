@@ -27,7 +27,7 @@ export class ZonePostPublish extends React.Component<AllProps> {
         const message = publish
             ? strings.post_zone_publish_confirm
             : strings.post_zone_unpublish_confirm;
-        
+
         if (confirm(message)) {
             this.props.togglePost(this.props.id, publish);
         }

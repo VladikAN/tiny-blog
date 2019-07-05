@@ -2,7 +2,7 @@ import { Thread } from './types';
 import {
     LOAD_THREAD_COMPLETED_MESSAGE,
     LOAD_THREAD_STARTED_MESSAGE,
-    ThreadActionTypes 
+    ThreadActionTypes
 } from './actions';
 import {
     DELETE_POST_COMPLETED_MESSAGE,
@@ -45,7 +45,7 @@ export function threadReducer(state = initialState, action: ThreadActionTypes | 
 
             let isEdit = false;
             let posts = state.posts.map(item => {
-                if (item.id == action.post.id) { 
+                if (item.id == action.post.id) {
                     isEdit = true;
                     return { ...action.post };
                 }
@@ -58,7 +58,7 @@ export function threadReducer(state = initialState, action: ThreadActionTypes | 
             }
 
             return { ...state, posts: posts };
-            
+
         case TOGGLE_POST_COMPLETED_MESSAGE:
             if (!action.isSuccess) {
                 return { ...state };
@@ -70,7 +70,7 @@ export function threadReducer(state = initialState, action: ThreadActionTypes | 
                     return item.id == action.id ? { ...item, isPublished: action.isPublished } : item;
                 })
             };
-            
+
         case DELETE_POST_COMPLETED_MESSAGE:
             if (!action.isSuccess) {
                 return { ...state };

@@ -61,6 +61,13 @@ class Menu extends React.Component<AllProps, State> {
                     title={strings.dashboard_link_layout}>
                     <span className="typcn typcn-spanner"/>{isOpen && strings.dashboard_link_layout}
                 </NavLink>
+                <NavLink
+                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
+                    activeClassName="link-active"
+                    to="/admin/user"
+                    title={strings.dashboard_link_user}>
+                    <span className="typcn typcn-user"/>{isOpen && strings.dashboard_link_user}
+                </NavLink>
                 <a
                     className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
                     title={strings.dashboard_logout}

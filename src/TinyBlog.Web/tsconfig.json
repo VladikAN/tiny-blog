@@ -14,6 +14,7 @@
         "./node_modules/@types"
     ],
     "types": [
+        "jwt-decode",
         "react",
         "react-dom",
         "react-redux",

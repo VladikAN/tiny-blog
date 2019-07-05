@@ -8,8 +8,15 @@ interface Strings extends LocalizedStringsMethods {
     login_invalid_creds_title: string;
     login_invalid_creds_msg: string;
 
+    change_password_label: string;
+    change_password_placeholder: string;
+    change_password_button: string;
+    change_password_operation_title: string;
+    change_password_operation_success: string;
+
     dashboard_toggle: string;
     dashboard_link_posts: string;
+    dashboard_link_user: string;
     dashboard_link_layout: string;
     dashboard_add: string;
     dashboard_logout: string;
@@ -66,6 +73,29 @@ interface Strings extends LocalizedStringsMethods {
     layout_save_response_success: string;
     layout_save_response_failed: string;
 
+    user_page_title: string;
+    user_form_username_title: string;
+    user_form_email_title: string;
+    user_form_add_action: string;
+    user_form_save_action: string;
+    user_form_cancel_action: string;
+    user_form_edit_action: string;
+    user_form_activate_action: string;
+    user_form_activate_confirm: string;
+    user_form_deactivate_action: string;
+    user_form_deactivate_confirm: string;
+    user_form_delete_action: string;
+    user_form_delete_confirm: string;
+    user_operation_title: string;
+    user_activate_reponse_success: string;
+    user_activate_reponse_failed: string;
+    user_deactivate_reponse_success: string;
+    user_deactivate_reponse_failed: string;
+    user_delete_reponse_success: string;
+    user_delete_reponse_failed: string;
+    user_save_reponse_success: string;
+    user_save_reponse_failed: string;
+
     shared_month_jan: string;
     shared_month_feb: string;
     shared_month_mar: string;
@@ -97,8 +127,15 @@ export const strings: Strings = new LocalizedStrings({
         login_invalid_creds_title: 'Login',
         login_invalid_creds_msg: 'username or password is incorrect',
 
+        change_password_label: 'Please enter a new password for your username login.',
+        change_password_placeholder: 'minimum 6 symbols length',
+        change_password_button: 'Change Password',
+        change_password_operation_title: 'Change Password',
+        change_password_operation_success: 'Password was successfully changed',
+
         dashboard_toggle: 'Toggle panel',
         dashboard_link_posts: 'Posts',
+        dashboard_link_user: 'Users',
         dashboard_link_layout: 'Settings',
         dashboard_add: 'Add',
         dashboard_logout: 'Logout',
@@ -151,9 +188,32 @@ export const strings: Strings = new LocalizedStrings({
         layout_form_footerContent: 'Footer Content (Markdown)',
         layout_form_footerContent_description: 'This content will be placed to the footer block at the end of the every page',
         layout_form_save: 'Save',
-        layout_operation_title: 'Site layout',
-        layout_save_response_success: 'Site layout successfully saved',
-        layout_save_response_failed: 'Failed to save site layout',
+        layout_operation_title: 'Site Settings',
+        layout_save_response_success: 'Site settings successfully saved',
+        layout_save_response_failed: 'Failed to save site settings',
+
+        user_page_title: 'User Management',
+        user_form_username_title: 'Username',
+        user_form_email_title: 'Email',
+        user_form_add_action: 'Add user',
+        user_form_save_action: 'Save user',
+        user_form_cancel_action: 'Cancel',
+        user_form_edit_action: 'Edit user',
+        user_form_activate_action: 'Activate user',
+        user_form_activate_confirm: 'Are you sure want to activate this user? This user will be able to login',
+        user_form_deactivate_action: 'Deactivate user',
+        user_form_deactivate_confirm: 'Are you sure want to deactivate this user? This user will be unable to login',
+        user_form_delete_action: 'Delete user',
+        user_form_delete_confirm: 'Are you sure want to delete this user completly?',
+        user_operation_title: 'User',
+        user_activate_reponse_success: 'User was activated',
+        user_activate_reponse_failed: 'Failed to activate user',
+        user_deactivate_reponse_success: 'User was deactivated',
+        user_deactivate_reponse_failed: 'Failed to deactivate user',
+        user_delete_reponse_success: 'User was deleted',
+        user_delete_reponse_failed: 'Failed to delete user',
+        user_save_reponse_success: 'User was saved',
+        user_save_reponse_failed: 'Failed to save user',
 
         shared_month_jan: 'jan',
         shared_month_feb: 'feb',

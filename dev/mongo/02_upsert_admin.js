@@ -4,6 +4,10 @@ db.users.update({ username: "admin" }, { $set: {
         email: "admin@domain.com",
         passwordHash: "rWt1hG18e/3V6ShmwEHW7UZyXU0f5CtRAVZz4MmwAEA=",
         passwordSalt: "y+56USuj6xTRtTa8ln5AAw==",
-        isActive: true
+        isActive: true,
+        isSuper: true,
+        changePassword: {
+            token: '1pnsk7ZoR0+VogyT+XzJxQ=='
+        }
     }
 }, { upsert: true });
