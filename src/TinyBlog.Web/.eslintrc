@@ -16,10 +16,15 @@
         "@typescript-eslint/no-empty-interface": "off",
         "@typescript-eslint/type-annotation-spacing": { "before": "false", "after": "true" },
         "@typescript-eslint/explicit-function-return-type": { "allowExpressions": true },
-        "semi": "off",
         "@typescript-eslint/semi": "warn",
+        "curly": ["error", "all"],
         "no-duplicate-imports": "warn",
+        "no-irregular-whitespace": "warn",
+        "no-mixed-spaces-and-tabs": "warn",
+        "no-multi-spaces": "warn",
         "no-useless-rename": "warn",
+        "no-trailing-spaces": "warn",
+        "semi": "off",
         "quotes": ["warn", "single"]
     },
     "settings": {

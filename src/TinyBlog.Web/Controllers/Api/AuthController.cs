@@ -33,6 +33,22 @@ namespace TinyBlog.Web.Controllers.Api
             return ApiResponseViewModel.Failed();
         }
 
+        [HttpPost, AllowAnonymous, Route("change-password")]
+        public async Task<ApiResponseViewModel> ChangePassword([FromBody] ChangePasswordViewModel model)
+        {
+            if (model != null && ModelState.IsValid)
+            {
+                var success = await _authService.TryChangePassword(model.Username, model.Password, model.Token);
+                if (success)
+                {
+                    return ApiResponseViewModel.Success();
+                }
+            }
+
+            await Task.Delay(100); // Small timeout to prevent password guess
+            return ApiResponseViewModel.Failed();
+        }
+
         [HttpGet, Route("verify")]
         public IActionResult Verify() => Ok();
     }

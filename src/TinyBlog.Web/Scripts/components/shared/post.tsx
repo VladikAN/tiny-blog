@@ -11,7 +11,7 @@ type AllProps = StateProps;
 class Post extends React.Component<AllProps> {
     public render(): React.ReactNode {
         const { title, id, publishedAt, previewText, tags, isPublished } = this.props;
-        
+
         const tagsRender = tags.map<React.ReactNode>(tg => (
             <a
                 key={tg}

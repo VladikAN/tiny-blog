@@ -35,10 +35,10 @@ namespace TinyBlog.Web.ViewModels
             return new PostDto
             {
                 Id = Id,
-                Title = Title,
-                LinkText = LinkText,
-                PreviewText = PreviewText,
-                FullText = FullText,
+                Title = Title.Trim(),
+                LinkText = LinkText.Trim().ToLower(),
+                PreviewText = PreviewText.Trim(),
+                FullText = FullText.Trim(),
                 PublishedAt = PublishedAt,
                 Tags = Tags
                 // IsPublished ignored

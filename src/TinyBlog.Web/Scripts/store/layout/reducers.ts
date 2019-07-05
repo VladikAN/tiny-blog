@@ -6,7 +6,7 @@ import {
     SAVE_LAYOUT_STARTED_MESSAGE,
     SAVE_LAYOUT_COMPLETED_MESSAGE
 } from './actions';
-import { 
+import {
     REQUEST_FAILED_MESSAGE,
     SharedActionTypes
 } from '../shared/actions';
