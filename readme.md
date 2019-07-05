@@ -29,7 +29,7 @@ You can build and run entire application by simple docker-compose command:
 
 Command will build and run the application. Application will be available at [8080](http://localhost:8080/) port.
 
-To access admin page use [/admin](http://localhost:8080/admin) path and *admin* / *admin* user credentials. Remember, this is DEV instance, avoid similar settings for PROD instance.
+To access admin page use [/admin](http://localhost:8080/admin) path and *admin* / *admin* user credentials. Remember, this is DEV instance, strongly recomended to avoid similar settings for PROD instance.
 
 Stop application be this command line:
 
@@ -37,16 +37,17 @@ Stop application be this command line:
 
 ### Configuration
 
-Configuration is possible by using (from lowest priority): appsettings.json file, environment variables or Azure Key Vault.
+Configuration is possible by using one of the following configuration providers: appsettings.json file, environment variables or Azure Key Vault.
 
 # How to deploy
 
 Please provide this value to start application:
-* **ConnectionStrings/Blog** connection string to MongoDB database with read and write rights. Put database name to the same connection string.
-* **Auth/Secret** put your own Base64 string for JWT token signature. At least 256 symbols long.
+* **ConnectionStrings/Blog** connection string to MongoDB database with read and write rights. Put database name to the same value as connection string.
+* **Auth/Secret** put your own Base64 string for JWT token signature. Must be at least 256 symbols long.
+* **Smtp/** settings for email exchange functionality.
 
-After application start you can login as admin by using /admin uri and specify general site settings:
-* **SiteSettings/Title** will be show on web page header and used inside of atom feed.
+After application start you can login as admin role by using /admin uri and specify general site settings:
+* **Title** will be show on web page header and used inside of atom feed.
 * **Description** is used to populate html meta tag for search engines and atom feed metadata.
 * **Uri** is used to populate atom feed metadata. Tthis is your site address or domain.
 * **Author** is used to populate atom feed metadata.
