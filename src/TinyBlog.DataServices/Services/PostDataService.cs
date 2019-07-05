@@ -91,7 +91,7 @@ namespace TinyBlog.DataServices.Services
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
-            _logger.LogInformation($"Post '{entity.LinkText}' has changed publish flag to {publish}");
+            _logger.LogInformation($"Post '{entity.LinkText}' has changed published flag to {publish}");
 
             return true;
         }
@@ -105,7 +105,7 @@ namespace TinyBlog.DataServices.Services
             }
 
             await DataCollection().DeleteOneAsync(pst => pst.EntityId == entity.EntityId);
-            _logger.LogInformation($"Post '{entity.LinkText}' was marked as deleted");
+            _logger.LogInformation($"Post '{entity.LinkText}' was deleted");
 
             return true;
         }

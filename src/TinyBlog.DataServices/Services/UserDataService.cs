@@ -31,6 +31,26 @@ namespace TinyBlog.DataServices.Services
             return user?.BuildAuthDto();
         }
 
+        public async Task<bool> SaveNewCredentials(string username, string hash, string salt)
+        {
+            var entity = await GetByUsername(username);
+            if (entity == null || !entity.IsActive)
+            {
+                return false;
+            }
+
+            var definition = Builders<User>.Update
+                .Set(x => x.PasswordHash, hash)
+                .Set(x => x.PasswordSalt, salt)
+                .Set(x => x.ChangePassword, null);
+
+            var options = new UpdateOptions { IsUpsert = false };
+            await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
+            _logger.LogInformation($"User {username} has changed password");
+
+            return true;
+        }
+
         public async Task<UserDto[]> GetAll()
         {
             var options = new FindOptions<User> { Sort = Builders<User>.Sort.Descending(x => x.Username) };
@@ -57,7 +77,7 @@ namespace TinyBlog.DataServices.Services
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
-            _logger.LogInformation($"User '{entity.Username}' has changed activity flag to {isActive}");
+            _logger.LogInformation($"User {entity.Username} has changed activity flag to {isActive}");
 
             return true;
         }
@@ -72,7 +92,7 @@ namespace TinyBlog.DataServices.Services
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().DeleteOneAsync(pst => pst.EntityId == entity.EntityId);
-            _logger.LogInformation($"User '{entity.Username}' was deleted");
+            _logger.LogInformation($"User {entity.Username} was deleted");
 
             return true;
         }
@@ -87,7 +107,7 @@ namespace TinyBlog.DataServices.Services
 
             if(isCreate || !entity.IsSuper)
             {
-                definition
+                definition = definition
                     .Set(x => x.Username, dto.Username);
             }
 
@@ -103,10 +123,13 @@ namespace TinyBlog.DataServices.Services
                     throw new ArgumentNullException(nameof(salt));
                 }
 
-                definition
+                var changePasswordToken = Guid.NewGuid().ToString("N");
+
+                definition = definition
                     .Set(x => x.IsActive, true)
                     .Set(x => x.PasswordHash, hash)
-                    .Set(x => x.PasswordSalt, salt);
+                    .Set(x => x.PasswordSalt, salt)
+                    .Set(x => x.ChangePassword, new ChangePassword { Token = changePasswordToken });
             }
 
             var options = new UpdateOptions { IsUpsert = true };

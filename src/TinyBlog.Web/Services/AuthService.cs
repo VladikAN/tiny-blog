@@ -38,26 +38,52 @@ namespace TinyBlog.Web.Services
             var user = await _userDataSerice.GetCredentials(username);
             if (user == null)
             {
-                _logger.LogInformation($"Failed authorize attempt with '{username}'. User not found or not active.");
+                _logger.LogInformation($"Failed attempt to authorize with '{username}'. User was not found or not active.");
                 return null;
             }
 
             var hashed = GetHash(password, user.PasswordSalt);
             var success = user.PasswordHash.Equals(hashed, StringComparison.Ordinal);
             _logger.LogInformation(success
-                ? $"Successful autorize attempt with '{username}'."
-                : $"Failed authorize attempt with '{username}'. Wrong password");
+                ? $"Successful attempt to authorize with '{username}'"
+                : $"Failed attempt to authorize with '{username}'. Wrong password");
             
             if (success)
             {
+                if (user.ChangePasswordRequired)
+                {
+                    _logger.LogInformation($"User {username} promted to change his/her password");
+                    return AuthResponseViewModel.ChangePassword(username, user.ChangePasswordToken);
+                }
+
                 var token = GetToken(user);
-                return new AuthResponseViewModel(username, token);
+                return AuthResponseViewModel.Authorized(username, token);
             }
             
             return null;
         }
 
-        public async Task<bool> UpdateUser(UserViewModel model)
+        public async Task<bool> TryChangePassword(string username, string password, string token)
+        {
+            var user = await _userDataSerice.GetCredentials(username);
+            if (user == null)
+            {
+                _logger.LogInformation($"Failed attempt to change password for '{username}'. User was not found or not active.");
+                return false;
+            }
+
+            if (user.ChangePasswordRequired && user.ChangePasswordToken == token)
+            {
+                var salt = GetSalt();
+                var hash = GetHash(password, salt);
+                return await _userDataSerice.SaveNewCredentials(username, hash, salt);
+            }
+
+            _logger.LogInformation($"Requested for password change but it is not allowed for user ${username}");
+            return false;
+        }
+
+        public async Task<bool> SaveUser(UserViewModel model)
         {
             var dto = model.BuildDto();
 
@@ -65,7 +91,7 @@ namespace TinyBlog.Web.Services
             if (user == null)
             {
                 // New user flow
-                var tmpPassword = Guid.NewGuid().ToString("N").Substring(0, 7);
+                var tmpPassword = Guid.NewGuid().ToString("N").Substring(20);
                 var salt = GetSalt();
                 var hash = GetHash(tmpPassword, salt);
                 var created = await _userDataSerice.Save(dto, hash, salt);

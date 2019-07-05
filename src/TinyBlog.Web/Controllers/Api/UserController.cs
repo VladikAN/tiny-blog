@@ -55,7 +55,7 @@ namespace TinyBlog.Web.Controllers.Api
         [HttpPost, Route("save")]
         public async Task<IActionResult> Save([FromBody] UserViewModel model)
         {
-            var result = await _authService.UpdateUser(model);
+            var result = await _authService.SaveUser(model);
             return Json(result ? ApiResponseViewModel.Success() : ApiResponseViewModel.Failed());
         }
     }

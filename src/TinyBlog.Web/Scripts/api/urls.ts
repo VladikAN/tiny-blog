@@ -1,4 +1,5 @@
 export const AuthUrl = '/api/auth';
+export const ChangePasswordUrl = '/api/auth/change-password';
 export const TokenVerifyUrl = '/api/auth/verify';
 
 export const LoadThreadUrl = '/api/post/all';

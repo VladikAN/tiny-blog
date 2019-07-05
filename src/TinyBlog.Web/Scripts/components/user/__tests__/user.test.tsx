@@ -3,7 +3,6 @@ import { AllProps, Users } from '../index';
 import { shallow } from 'enzyme';
 import { User } from '../../../store/user/types';
 import { strings } from '../../../localization';
-import { saveUser } from '../../../store/user/actions';
 
 describe('<User />', () => {
     const simpleUser: User = { username: 'simple-user', email: '@simple', isActive: true };

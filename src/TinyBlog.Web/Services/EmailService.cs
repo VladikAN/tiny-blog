@@ -25,27 +25,24 @@ namespace TinyBlog.Web.Services
 
         public async Task NewUser(string username, string email, string password)
         {
-            if (!_settings.Enabled)
-            {
-                _logger.LogWarning("Smtp client disabled. No messages will be sended");
-                return;
-            }
-
             var siteSettings = await _layoutDataService.Get();
 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(_settings.FromEmail));
             message.To.Add(new MailboxAddress(email));
-            message.Subject = $"Welcome to {siteSettings.Title} administrators";
+            message.Subject = $"Welcome to {siteSettings.Title}";
 
             message.Body = new TextPart("plain")
             {
-                Text = $@"Hello,
+                Text = $@"
+Hello,
 
 You have granted access to {siteSettings.Uri} blog administrators.
 
 Username: {username}
 Password: {password}
+
+This is temporary password. You will be promted to endet new one on first login.
 
 Thanks."
             };

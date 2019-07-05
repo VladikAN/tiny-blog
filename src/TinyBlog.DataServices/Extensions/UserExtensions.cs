@@ -7,7 +7,16 @@ namespace TinyBlog.DataServices.Extensions
     {
         internal static AuthDto BuildAuthDto(this User user)
         {
-            return new AuthDto(user.Username, user.Email, user.PasswordHash, user.PasswordSalt);
+            var changePasswordRequired = user.ChangePassword != null;
+            var changepasswordToken = user.ChangePassword?.Token ?? string.Empty;
+
+            return new AuthDto(
+                user.Username,
+                user.Email,
+                user.PasswordHash,
+                user.PasswordSalt,
+                changePasswordRequired,
+                changepasswordToken);
         }
 
         internal static UserDto BuildDto(this User user)

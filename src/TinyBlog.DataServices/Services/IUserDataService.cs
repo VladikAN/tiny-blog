@@ -6,6 +6,8 @@ namespace TinyBlog.DataServices.Services
     public interface IUserDataService
     {
         Task<AuthDto> GetCredentials(string username);
+        Task<bool> SaveNewCredentials(string username, string hash, string salt);
+
         Task<UserDto[]> GetAll();
         Task<UserDto> Get(string username);
         Task<bool> SetActivity(string username, bool isActive);

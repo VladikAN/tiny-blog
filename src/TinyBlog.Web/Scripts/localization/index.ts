@@ -8,6 +8,12 @@ interface Strings extends LocalizedStringsMethods {
     login_invalid_creds_title: string;
     login_invalid_creds_msg: string;
 
+    change_password_label: string;
+    change_password_placeholder: string;
+    change_password_button: string;
+    change_password_operation_title: string;
+    change_password_operation_success: string;
+
     dashboard_toggle: string;
     dashboard_link_posts: string;
     dashboard_link_user: string;
@@ -120,6 +126,12 @@ export const strings: Strings = new LocalizedStrings({
         login_signIn: 'Sign In',
         login_invalid_creds_title: 'Login',
         login_invalid_creds_msg: 'username or password is incorrect',
+
+        change_password_label: 'Please enter a new password for your username login.',
+        change_password_placeholder: 'minimum 6 symbols length',
+        change_password_button: 'Change Password',
+        change_password_operation_title: 'Change Password',
+        change_password_operation_success: 'Password was successfully changed',
 
         dashboard_toggle: 'Toggle panel',
         dashboard_link_posts: 'Posts',

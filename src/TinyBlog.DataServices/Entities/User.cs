@@ -21,5 +21,8 @@ namespace TinyBlog.DataServices.Entities
 
         [BsonElement("isSuper"), BsonDefaultValue(false)]
         public bool IsSuper { get; set; }
+
+        [BsonElement("changePassword")]
+        public ChangePassword ChangePassword { get; set; }
     }
 }
