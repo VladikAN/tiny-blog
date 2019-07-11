@@ -1,15 +1,14 @@
 ﻿@{
-    var enableGoogleTags = ViewData[nameof(LayoutViewModel.GoogleTagsCode)] != null
-        && ViewData[nameof(LayoutViewModel.GoogleTagsCode)] is string;
+    var googleCode = ViewData[nameof(LayoutViewModel.GoogleTagsCode)] != null
+        ? ViewData[nameof(LayoutViewModel.GoogleTagsCode)] as string
+        : string.Empty;
 
     var isAdmin = ViewData["IsAdmin"] is bool ? (bool)ViewData["IsAdmin"] : false;
 }
 
-@if (!isAdmin && enableGoogleTags)
+@if (!isAdmin && !string.IsNullOrWhiteSpace(googleCode))
 {
-    var code = ViewData[nameof(LayoutViewModel.GoogleTagsCode)] as string;
-
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=@(code)"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=@(googleCode)"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 }

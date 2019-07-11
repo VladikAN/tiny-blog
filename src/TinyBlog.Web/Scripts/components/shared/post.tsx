@@ -25,7 +25,7 @@ class Post extends React.Component<AllProps> {
                     {!isPublished && <span className="typcn typcn-eye-outline" title={strings.shared_post_notPublished}></span>}
                     {title}&nbsp;
                     <NavLink className="link-header" to={`/admin/post/${id}`}>{strings.shared_post_editLink}</NavLink></h2>
-                <div className="thread__post_info">
+                <div className="date-upper">
                     <DateRender date={publishedAt} />
                 </div>
                 <div className="thread__post_preview">
