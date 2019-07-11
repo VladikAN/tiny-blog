@@ -15,7 +15,7 @@ html {
 }
 
 body {
-    background-color: #fafafa;
+    background-color: $backgroundColor;
     color: #818181;
     font-family: "Open Sans",sans-serif;
     font-size: 1rem;
@@ -24,7 +24,12 @@ body {
 
 h1, h2, h3, h4 { color: #222; }
 h1 { font-size: 130%; margin: 10px 0; }
-h2 { font-size: 130%; margin: 10px 0; }
+h2 {
+	font-size: 130%;
+	margin: 10px 0;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+}
 
 button {
     cursor: pointer;
@@ -152,10 +157,11 @@ a.site-title {
     height: 100%;
 
     .content {
+        background-color: $contentBackColor;
         width: $contentWidth;
-        margin: 5rem auto 0;
+        margin: 3rem auto 0;
         flex: 1 0 auto;
-        padding-bottom: 20px;
+        padding: 5px;
     }
 
     .footer {
@@ -175,6 +181,8 @@ a.site-title {
     @media screen and (min-width: 768px) {
         .content {
             width: $desktopContentWidth;
+            margin: 5rem auto 0;
+            padding: 20px;
         }
 
         .footer {
@@ -189,15 +197,15 @@ a.site-title {
     text-decoration: none;
 }
 
+.date-upper {
+    font-size: 80%;
+    color: #666;
+    text-transform: uppercase;
+}
+
 .thread {
     .thread__post {
         margin-bottom: 2rem;
-
-        .thread__post_info {
-            font-size: 80%;
-            color: #666;
-            text-transform: uppercase;
-        }
 
         .thread__post_preview_link {
             margin: 5px 0 0;

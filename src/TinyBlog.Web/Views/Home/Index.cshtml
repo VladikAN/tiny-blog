@@ -11,10 +11,8 @@
                     <a class="link-header" href="@href">
                         <h2>@post.Title</h2>
                     </a>
-                    <div class="thread__post_info">
-                        <span>
-                            @post.PublishedAt.ToString("MMM yyyy")
-                        </span>
+                    <div class="date-upper">
+                        <span>@post.PublishedAt.ToString("MMM yyyy")</span>
                     </div>
                     <div class="thread__post_preview markdown">
                         @Html.Markdown(post.PreviewText)
