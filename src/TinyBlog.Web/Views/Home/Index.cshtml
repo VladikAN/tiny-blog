@@ -1,38 +1,45 @@
 ﻿@model TinyBlog.Web.ViewModels.ThreadViewModel
 
-    <div class="thread">
-        @if (Model.Posts != null && Model.Posts.Length > 0)
+<div class="thread">
+    @if (!string.IsNullOrWhiteSpace(Model.FilterByTag))
+    {
+        <h3>Search by tag: @(Model.FilterByTag)</h3>
+        <p>Found @(Model.Posts.Length) record(s)</p>
+        <a href="/">[ back to home ]</a>
+    }
+
+    @if (Model.Posts != null && Model.Posts.Length > 0)
+    {
+        @foreach (var post in Model.Posts)
         {
-            @foreach (var post in Model.Posts)
-            {
-                var href = Url.Action("post", new { post.LinkText });
+            var href = Url.Action("post", new { post.LinkText });
 
-                <div class="thread__post">
-                    <a class="link-header" href="@href">
-                        <h2>@post.Title</h2>
-                    </a>
-                    <div class="date-upper">
-                        <span>@post.PublishedAt.ToString("MMM yyyy")</span>
-                    </div>
-                    <div class="thread__post_preview markdown">
-                        @Html.Markdown(post.PreviewText)
-                        <a class="thread__post_preview_link" href="@href">read more</a>
-                    </div>
-
-                    @if (post.Tags != null || post.Tags.Length > 0)
-                    {
-                        <div class="tags">
-                            @foreach (var tag in post.Tags)
-                            {
-                                <a href="/tag/@(tag)" title="Tag: @(tag)">@tag</a>
-                            }
-                        </div>
-                    }
+            <div class="thread__post">
+                <a class="link-header" href="@href">
+                    <h2>@post.Title</h2>
+                </a>
+                <div class="date-upper">
+                    <span>@post.PublishedAt.ToString("MMM yyyy")</span>
                 </div>
-            }
+                <div class="thread__post_preview markdown">
+                    @Html.Markdown(post.PreviewText)
+                    <a class="thread__post_preview_link" href="@href">read more</a>
+                </div>
+
+                @if (post.Tags != null || post.Tags.Length > 0)
+                {
+                    <div class="tags">
+                        @foreach (var tag in post.Tags)
+                        {
+                            <a href="/tag/@(tag)" title="Tag: @(tag)">@tag</a>
+                        }
+                    </div>
+                }
+            </div>
         }
-        else
-        {
-            <div class="thread__no-records">No records so far. Please go back later.</div>
-        }
+    }
+    else
+    {
+        <div class="thread__no-records">No records so far. Please go back later.</div>
+    }
 </div>
