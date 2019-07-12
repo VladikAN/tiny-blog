@@ -158,7 +158,7 @@ export const strings: Strings = new LocalizedStrings({
         post_form_previewText: 'Preview Text',
         post_form_fullText: 'Full Text',
         post_form_tags: 'Tags',
-        post_form_tags_description: 'Each tag is separated by single space',
+        post_form_tags_description: 'Each tag is separated by single space. Only letters, numbers and - is allowed',
         post_form_save: 'Save',
         post_operation_title: 'Post',
         post_save_response_success: 'Changes successfully saved',
