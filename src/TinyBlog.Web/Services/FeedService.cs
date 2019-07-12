@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarkdownSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
@@ -9,6 +10,8 @@ namespace TinyBlog.Web.Services
 {
     public class FeedService : IFeedService
     {
+        private static Markdown MarkdownTransformer = new Markdown();
+
         private IPostDataService _postDataService;
         private ILayoutDataService _layoutDataService;
 
@@ -50,7 +53,7 @@ namespace TinyBlog.Web.Services
             {
                 var item = new SyndicationItem(
                     post.Title,
-                    post.PreviewText,
+                    RenderText(post.PreviewText),
                     new Uri(baseUri, post.LinkText),
                     post.LinkText,
                     post.PublishedAt);
@@ -59,6 +62,12 @@ namespace TinyBlog.Web.Services
 
             feed.Items = items;
             return new Atom10FeedFormatter(feed);
+        }
+
+        private string RenderText(string markdown)
+        {
+            var html = MarkdownTransformer.Transform(markdown);
+            return html;
         }
     }
 }
