@@ -7,6 +7,7 @@ using System.Xml;
 using Microsoft.AspNetCore.Diagnostics;
 using System;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace TinyBlog.Web.Configuration
 {
@@ -50,7 +51,8 @@ namespace TinyBlog.Web.Configuration
 
                     using (var sw = new StringWriter())
                     {
-                        using (var xw = XmlWriter.Create(sw))
+                        var settings = new XmlWriterSettings { Encoding = Encoding.UTF8 };
+                        using (var xw = XmlWriter.Create(sw, settings))
                         {
                             feed.WriteTo(xw);
                         }
