@@ -1,13 +1,7 @@
-﻿using TinyBlog.Web.Services;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using System.Xml;
-using Microsoft.AspNetCore.Diagnostics;
 using System;
 using System.Threading.Tasks;
-using System.Text;
 
 namespace TinyBlog.Web.Configuration
 {
@@ -36,32 +30,6 @@ namespace TinyBlog.Web.Configuration
                 });
                 app.UseHsts();
             }
-
-            return app;
-        }
-
-        public static IApplicationBuilder UseAtomFeed(this IApplicationBuilder app)
-        {
-            app.Map("/feed.atom", builder =>
-            {
-                builder.Run(async context =>
-                {
-                    var service = builder.ApplicationServices.GetService(typeof(IFeedService)) as IFeedService;
-                    var feed = await service.BuildFeed();
-
-                    using (var sw = new StringWriter())
-                    {
-                        var settings = new XmlWriterSettings { Encoding = Encoding.UTF8 };
-                        using (var xw = XmlWriter.Create(sw, settings))
-                        {
-                            feed.WriteTo(xw);
-                        }
-
-                        context.Response.Headers["content-type"] = "application/atom+xml;charset=utf-8";
-                        await context.Response.WriteAsync(sw.ToString());
-                    }
-                });
-            });
 
             return app;
         }
