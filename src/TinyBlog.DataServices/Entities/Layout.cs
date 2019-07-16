@@ -2,6 +2,7 @@
 
 namespace TinyBlog.DataServices.Entities
 {
+    [BsonIgnoreExtraElements]
     public class Layout : BaseEntity
     {
         [BsonElement("title")]
