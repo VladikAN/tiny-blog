@@ -1,6 +1,6 @@
 import { Selector, t } from 'testcafe';
-import DataService from '../services/data-service';
-import { UserDomain } from '../services/types';
+import UserService from '../services/user-service';
+import { UserDomain } from '../types/user';
 
 export default class LoginPage {
     public form: Selector;
@@ -8,7 +8,7 @@ export default class LoginPage {
     public inpPassword: Selector;
     public btnSubmit: Selector;
 
-    private dataService: DataService;
+    private dataService: UserService;
 
     public constructor() {
         this.form = Selector('div.login form');
@@ -16,7 +16,7 @@ export default class LoginPage {
         this.inpPassword = this.form.find('input[type=password][name=password]');
         this.btnSubmit = this.form.find('button[type=submit]');
 
-        this.dataService = new DataService();
+        this.dataService = new UserService();
     }
 
     public async IsLoginFormDisplayed(): Promise<void> {
@@ -37,8 +37,8 @@ export default class LoginPage {
             .expect(this.btnSubmit.innerText).eql('Change Password');
     }
 
-    public async UpsertUser(username: string, changePassword: boolean = false, active: boolean = true): Promise<UserDomain> {
-        return await this.dataService.UpsertUser(username, changePassword);
+    public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
+        return await this.dataService.UpsertUser(username, requestPasswordChange);
     }
 
     public async BeforeAll(): Promise<void> {
@@ -46,6 +46,6 @@ export default class LoginPage {
     }
 
     public async AfterAll(): Promise<void> {
-        await Promise.resolve();
+        await this.dataService.CleanupTestRun();
     }
 }
