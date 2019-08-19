@@ -38,7 +38,7 @@ export default class LoginPage {
     }
 
     public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
-        return await this.dataService.UpsertUser(username, requestPasswordChange);
+        return await this.dataService.UpsertUser(username, requestPasswordChange, isActive);
     }
 
     public async BeforeAll(): Promise<void> {

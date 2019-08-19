@@ -7,8 +7,8 @@ const loginPage = new LoginPage();
 const dashboardPage = new DashboardPage();
 
 fixture('Admin login page')
-    .before(async ctx => { await loginPage.BeforeAll(); })
-    .after(async ctx => { await loginPage.AfterAll(); })
+    .before(async () => { await loginPage.BeforeAll(); })
+    .after(async () => { await loginPage.AfterAll(); })
     .page(AdminUri);
 
 test('Page has login, password and submit controls', async () => {
@@ -66,9 +66,40 @@ test('User can login by using new password after completed password change', asy
     await dashboardPage.IsDisplayed();
 });
 
-test('User will quit to login screen after click on Logout button', async t => {
+test('User can login by using known credentials', async t => {
     // Prepare
     const username = 'login-user-3';
+    await loginPage.UpsertUser(username);
+
+    // Test
+    await t
+        .typeText(loginPage.inpUsername, username)
+        .typeText(loginPage.inpPassword, DefaultPassword)
+        .click(loginPage.btnSubmit);
+
+    // Assert
+    await dashboardPage.IsDisplayed();
+});
+
+test('User cannot login by using known credentials because user is inactive', async t => {
+    // Prepare
+    const username = 'login-user-4';
+    await loginPage.UpsertUser(username, false, false);
+
+    // Test
+    await t
+        .typeText(loginPage.inpUsername, username)
+        .typeText(loginPage.inpPassword, DefaultPassword)
+        .click(loginPage.btnSubmit);
+
+    // Assert
+    await loginPage.IsLoginFormDisplayed();
+    await t.expect(Selector('div.toastr.rrt-error').exists).ok();
+});
+
+test('User will quit to login screen after click on Logout button', async t => {
+    // Prepare
+    const username = 'login-user-5';
     await loginPage.UpsertUser(username);
 
     // Test
