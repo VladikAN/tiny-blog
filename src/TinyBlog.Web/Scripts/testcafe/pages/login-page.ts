@@ -8,7 +8,7 @@ export default class LoginPage {
     public inpPassword: Selector;
     public btnSubmit: Selector;
 
-    private dataService: UserService;
+    private userService: UserService;
 
     public constructor() {
         this.form = Selector('div.login form');
@@ -16,7 +16,7 @@ export default class LoginPage {
         this.inpPassword = this.form.find('input[type=password][name=password]');
         this.btnSubmit = this.form.find('button[type=submit]');
 
-        this.dataService = new UserService();
+        this.userService = new UserService();
     }
 
     public async IsLoginFormDisplayed(): Promise<void> {
@@ -38,7 +38,7 @@ export default class LoginPage {
     }
 
     public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
-        return await this.dataService.UpsertUser(username, requestPasswordChange, isActive);
+        return await this.userService.UpsertUser(username, requestPasswordChange, isActive);
     }
 
     public async BeforeAll(): Promise<void> {
@@ -46,6 +46,6 @@ export default class LoginPage {
     }
 
     public async AfterAll(): Promise<void> {
-        await this.dataService.CleanupTestRun();
+        await this.userService.CleanupTestRun();
     }
 }
