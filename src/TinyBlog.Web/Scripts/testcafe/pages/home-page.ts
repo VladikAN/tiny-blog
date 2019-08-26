@@ -6,10 +6,12 @@ export default class HomePage {
     public blkHeader: Selector;
     public spnTitle: Selector;
 
+    public blkContent: Selector;
+    public spnHeader: Selector;
+    public blkThread: Selector;
+
     public blkFooter: Selector;
     public spnFooter: Selector;
-
-    public blkThread: Selector;
 
     private layoutService: LayoutService;
     private initialLayout: LayoutDomain;
@@ -18,10 +20,12 @@ export default class HomePage {
         this.blkHeader = Selector('div.header');
         this.spnTitle = this.blkHeader.find('a.header__body_link');
 
+        this.blkContent = Selector('div.content');
+        this.spnHeader = this.blkContent.find('div.content__header');
+        this.blkThread = this.blkContent.find('div.thread');
+
         this.blkFooter = Selector('div.footer');
         this.spnFooter = this.blkFooter.find('div.footer__body');
-
-        this.blkThread = Selector('div.thread');
 
         this.layoutService = new LayoutService();
     }
@@ -35,6 +39,14 @@ export default class HomePage {
 
     public async SetTitle(title: string): Promise<LayoutDomain> {
         return await this.layoutService.SetTitle(title);
+    }
+
+    public async SetHeaderContent(headerMd: string): Promise<LayoutDomain> {
+        return await this.layoutService.SetHeaderContent(headerMd);
+    }
+
+    public async SetFooterContent(footerMd: string): Promise<LayoutDomain> {
+        return await this.layoutService.SetFooterContent(footerMd);
     }
 
     public async BeforeAll(): Promise<void> {
