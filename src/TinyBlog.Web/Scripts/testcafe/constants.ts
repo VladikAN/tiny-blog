@@ -1,5 +1,6 @@
 export const Host = 'http://localhost:8080/';
 export const AdminUri = `${Host}admin`;
+export const SettingsUri = `${Host}admin/layout`;
 
 export const MongoConnection = 'mongodb://webapp:password@localhost:27017/blog';
 

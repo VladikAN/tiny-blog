@@ -1,6 +1,7 @@
 import { Selector, t } from 'testcafe';
 import UserService from '../services/user-service';
 import { UserDomain } from '../types/user';
+import { DefaultPassword } from '../constants';
 
 export default class LoginPage {
     public form: Selector;
@@ -35,6 +36,19 @@ export default class LoginPage {
             .expect(this.inpPassword.exists).ok()
             .expect(this.btnSubmit.exists).ok()
             .expect(this.btnSubmit.innerText).eql('Change Password');
+    }
+
+    public async LoginAsDefault(): Promise<void> {
+        const username = 'default-admin';
+        await this.UpsertUser(username, false, true);
+        await this.Login(username, DefaultPassword);
+    }
+
+    public async Login(username: string, password: string): Promise<void> {
+        await t
+            .typeText(this.inpUsername, username)
+            .typeText(this.inpPassword, password)
+            .click(this.btnSubmit);
     }
 
     public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
