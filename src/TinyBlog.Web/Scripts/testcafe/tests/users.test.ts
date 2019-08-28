@@ -16,7 +16,7 @@ test('Page has controls and table with users', async () => {
     await usersPage.IsPageDisplayed();
 });
 
-test('User created as inactive by default, saved to database and persist after page refresh', async t => {
+test('User created as active by default, saved to database and persist after page refresh', async t => {
     // Test
     const username = 'create-admin';
     const email = `${username}@${EmailDomain}`;
@@ -24,9 +24,10 @@ test('User created as inactive by default, saved to database and persist after p
     await t.navigateTo(UsersUri);
 
     // Assert
-    const user = await usersPage.Get(email);
+    const user = await usersPage.GetFromDb(email);
     await t
         .expect(user.username).eql(username)
         .expect(user.email).eql(email)
-        .expect(user.isActive).eql(false);
+        .expect(user.isActive).eql(true);
+    await usersPage.IsUserOnPage(user);
 });

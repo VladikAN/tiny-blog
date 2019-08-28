@@ -1,8 +1,6 @@
 import * as mongoose from 'mongoose';
 import { User, UserDomain } from '../types/user';
-import { MongoConnection, DefaultPasswordHash, DefaultPasswordSalt } from '../constants';
-
-const emailDomain = 'testcafe.com';
+import { MongoConnection, DefaultPasswordHash, DefaultPasswordSalt, EmailDomain } from '../constants';
 
 export default class UserService {
     public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
@@ -12,7 +10,7 @@ export default class UserService {
         record = record != null ? record : new User();
 
         record.username = username;
-        record.email = `${username}@${emailDomain}`;
+        record.email = `${username}@${EmailDomain}`;
         record.passwordHash = DefaultPasswordHash;
         record.passwordSalt = DefaultPasswordSalt;
         record.isActive = isActive;
@@ -33,7 +31,7 @@ export default class UserService {
 
     public async CleanupTestRun(): Promise<void> {
         mongoose.connect(MongoConnection, { useNewUrlParser: true });
-        await User.deleteMany({ email: { $regex: emailDomain, $options: 'i' } });
+        await User.deleteMany({ email: { $regex: EmailDomain, $options: 'i' } });
         mongoose.disconnect();
     }
 }

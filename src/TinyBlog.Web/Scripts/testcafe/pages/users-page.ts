@@ -37,12 +37,19 @@ export default class UsersPage {
     public async IsUserOnPage(user: UserDomain): Promise<void> {
         const count = await this.blkUsers.count;
         for (var _i = 0; _i < count; _i++) {
-            //const username = this.blkUsers.nth(_i).find('td').nth(0);
-            //const email = this.blkUsers.nth(_i).find('td').nth(1);
+            const entries = this.blkUsers.nth(_i).find('td');
+            const username = await entries.nth(0).innerText;
+            const email = await entries.nth(1).innerText;
+            if (username == user.username && email == user.email) {
+                await t.expect(true).ok();
+                return;
+            }
         }
+
+        await t.expect(true).notOk('User was not found on page');
     }
 
-    public async Get(email: string): Promise<UserDomain> {
+    public async GetFromDb(email: string): Promise<UserDomain> {
         return await this.userService.Get(email);
     }
 
