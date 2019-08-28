@@ -24,6 +24,13 @@ export default class UserService {
         return user;
     }
 
+    public async Get(email: string): Promise<UserDomain> {
+        mongoose.connect(MongoConnection, { useNewUrlParser: true });
+        const user = await User.findOne({ email: email });
+        mongoose.disconnect();
+        return user;
+    }
+
     public async CleanupTestRun(): Promise<void> {
         mongoose.connect(MongoConnection, { useNewUrlParser: true });
         await User.deleteMany({ email: { $regex: emailDomain, $options: 'i' } });

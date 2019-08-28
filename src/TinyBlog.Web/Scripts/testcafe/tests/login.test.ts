@@ -13,7 +13,7 @@ fixture('Admin login page')
 
 test('Page has login, password and submit controls', async () => {
     // Assert
-    await loginPage.IsLoginFormDisplayed();
+    await loginPage.IsPageDisplayed();
 });
 
 test('Try invalid credentials and click submit. Should stay on page and see error', async t => {
@@ -21,7 +21,7 @@ test('Try invalid credentials and click submit. Should stay on page and see erro
     await loginPage.Login('fake-username', 'fake-password');
 
     // Assert
-    await loginPage.IsLoginFormDisplayed();
+    await loginPage.IsPageDisplayed();
     await t.expect(Selector('div.toastr.rrt-error').exists).ok();
 });
 
@@ -76,7 +76,7 @@ test('User cannot login by using known credentials because user is inactive', as
     await loginPage.Login(username, DefaultPassword);
 
     // Assert
-    await loginPage.IsLoginFormDisplayed();
+    await loginPage.IsPageDisplayed();
     await t.expect(Selector('div.toastr.rrt-error').exists).ok();
 });
 
@@ -92,5 +92,5 @@ test('User will quit to login screen after click on Logout button', async t => {
         .click(dashboardPage.lnkLogout);
 
     // Assert
-    await loginPage.IsLoginFormDisplayed();
+    await loginPage.IsPageDisplayed();
 });

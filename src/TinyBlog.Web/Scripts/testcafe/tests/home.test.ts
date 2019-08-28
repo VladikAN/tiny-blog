@@ -10,7 +10,7 @@ fixture('Home page')
 
 test('Page has header, footer and thread block', async () => {
     // Assert
-    await homePage.IsLoginFormDisplayed();
+    await homePage.IsPageDisplayed();
 });
 
 test('Page title reflects to value from database', async t => {

@@ -5,7 +5,7 @@ import SettingsPage from '../pages/settings-page';
 const loginPage = new LoginPage();
 const settingsPage = new SettingsPage();
 
-fixture('Settings page')
+fixture('Admin settings page')
     .before(async () => { await settingsPage.BeforeAll(); })
     .after(async () => { await settingsPage.AfterAll(); })
     .beforeEach(async() => { await loginPage.LoginAsDefault(); })
@@ -13,7 +13,7 @@ fixture('Settings page')
 
 test('Page has login, password and submit controls', async () => {
     // Assert
-    await settingsPage.IsSettingsPageDisplayed();
+    await settingsPage.IsPageDisplayed();
 });
 
 test('Title changes reflects database record and stays on page after refresh', async t => {
@@ -138,7 +138,7 @@ test('Footer changes reflects database record and stays on page after refresh', 
 
 test('Header MD changes reflects on preview window', async t => {
     // Test
-    const markdown = `[link](domain.com) **header**`;
+    const markdown = '[link](domain.com) **header**';
     await t
         .typeText(settingsPage.inpHeader, markdown, { replace: true })
         .click(settingsPage.btnSave)
@@ -153,7 +153,7 @@ test('Header MD changes reflects on preview window', async t => {
 
 test('Footer MD changes reflects on preview window', async t => {
     // Test
-    const markdown = `[link](domain.com) **footer**`;
+    const markdown = '[link](domain.com) **footer**';
     await t
         .typeText(settingsPage.inpFooter, markdown, { replace: true })
         .click(settingsPage.btnSave)

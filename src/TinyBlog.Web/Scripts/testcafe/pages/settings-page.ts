@@ -34,7 +34,7 @@ export default class SettingsPage {
         this.layoutService = new LayoutService();
     }
 
-    public async IsSettingsPageDisplayed(): Promise<void> {
+    public async IsPageDisplayed(): Promise<void> {
         await t
             .expect(this.inpTitle.exists).ok()
             .expect(this.inpDescription.exists).ok()

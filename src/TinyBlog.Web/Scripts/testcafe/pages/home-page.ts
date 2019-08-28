@@ -30,7 +30,7 @@ export default class HomePage {
         this.layoutService = new LayoutService();
     }
 
-    public async IsLoginFormDisplayed(): Promise<void> {
+    public async IsPageDisplayed(): Promise<void> {
         await t
             .expect(this.blkHeader.exists).ok()
             .expect(this.blkFooter.exists).ok()

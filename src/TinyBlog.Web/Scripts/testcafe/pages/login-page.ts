@@ -20,7 +20,7 @@ export default class LoginPage {
         this.userService = new UserService();
     }
 
-    public async IsLoginFormDisplayed(): Promise<void> {
+    public async IsPageDisplayed(): Promise<void> {
         await t
             .expect(this.form.exists).ok()
             .expect(this.inpUsername.exists).ok()
