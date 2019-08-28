@@ -69,6 +69,6 @@ export default class UsersPage {
     }
 
     public async AfterAll(): Promise<void> {
-        await Promise.resolve();
+        await this.userService.CleanupTestRun();
     }
 }
