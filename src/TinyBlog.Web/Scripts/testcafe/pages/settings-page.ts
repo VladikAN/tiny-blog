@@ -10,7 +10,9 @@ export default class SettingsPage {
     public inpLanguage: Selector;
     public inpGoogleTagsCode: Selector;
     public inpHeader: Selector;
+    public prwHeader: Selector;
     public inpFooter: Selector;
+    public prwFooter: Selector;
     public btnSave: Selector;
 
     private layoutService: LayoutService;
@@ -24,7 +26,9 @@ export default class SettingsPage {
         this.inpLanguage = Selector('input[name="language"]');
         this.inpGoogleTagsCode = Selector('input[name="googleTagsCode"]');
         this.inpHeader = Selector('textarea[name="headerContent"]');
+        this.prwHeader = Selector('div.md-editor div.markdown').nth(0);
         this.inpFooter = Selector('textarea[name="footerContent"]');
+        this.prwFooter = Selector('div.md-editor div.markdown').nth(1);
         this.btnSave = Selector('button[type="submit"]');
 
         this.layoutService = new LayoutService();
@@ -39,7 +43,13 @@ export default class SettingsPage {
             .expect(this.inpLanguage.exists).ok()
             .expect(this.inpGoogleTagsCode.exists).ok()
             .expect(this.inpHeader.exists).ok()
-            .expect(this.inpFooter.exists).ok();
+            .expect(this.prwHeader.exists).ok()
+            .expect(this.inpFooter.exists).ok()
+            .expect(this.prwFooter.exists).ok();
+    }
+
+    public async GetSettingsFromDb(): Promise<LayoutDomain> {
+        return await this.layoutService.Get();
     }
 
     public async BeforeAll(): Promise<void> {
