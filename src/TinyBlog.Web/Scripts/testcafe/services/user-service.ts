@@ -16,7 +16,8 @@ export default class UserService {
         record.isActive = isActive;
         record.changePassword = requestPasswordChange ? { token: '1pnsk7ZoR0+VogyT+XzJxQ==' } : null;
 
-        const user = await User.updateOne({ username: username }, record, { upsert: true });
+        await User.updateOne({ username: username }, record, { upsert: true });
+        const user = await User.findOne({ username: username });
         mongoose.disconnect();
 
         return user;
