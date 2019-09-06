@@ -6,6 +6,7 @@ export const UsersUri = `${Host}admin/user`;
 export const MongoConnection = 'mongodb://webapp:password@localhost:27017/blog';
 
 export const EmailDomain = 'testcafe.com';
+export const PostLinkPrefix = 'tc-tmp-run-';
 
 export const DefaultPassword = 'admin';
 export const DefaultPasswordHash = 'rWt1hG18e/3V6ShmwEHW7UZyXU0f5CtRAVZz4MmwAEA=';
