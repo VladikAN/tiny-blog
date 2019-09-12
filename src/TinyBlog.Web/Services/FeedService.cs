@@ -54,7 +54,7 @@ namespace TinyBlog.Web.Services
                 var item = new SyndicationItem(
                     post.Title,
                     RenderText(post.PreviewText),
-                    new Uri(baseUri, post.LinkText),
+                    new Uri(baseUri, $"post/{post.LinkText}"),
                     post.LinkText,
                     post.PublishedAt);
                 items.Add(item);
