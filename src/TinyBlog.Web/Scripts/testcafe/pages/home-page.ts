@@ -1,6 +1,8 @@
 import { Selector, t } from 'testcafe';
 import LayoutService from '../services/layout-service';
 import { LayoutDomain } from '../types/layout';
+import PostService from '../services/post-service';
+import { PostDomain } from '../types/post';
 
 export default class HomePage {
     public blkHeader: Selector;
@@ -14,6 +16,7 @@ export default class HomePage {
     public spnFooter: Selector;
 
     private layoutService: LayoutService;
+    private postService: PostService;
     private initialLayout: LayoutDomain;
 
     public constructor() {
@@ -22,12 +25,13 @@ export default class HomePage {
 
         this.blkContent = Selector('div.content');
         this.spnHeader = this.blkContent.find('div.content__header');
-        this.blkThread = this.blkContent.find('div.thread');
+        this.blkThread = this.blkContent.find('div.thread div.thread__post');
 
         this.blkFooter = Selector('div.footer');
         this.spnFooter = this.blkFooter.find('div.footer__body');
 
         this.layoutService = new LayoutService();
+        this.postService = new PostService();
     }
 
     public async IsPageDisplayed(): Promise<void> {
@@ -55,5 +59,29 @@ export default class HomePage {
 
     public async AfterAll(): Promise<void> {
         await this.layoutService.Save(this.initialLayout);
+        await this.postService.CleanupTestRun();
+    }
+
+    public async UpsertPost(title: string, previewText: string, fullText, isPublished: boolean, tags: string[]): Promise<PostDomain> {
+        return await this.postService.UpsertPost(title, previewText, fullText, isPublished, tags);
+    }
+
+    public async IsPostOnPage(post: PostDomain): Promise<void> {
+        const onPage = await this.FindPostOnPage(post.title);
+        await t.expect(onPage.exists).ok();
+    }
+
+    private async FindPostOnPage(title: string): Promise<Selector> {
+        const count = await this.blkThread.count;
+        for (var _i = 0; _i < count; _i++) {
+            const entries = this.blkThread.nth(_i).find('.link-header h2');
+            const postTitle = await entries.nth(0).innerText;
+
+            if (title == postTitle) {
+                return this.blkThread.nth(_i);
+            }
+        }
+
+        return null;
     }
 }
