@@ -1,7 +1,20 @@
 import * as mongoose from 'mongoose';
-import { UserDomain } from './types';
 
-export const UserSchema: mongoose.Schema = new mongoose.Schema({
+export interface UserDomain extends mongoose.Document {
+    username: string;
+    email: string;
+    passwordHash: string;
+    passwordSalt: string;
+    isActive: boolean;
+    isSuper: boolean;
+    changePassword: ChangePassword;
+}
+
+interface ChangePassword {
+    token: string;
+}
+
+const UserSchema: mongoose.Schema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },

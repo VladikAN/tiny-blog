@@ -1,6 +1,7 @@
 import { Selector, t } from 'testcafe';
-import DataService from '../services/data-service';
-import { UserDomain } from '../services/types';
+import UserService from '../services/user-service';
+import { UserDomain } from '../types/user';
+import { DefaultPassword } from '../constants';
 
 export default class LoginPage {
     public form: Selector;
@@ -8,7 +9,7 @@ export default class LoginPage {
     public inpPassword: Selector;
     public btnSubmit: Selector;
 
-    private dataService: DataService;
+    private userService: UserService;
 
     public constructor() {
         this.form = Selector('div.login form');
@@ -16,10 +17,10 @@ export default class LoginPage {
         this.inpPassword = this.form.find('input[type=password][name=password]');
         this.btnSubmit = this.form.find('button[type=submit]');
 
-        this.dataService = new DataService();
+        this.userService = new UserService();
     }
 
-    public async IsLoginFormDisplayed(): Promise<void> {
+    public async IsPageDisplayed(): Promise<void> {
         await t
             .expect(this.form.exists).ok()
             .expect(this.inpUsername.exists).ok()
@@ -37,8 +38,21 @@ export default class LoginPage {
             .expect(this.btnSubmit.innerText).eql('Change Password');
     }
 
-    public async UpsertUser(username: string, changePassword: boolean = false, active: boolean = true): Promise<UserDomain> {
-        return await this.dataService.UpsertUser(username, changePassword);
+    public async LoginAsDefault(): Promise<void> {
+        const username = 'default-admin';
+        await this.UpsertUserToDB(username, false, true);
+        await this.Login(username, DefaultPassword);
+    }
+
+    public async Login(username: string, password: string): Promise<void> {
+        await t
+            .typeText(this.inpUsername, username)
+            .typeText(this.inpPassword, password)
+            .click(this.btnSubmit);
+    }
+
+    public async UpsertUserToDB(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
+        return await this.userService.UpsertUser(username, requestPasswordChange, isActive);
     }
 
     public async BeforeAll(): Promise<void> {
@@ -46,6 +60,6 @@ export default class LoginPage {
     }
 
     public async AfterAll(): Promise<void> {
-        await Promise.resolve();
+        await this.userService.CleanupTestRun();
     }
 }
