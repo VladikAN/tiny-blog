@@ -10,10 +10,15 @@
     "include": [
         "./Scripts/**/*"
     ],
+    "exclude": [
+        "**/node_modules/**",
+        "**/testcafe/**",
+    ],
     "typeRoots": [
         "./node_modules/@types"
     ],
     "types": [
+        "jwt-decode",
         "react",
         "react-dom",
         "react-redux",
@@ -22,6 +27,7 @@
         "query-string",
         "jest",
         "enzyme",
-        "enzyme-adapter-react-16"
+        "enzyme-adapter-react-16",
+        "mongoose"
     ]
 }

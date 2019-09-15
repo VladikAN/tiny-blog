@@ -73,7 +73,7 @@ namespace TinyBlog.Web.Controllers
                 return NotFound();
             }
 
-            var model = new ThreadViewModel(posts);
+            var model = new ThreadViewModel(posts, name);
             return View(nameof(Index), model);
         }
     }

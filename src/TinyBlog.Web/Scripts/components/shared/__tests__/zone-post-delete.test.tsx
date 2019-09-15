@@ -9,7 +9,7 @@ describe('<ZonePostDelete />', () => {
         confirmMock = jest.fn();
         window.confirm = confirmMock;
     });
-    
+
     const defaultProps: AllProps = { id: '1', deletePost: jest.fn() };
 
     it ('should render description and action button for delete zone', () => {

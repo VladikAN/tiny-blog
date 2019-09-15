@@ -6,6 +6,8 @@
 
 <h2>@Model.Title</h2>
 
+<span class="date-upper">@Model.PublishedAt.ToString("MMM yyyy")</span>
+
 <div class="markdown">
     @Html.Markdown(Model.FullText)
 </div>

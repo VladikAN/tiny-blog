@@ -27,7 +27,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<PostDto[]> GetAll()
         {
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await PostCollection().FindAsync(pst => !pst.IsDeleted, options);
+            var data = await DataCollection().FindAsync(FilterDefinition<Post>.Empty, options);
             return data.ToList().Select(pst => pst.BuildDto()).ToArray();
         }
 
@@ -35,7 +35,7 @@ namespace TinyBlog.DataServices.Services
         {
             var queryParam = name.Trim().ToLower();
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await PostCollection().FindAsync(pst => !pst.IsDeleted && pst.Tags.Any(tg => tg == queryParam), options);
+            var data = await DataCollection().FindAsync(pst => pst.Tags.Any(tg => tg == queryParam), options);
 
             var result = data.ToList().Select(pst => pst.BuildDto()).ToArray();
             return result;
@@ -44,7 +44,7 @@ namespace TinyBlog.DataServices.Services
         public async Task<PostDto> GetByLinkText(string linkText)
         {
             var queryParam = linkText.Trim().ToLower();
-            var data = await PostCollection().FindAsync(pst => !pst.IsDeleted && pst.LinkText == queryParam);
+            var data = await DataCollection().FindAsync(pst => pst.LinkText == queryParam);
             var post = await data.FirstOrDefaultAsync();
             return post?.BuildDto(includeText: true);
         }
@@ -57,81 +57,66 @@ namespace TinyBlog.DataServices.Services
 
         public async Task<string> Upsert(PostDto post)
         {
-            try
+            var domain = post.BuildDomain();
+            var definition = Builders<Post>.Update
+                .Set(x => x.Title, domain.Title)
+                .Set(x => x.LinkText, domain.LinkText)
+                .Set(x => x.PreviewText, domain.PreviewText)
+                .Set(x => x.FullText, domain.FullText)
+                .Set(x => x.PublishedAt, domain.IsPublished ? domain.PublishedAt : DateTime.UtcNow);
+
+            if (domain.Tags != null && domain.Tags.Length > 0)
             {
-                var domain = post.BuildDomain();
-                var definition = Builders<Post>.Update
-                    .Set(x => x.Title, domain.Title)
-                    .Set(x => x.LinkText, domain.LinkText)
-                    .Set(x => x.PreviewText, domain.PreviewText)
-                    .Set(x => x.FullText, domain.FullText)
-                    .Set(x => x.PublishedAt, domain.IsPublished ? domain.PublishedAt : DateTime.UtcNow);
-
-                if (domain.Tags != null && domain.Tags.Length > 0)
-                {
-                    definition = definition.Set(x => x.Tags, domain.Tags);
-                }
-
-                var options = new UpdateOptions { IsUpsert = true };
-                var result = await PostCollection().UpdateOneAsync(pst => pst.EntityId == domain.EntityId, definition, options);
-                _logger.LogInformation($"Post '{post.LinkText}' was saved");
-
-                return domain.EntityId.ToString();
+                definition = definition.Set(x => x.Tags, domain.Tags);
             }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message);
-                return null;
-            }
+
+            var options = new UpdateOptions { IsUpsert = true };
+            var result = await DataCollection().UpdateOneAsync(pst => pst.EntityId == domain.EntityId, definition, options);
+            _logger.LogInformation($"Post '{post.LinkText}' was saved");
+
+            return domain.EntityId.ToString();
         }
 
         public async Task<bool> TogglePublish(string id, bool publish)
         {
-            try
+            var entity = await GetById(id);
+            if (entity == null)
             {
-                var entity = await GetById(id);
-
-                var definition = Builders<Post>.Update
-                    .Set(x => x.IsPublished, publish)
-                    .Set(x => x.PublishedAt, publish ? DateTime.UtcNow : entity.PublishedAt);
-
-                var options = new UpdateOptions { IsUpsert = false };
-                await PostCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
-                _logger.LogInformation($"Post '{entity.LinkText}' has changed publish flag to {publish}");
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message);
                 return false;
             }
+
+            var definition = Builders<Post>.Update
+                .Set(x => x.IsPublished, publish)
+                .Set(x => x.PublishedAt, publish ? DateTime.UtcNow : entity.PublishedAt);
+
+            var options = new UpdateOptions { IsUpsert = false };
+            await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
+            _logger.LogInformation($"Post '{entity.LinkText}' has changed published flag to {publish}");
+
+            return true;
         }
 
         public async Task<bool> Delete(string id)
         {
-            try
+            var entity = await GetById(id);
+            if (entity == null)
             {
-                var entity = await GetById(id);
-                await PostCollection().DeleteOneAsync(pst => pst.EntityId == entity.EntityId);
-                _logger.LogInformation($"Post '{entity.LinkText}' was marked as deleted");
-
-                return true;
-            }
-            catch(Exception e)
-            {
-                _logger.LogError(e, e.Message);
                 return false;
             }
+
+            await DataCollection().DeleteOneAsync(pst => pst.EntityId == entity.EntityId);
+            _logger.LogInformation($"Post '{entity.LinkText}' was deleted");
+
+            return true;
         }
 
         private async Task<Post> GetById(string id)
         {
             var queryParam = ObjectId.Parse(id);
-            var data = await PostCollection().FindAsync(pst => !pst.IsDeleted && pst.EntityId == queryParam);
+            var data = await DataCollection().FindAsync(pst => pst.EntityId == queryParam);
             return await data.FirstOrDefaultAsync();
         }
 
-        private IMongoCollection<Post> PostCollection() => Repository.GetCollection<Post>(CollectionName);
+        private IMongoCollection<Post> DataCollection() => Repository.GetCollection<Post>(CollectionName);
     }
 }

@@ -9,7 +9,7 @@ describe('<ZonePostPublish />', () => {
         confirmMock = jest.fn();
         window.confirm = confirmMock;
     });
-    
+
     const defaultPublished: AllProps = { id: '1', isPublished: true, togglePost: jest.fn() };
     const defaultUnpublished: AllProps = { id: '1', isPublished: false, togglePost: jest.fn() };
 

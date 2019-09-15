@@ -2,6 +2,7 @@
 
 namespace TinyBlog.DataServices.Entities
 {
+    [BsonIgnoreExtraElements]
     public class User : BaseEntity
     {
         [BsonElement("username")]
@@ -18,5 +19,11 @@ namespace TinyBlog.DataServices.Entities
 
         [BsonElement("isActive")]
         public bool IsActive { get; set; }
+
+        [BsonElement("isSuper"), BsonDefaultValue(false)]
+        public bool IsSuper { get; set; }
+
+        [BsonElement("changePassword")]
+        public ChangePassword ChangePassword { get; set; }
     }
 }

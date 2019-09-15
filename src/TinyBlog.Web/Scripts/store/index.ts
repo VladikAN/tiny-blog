@@ -7,12 +7,14 @@ import { threadReducer } from './thread/reducers';
 import { postReducer } from './post/reducers';
 import { loginReducer } from './login/reducers';
 import { layoutReducer } from './layout/reducers';
+import { userReducer } from './user/reducers';
 
 const rootReducer = combineReducers({
     thread: threadReducer,
     post: postReducer,
     login: loginReducer,
     layout: layoutReducer,
+    user: userReducer,
     toastr: toastrReducer
 });
 

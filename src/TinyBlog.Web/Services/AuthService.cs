@@ -16,53 +16,99 @@ namespace TinyBlog.Web.Services
 {
     public sealed class AuthService : IAuthService
     {
+        private readonly IEmailService _emailService;
         private readonly IUserDataService _userDataSerice;
         private readonly IAuthSettings _authSettings;
         private readonly ILogger _logger;
 
         public AuthService(
+            IEmailService emailService,
             IUserDataService userDataService,
             IAuthSettings authSettings,
             ILogger<AuthService> logger)
         {
+            _emailService = emailService;
             _userDataSerice = userDataService;
             _authSettings = authSettings;
             _logger = logger;
         }
 
-        public async Task<UserViewModel> TryAuthorize(string username, string password)
+        public async Task<AuthResponseViewModel> TryAuthorize(string username, string password)
         {
             var user = await _userDataSerice.GetCredentials(username);
             if (user == null)
             {
-                _logger.LogInformation($"Failed authorize attempt with '{username}'. User not found or not active.");
+                _logger.LogInformation($"Failed attempt to authorize with '{username}'. User was not found or not active.");
                 return null;
             }
 
-            var salt = Convert.FromBase64String(user.PasswordSalt);
-            var hashed = Convert.ToBase64String(
-                KeyDerivation.Pbkdf2(
-                    password,
-                    salt,
-                    KeyDerivationPrf.HMACSHA1,
-                    iterationCount: 10000,
-                    numBytesRequested: 256 / 8));
-
+            var hashed = GetHash(password, user.PasswordSalt);
             var success = user.PasswordHash.Equals(hashed, StringComparison.Ordinal);
             _logger.LogInformation(success
-                ? $"Successful autorize attempt with '{username}'."
-                : $"Failed authorize attempt with '{username}'. Wrong password");
+                ? $"Successful attempt to authorize with '{username}'"
+                : $"Failed attempt to authorize with '{username}'. Wrong password");
             
             if (success)
             {
+                if (user.ChangePasswordRequired)
+                {
+                    _logger.LogInformation($"User {username} promted to change his/her password");
+                    return AuthResponseViewModel.ChangePassword(username, user.ChangePasswordToken);
+                }
+
                 var token = GetToken(user);
-                return new UserViewModel(username, token);
+                return AuthResponseViewModel.Authorized(username, token);
             }
             
             return null;
         }
 
-        private string GetToken(UserDto user)
+        public async Task<bool> TryChangePassword(string username, string password, string token)
+        {
+            var user = await _userDataSerice.GetCredentials(username);
+            if (user == null)
+            {
+                _logger.LogInformation($"Failed attempt to change password for '{username}'. User was not found or not active.");
+                return false;
+            }
+
+            if (user.ChangePasswordRequired && user.ChangePasswordToken == token)
+            {
+                var salt = GetSalt();
+                var hash = GetHash(password, salt);
+                return await _userDataSerice.SaveNewCredentials(username, hash, salt);
+            }
+
+            _logger.LogInformation($"Requested for password change but it is not allowed for user ${username}");
+            return false;
+        }
+
+        public async Task<bool> SaveUser(UserViewModel model)
+        {
+            var dto = model.BuildDto();
+
+            var user = await _userDataSerice.Get(dto.Username);
+            if (user == null)
+            {
+                // New user flow
+                var tmpPassword = Guid.NewGuid().ToString("N").Substring(20);
+                var salt = GetSalt();
+                var hash = GetHash(tmpPassword, salt);
+                var created = await _userDataSerice.Save(dto, hash, salt);
+                if (created)
+                {
+                    await _emailService.NewUser(dto.Username, dto.Email, tmpPassword);
+                }
+
+                return created;
+            }
+            else
+            {
+                return await _userDataSerice.Save(dto);
+            }
+        }
+
+        private string GetToken(AuthDto auth)
         {
             var key = Encoding.UTF8.GetBytes(_authSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -71,7 +117,8 @@ namespace TinyBlog.Web.Services
                 Audience = _authSettings.Audience,
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Username)
+                    new Claim(ClaimTypes.Name, auth.Username),
+                    new Claim(ClaimTypes.Email, auth.Email)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -81,6 +128,17 @@ namespace TinyBlog.Web.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private string GetHash(string password, string salt)
+        {
+            return Convert.ToBase64String(
+                KeyDerivation.Pbkdf2(
+                    password,
+                    Convert.FromBase64String(salt),
+                    KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
         }
 
         private string GetSalt()

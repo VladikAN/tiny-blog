@@ -39,7 +39,7 @@ export function postReducer(state = initialState, action: PostActionTypes | Shar
     switch (action.type) {
         case REQUEST_FAILED_MESSAGE:
             return { ...state, isFetching: false, isSaving: false };
-        case RESET_POST_MESSAGE: 
+        case RESET_POST_MESSAGE:
             return {
                 ...initialState,
                 isFetching: false,
