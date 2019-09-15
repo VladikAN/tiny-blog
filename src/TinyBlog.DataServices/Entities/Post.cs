@@ -3,6 +3,7 @@ using System;
 
 namespace TinyBlog.DataServices.Entities
 {
+    [BsonIgnoreExtraElements]
     public class Post : BaseEntity
     {
         [BsonElement("title")]

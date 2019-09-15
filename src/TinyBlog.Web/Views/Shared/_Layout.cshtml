@@ -46,7 +46,7 @@
         <div class="content">
             @if (!isAdmin && !string.IsNullOrWhiteSpace(header))
             {
-                <div>@Html.Markdown(header)</div>
+                <div class="content__header">@Html.Markdown(header)</div>
             }
 
             @RenderBody()

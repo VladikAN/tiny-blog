@@ -2,6 +2,7 @@
 
 namespace TinyBlog.DataServices.Entities
 {
+    [BsonIgnoreExtraElements]
     public class User : BaseEntity
     {
         [BsonElement("username")]

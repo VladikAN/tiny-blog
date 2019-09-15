@@ -140,6 +140,7 @@ export class Post extends React.Component<AllProps, State> {
                                 type="text"
                                 name="tags"
                                 value={tags}
+                                pattern="([\w\d]*[\w\d\- ]*?)*"
                                 onChange={this.handleChange} />
                         </label>
                         <span className="editor-field__help">{strings.post_form_tags_description}</span>

@@ -1,0 +1,5 @@
+{
+    "browsers": ["firefox:headless"],
+    "src": "./Scripts/testcafe/tests/*.ts",
+    "stopOnFirstFail": true
+}

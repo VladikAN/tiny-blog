@@ -5,7 +5,7 @@
 
     .dashboard__menu {
         flex: 0 0;
-        padding: 10px 20px;
+        padding: 10px 5px;
 
         .dashboard__menu__toggle {
             text-align: right;
@@ -41,6 +41,16 @@
 
     .dashboard__content {
         flex: 1 1 auto;
-        padding: 10px 20px;
+        padding: 10px 5px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .dashboard__menu {
+            padding: 10px 20px;
+        }
+
+        .dashboard__content {
+            padding: 10px 20px;
+        }
     }
 }
