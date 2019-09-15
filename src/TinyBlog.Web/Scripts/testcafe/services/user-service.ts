@@ -4,7 +4,7 @@ import { MongoConnection, DefaultPasswordHash, DefaultPasswordSalt, EmailDomain 
 
 export default class UserService {
     public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
-        mongoose.connect(MongoConnection, { useNewUrlParser: true });
+        await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
         let record = await User.findOne({ username: username });
         record = record != null ? record : new User();
@@ -18,21 +18,21 @@ export default class UserService {
 
         await User.updateOne({ username: username }, record, { upsert: true });
         const user = await User.findOne({ username: username });
-        mongoose.disconnect();
+        await mongoose.disconnect();
 
         return user;
     }
 
     public async Get(email: string): Promise<UserDomain> {
-        mongoose.connect(MongoConnection, { useNewUrlParser: true });
+        await mongoose.connect(MongoConnection, { useNewUrlParser: true });
         const user = await User.findOne({ email: email });
-        mongoose.disconnect();
+        await mongoose.disconnect();
         return user;
     }
 
     public async CleanupTestRun(): Promise<void> {
-        mongoose.connect(MongoConnection, { useNewUrlParser: true });
+        await mongoose.connect(MongoConnection, { useNewUrlParser: true });
         await User.deleteMany({ email: { $regex: EmailDomain, $options: 'i' } });
-        mongoose.disconnect();
+        await mongoose.disconnect();
     }
 }

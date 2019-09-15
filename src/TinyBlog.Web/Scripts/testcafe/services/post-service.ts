@@ -4,7 +4,7 @@ import { MongoConnection, PostLinkPrefix } from '../constants';
 
 export default class PostService {
     public async UpsertPost(title: string, previewText: string, fullText, isPublished: boolean, tags: string[]): Promise<PostDomain> {
-        mongoose.connect(MongoConnection, { useNewUrlParser: true });
+        await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
         const linkText = PostLinkPrefix + title.toLowerCase().replace(' ', '-');
         let record = await Post.findOne({ linkText: linkText });
@@ -18,15 +18,16 @@ export default class PostService {
         record.tags = tags;
         record.isPublished = isPublished;
 
-        const user = await Post.updateOne({ linkText: linkText }, record, { upsert: true });
-        mongoose.disconnect();
+        await Post.updateOne({ linkText: linkText }, record, { upsert: true });
+        const post = await Post.findOne({ linkText: linkText });
+        await mongoose.disconnect();
 
-        return user;
+        return post;
     }
 
     public async CleanupTestRun(): Promise<void> {
-        mongoose.connect(MongoConnection, { useNewUrlParser: true });
+        await mongoose.connect(MongoConnection, { useNewUrlParser: true });
         await Post.deleteMany({ LinkText: { $regex: PostLinkPrefix, $options: 'i' } });
-        mongoose.disconnect();
+        await mongoose.disconnect();
     }
 }

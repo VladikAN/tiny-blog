@@ -77,7 +77,7 @@ export default class HomePage {
             const entries = this.blkThread.nth(_i).find('.link-header h2');
             const postTitle = await entries.nth(0).innerText;
 
-            if (title == postTitle) {
+            if (postTitle == title) {
                 return this.blkThread.nth(_i);
             }
         }

@@ -10,7 +10,7 @@ fixture('Home page. Posts thread')
 
 test('Newly created post is displayed on page', async t => {
     // Test
-    const title = `New post #${new Date()}`;
+    const title = `New post #${new Date().toJSON()}`;
     const post = await homePage.UpsertPost(title, 'p', 'f', true, ['tag-1']);
 
     // Assert
