@@ -16,7 +16,7 @@ test('Page has header, footer and thread block', async () => {
 test('Page title reflects to value from database', async t => {
     // Prepare
     const title = `Test title #${Date.now()}`;
-    await homePage.SetTitle(title);
+    await homePage.SetTitleFromDb(title);
 
     // Test
     await t.navigateTo(Host);
@@ -28,7 +28,7 @@ test('Page title reflects to value from database', async t => {
 test('Empty header content set for home page and it\'s not displayed', async t => {
     // Prepare
     const headerMd = '';
-    await homePage.SetHeaderContent(headerMd);
+    await homePage.SetHeaderFromDb(headerMd);
 
     // Test
     await t.navigateTo(Host);
@@ -40,7 +40,7 @@ test('Empty header content set for home page and it\'s not displayed', async t =
 test('Header content set for home page and it\'s displayed', async t => {
     // Prepare
     const headerMd = `Header content #${Date.now()}`;
-    await homePage.SetHeaderContent(headerMd);
+    await homePage.SetHeaderFromDb(headerMd);
 
     // Test
     await t.navigateTo(Host);
@@ -54,7 +54,7 @@ test('Header content set for home page and it\'s displayed', async t => {
 test('Empty footer content set for home page and it\'s not displayed', async t => {
     // Prepare
     const footerMd = '';
-    await homePage.SetFooterContent(footerMd);
+    await homePage.SetFooterFromDb(footerMd);
 
     // Test
     await t.navigateTo(Host);
@@ -66,7 +66,7 @@ test('Empty footer content set for home page and it\'s not displayed', async t =
 test('Footer content set for home page and it\'s displayed', async t => {
     // Prepare
     const headerMd = `Footer content #${Date.now()}`;
-    await homePage.SetFooterContent(headerMd);
+    await homePage.SetFooterFromDb(headerMd);
 
     // Test
     await t.navigateTo(Host);

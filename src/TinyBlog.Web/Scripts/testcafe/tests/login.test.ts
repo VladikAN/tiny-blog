@@ -28,7 +28,7 @@ test('Try invalid credentials and click submit. Should stay on page and see erro
 test('User promted to change password if required', async () => {
     // Prepare
     const username = 'login-user-1';
-    await loginPage.UpsertUser(username, true);
+    await loginPage.UpsertUserToDB(username, true);
 
     // Test
     await loginPage.Login(username, DefaultPassword);
@@ -41,7 +41,7 @@ test('User can login by using new password after completed password change', asy
     // Prepare
     const username = 'login-user-2';
     const newPassword = 'NewPassword1';
-    await loginPage.UpsertUser(username, true);
+    await loginPage.UpsertUserToDB(username, true);
 
     // Test
     await loginPage.Login(username, DefaultPassword);
@@ -58,7 +58,7 @@ test('User can login by using new password after completed password change', asy
 test('User can login by using known credentials', async () => {
     // Prepare
     const username = 'login-user-3';
-    await loginPage.UpsertUser(username);
+    await loginPage.UpsertUserToDB(username);
 
     // Test
     await loginPage.Login(username, DefaultPassword);
@@ -70,7 +70,7 @@ test('User can login by using known credentials', async () => {
 test('User cannot login by using known credentials because user is inactive', async t => {
     // Prepare
     const username = 'login-user-4';
-    await loginPage.UpsertUser(username, false, false);
+    await loginPage.UpsertUserToDB(username, false, false);
 
     // Test
     await loginPage.Login(username, DefaultPassword);
@@ -83,7 +83,7 @@ test('User cannot login by using known credentials because user is inactive', as
 test('User will quit to login screen after click on Logout button', async t => {
     // Prepare
     const username = 'login-user-5';
-    await loginPage.UpsertUser(username);
+    await loginPage.UpsertUserToDB(username);
 
     // Test
     await loginPage.Login(username, DefaultPassword);

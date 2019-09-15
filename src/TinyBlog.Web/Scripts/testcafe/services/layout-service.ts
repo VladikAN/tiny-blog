@@ -9,31 +9,34 @@ export default class LayoutService {
         let record = await Layout.findOne();
         record.title = title;
 
-        const layout = await Layout.updateOne({}, record);
+        await Layout.updateOne({}, record);
+        const layout = await Layout.findOne({});
         await mongoose.disconnect();
 
         return layout;
     }
 
-    public async SetHeaderContent(headerMd: string): Promise<LayoutDomain> {
+    public async SetHeader(headerMd: string): Promise<LayoutDomain> {
         await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
         let record = await Layout.findOne();
         record.headerContent = headerMd;
 
-        const layout = await Layout.updateOne({}, record);
+        await Layout.updateOne({}, record);
+        const layout = await Layout.findOne({});
         await mongoose.disconnect();
 
         return layout;
     }
 
-    public async SetFooterContent(footerMd: string): Promise<LayoutDomain> {
+    public async SetFooter(footerMd: string): Promise<LayoutDomain> {
         await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
         let record = await Layout.findOne();
         record.footerContent = footerMd;
 
-        const layout = await Layout.updateOne({}, record);
+        await Layout.updateOne({}, record);
+        const layout = await Layout.findOne({});
         await mongoose.disconnect();
 
         return layout;
@@ -52,8 +55,7 @@ export default class LayoutService {
         }
 
         await mongoose.connect(MongoConnection, { useNewUrlParser: true });
-        const saved = await Layout.updateOne({}, layout);
+        await Layout.updateOne({}, layout);
         await mongoose.disconnect();
-        return saved;
     }
 }

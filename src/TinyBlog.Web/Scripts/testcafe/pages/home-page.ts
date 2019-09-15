@@ -19,6 +19,10 @@ export default class HomePage {
     private postService: PostService;
     private initialLayout: LayoutDomain;
 
+    private headerSelector: string = 'h2';
+    private markdownSelector: string = 'div.markdown';
+    private tagsSelector: string = '.tags a';
+
     public constructor() {
         this.blkHeader = Selector('div.header');
         this.spnTitle = this.blkHeader.find('a.header__body_link');
@@ -41,16 +45,16 @@ export default class HomePage {
             .expect(this.blkThread.exists).ok();
     }
 
-    public async SetTitle(title: string): Promise<LayoutDomain> {
+    public async SetTitleFromDb(title: string): Promise<LayoutDomain> {
         return await this.layoutService.SetTitle(title);
     }
 
-    public async SetHeaderContent(headerMd: string): Promise<LayoutDomain> {
-        return await this.layoutService.SetHeaderContent(headerMd);
+    public async SetHeaderFromDb(headerMd: string): Promise<LayoutDomain> {
+        return await this.layoutService.SetHeader(headerMd);
     }
 
-    public async SetFooterContent(footerMd: string): Promise<LayoutDomain> {
-        return await this.layoutService.SetFooterContent(footerMd);
+    public async SetFooterFromDb(footerMd: string): Promise<LayoutDomain> {
+        return await this.layoutService.SetFooter(footerMd);
     }
 
     public async BeforeAll(): Promise<void> {
@@ -62,7 +66,7 @@ export default class HomePage {
         await this.postService.CleanupTestRun();
     }
 
-    public async UpsertPost(title: string, previewText: string, fullText, isPublished: boolean, tags: string[]): Promise<PostDomain> {
+    public async UpsertPostToDb(title: string, previewText: string, fullText, isPublished: boolean, tags: string[]): Promise<PostDomain> {
         return await this.postService.UpsertPost(title, previewText, fullText, isPublished, tags);
     }
 
@@ -79,15 +83,15 @@ export default class HomePage {
         const onPage = await this.FindPostOnPage(post.title);
 
         await t
-            .expect(onPage.find('a h2').innerText).eql(post.title)
-            .expect(onPage.find('div.markdown').innerText).contains(post.previewText)
-            .expect(onPage.find('.tags a').count).eql(post.tags.length);
+            .expect(onPage.find(this.headerSelector).innerText).eql(post.title)
+            .expect(onPage.find(this.markdownSelector).innerText).contains(post.previewText)
+            .expect(onPage.find(this.tagsSelector).count).eql(post.tags.length);
     }
 
     public async IsFullPostDisplayed(post: PostDomain): Promise<void> {
-        const headerSelector = Selector('h2');
-        const contentSelector = Selector('div.markdown');
-        const tagsSelector = Selector('.tags a');
+        const headerSelector = Selector(this.headerSelector);
+        const contentSelector = Selector(this.markdownSelector);
+        const tagsSelector = Selector(this.tagsSelector);
 
         await t
             .expect(headerSelector.innerText).eql(post.title)

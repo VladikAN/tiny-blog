@@ -40,7 +40,7 @@ export default class LoginPage {
 
     public async LoginAsDefault(): Promise<void> {
         const username = 'default-admin';
-        await this.UpsertUser(username, false, true);
+        await this.UpsertUserToDB(username, false, true);
         await this.Login(username, DefaultPassword);
     }
 
@@ -51,7 +51,7 @@ export default class LoginPage {
             .click(this.btnSubmit);
     }
 
-    public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
+    public async UpsertUserToDB(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
         return await this.userService.UpsertUser(username, requestPasswordChange, isActive);
     }
 
