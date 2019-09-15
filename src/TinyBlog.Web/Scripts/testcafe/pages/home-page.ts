@@ -66,9 +66,38 @@ export default class HomePage {
         return await this.postService.UpsertPost(title, previewText, fullText, isPublished, tags);
     }
 
-    public async IsPostOnPage(post: PostDomain): Promise<void> {
+    public async IsPostOnPage(post: PostDomain): Promise<boolean> {
         const onPage = await this.FindPostOnPage(post.title);
-        await t.expect(onPage.exists).ok();
+        if (onPage) {
+            return await onPage.exists;
+        }
+
+        return false;
+    }
+
+    public async isPreviewPostDisplayed(post: PostDomain): Promise<void> {
+        const onPage = await this.FindPostOnPage(post.title);
+
+        await t
+            .expect(onPage.find('a h2').innerText).eql(post.title)
+            .expect(onPage.find('div.markdown').innerText).contains(post.previewText)
+            .expect(onPage.find('.tags a').count).eql(post.tags.length);
+    }
+
+    public async IsFullPostDisplayed(post: PostDomain): Promise<void> {
+        const headerSelector = Selector('h2');
+        const contentSelector = Selector('div.markdown');
+        const tagsSelector = Selector('.tags a');
+
+        await t
+            .expect(headerSelector.innerText).eql(post.title)
+            .expect(contentSelector.innerText).eql(post.fullText)
+            .expect(tagsSelector.count).eql(post.tags.length);
+    }
+
+    public async GoToFullPostView(post: PostDomain): Promise<void> {
+        const onPage = await this.FindPostOnPage(post.title);
+        await t.click(onPage.find('.link-header'));
     }
 
     private async FindPostOnPage(title: string): Promise<Selector> {

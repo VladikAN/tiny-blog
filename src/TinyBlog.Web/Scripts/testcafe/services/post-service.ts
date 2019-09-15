@@ -14,7 +14,7 @@ export default class PostService {
         record.linkText = linkText;
         record.previewText = previewText;
         record.fullText = fullText;
-        record.publishedAt = isPublished ? new Date() : null;
+        record.publishedAt = new Date();
         record.tags = tags;
         record.isPublished = isPublished;
 

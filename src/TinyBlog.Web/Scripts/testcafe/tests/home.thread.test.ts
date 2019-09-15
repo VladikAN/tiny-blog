@@ -15,5 +15,42 @@ test('Newly created post is displayed on page', async t => {
 
     // Assert
     await t.navigateTo(Host);
-    await homePage.IsPostOnPage(post);
+    const exists = await homePage.IsPostOnPage(post);
+    await t.expect(exists).ok();
+});
+
+test('Draft post is not displayed on page', async t => {
+    // Test
+    const title = `Draft post #${new Date().toJSON()}`;
+    const post = await homePage.UpsertPost(title, 'p', 'f', false, ['tag-1']);
+
+    // Assert
+    await t.navigateTo(Host);
+    const exists = await homePage.IsPostOnPage(post);
+    await t.expect(exists).notOk();
+});
+
+test('Post is dosplayed with its preview content', async t => {
+    // Prepare
+    const title = `View post #${new Date().toJSON()}`;
+    const post = await homePage.UpsertPost(title, 'preview-text', 'f', true, ['tag-1']);
+
+    // Test
+    await t.navigateTo(Host);
+
+    // Assert
+    await homePage.isPreviewPostDisplayed(post);
+});
+
+test('Click on title will open full text view', async t => {
+    // Prepare
+    const title = `View post #${new Date().toJSON()}`;
+    const post = await homePage.UpsertPost(title, 'p', 'full-text', true, ['tag-1']);
+
+    // Test
+    await t.navigateTo(Host);
+    await homePage.GoToFullPostView(post);
+
+    // Assert
+    await homePage.IsFullPostDisplayed(post);
 });
