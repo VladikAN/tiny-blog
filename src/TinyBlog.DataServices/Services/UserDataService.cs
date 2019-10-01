@@ -46,7 +46,7 @@ namespace TinyBlog.DataServices.Services
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
-            _logger.LogInformation($"User {username} has changed password");
+            _logger.LogInformation($"The password was changed for user {username}");
 
             return true;
         }
@@ -77,7 +77,7 @@ namespace TinyBlog.DataServices.Services
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
-            _logger.LogInformation($"User {entity.Username} has changed activity flag to {isActive}");
+            _logger.LogInformation($"User {entity.Username} has changed activity flag to '{isActive}'");
 
             return true;
         }

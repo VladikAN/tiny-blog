@@ -43,7 +43,7 @@ namespace TinyBlog.DataServices.Services
 
             var options = new UpdateOptions { IsUpsert = true };
             var result = await DataCollection().UpdateOneAsync(FilterDefinition<Layout>.Empty, definition, options);
-            _logger.LogInformation($"Site settings was updated");
+            _logger.LogInformation($"Site settings were updated");
 
             return true;
         }

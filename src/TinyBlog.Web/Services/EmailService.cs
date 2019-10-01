@@ -42,7 +42,7 @@ You have granted access to {siteSettings.Uri} blog administrators.
 Username: {username}
 Password: {password}
 
-This is temporary password. You will be promted to endet new one on first login.
+This is a temporary password. You will be prompted to enter a new one on first login.
 
 Thanks."
             };
@@ -54,7 +54,7 @@ Thanks."
         {
             if (!_settings.Enabled)
             {
-                _logger.LogWarning("Smtp client disabled. No messages will be sended");
+                _logger.LogWarning("Smtp client is disabled. No messages will be sended");
                 return;
             }
 

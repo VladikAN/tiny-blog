@@ -52,7 +52,7 @@ namespace TinyBlog.Web.Services
             {
                 if (user.ChangePasswordRequired)
                 {
-                    _logger.LogInformation($"User {username} promted to change his/her password");
+                    _logger.LogInformation($"User {username} promted to change current password");
                     return AuthResponseViewModel.ChangePassword(username, user.ChangePasswordToken);
                 }
 
