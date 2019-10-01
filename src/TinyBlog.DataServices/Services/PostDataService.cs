@@ -91,7 +91,7 @@ namespace TinyBlog.DataServices.Services
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().UpdateOneAsync(pst => pst.EntityId == entity.EntityId, definition, options);
-            _logger.LogInformation($"Post '{entity.LinkText}' has changed published flag to {publish}");
+            _logger.LogInformation($"Changed published flag for '{entity.LinkText}' to '{publish}'");
 
             return true;
         }
