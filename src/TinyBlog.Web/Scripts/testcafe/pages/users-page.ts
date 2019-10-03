@@ -44,12 +44,21 @@ export default class UsersPage {
         await t.expect(onPage.exists).ok();
     }
 
-    public async UpdateUserFromUi(username: string, email: string): Promise<void> {
+    public async UpdateUserFromUi(username: string, email: string, isNew: boolean): Promise<void> {
         await t
-            .expect(this.inpUsername.exists).eql(true)
             .expect(this.inpEmail.exists).eql(true)
-            .typeText(this.inpUsername, username, { replace: true })
-            .typeText(this.inpEmail, email, { replace: true })
+            .typeText(this.inpEmail, email, { replace: true });
+
+        if (isNew) {
+            await t
+                .expect(this.inpUsername.exists).eql(true)
+                .typeText(this.inpUsername, username, { replace: true });
+        } else {
+            await t
+                .expect(this.inpUsername.exists).eql(false);
+        }
+
+        await t
             .expect(this.btnSaveChanges.exists).eql(true)
             .click(this.btnSaveChanges);
     }

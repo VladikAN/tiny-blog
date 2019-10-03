@@ -27,10 +27,15 @@ interface OwnProps {
 export type AllProps = OwnProps & StateProps & DispatchProps;
 
 interface State {
-    isEditMode: boolean;
-    targetUsername?: string;
+    mode: RowMode;
     rawUsername: string;
     rawEmail: string;
+}
+
+enum RowMode {
+    None,
+    Edit,
+    Create
 }
 
 export class Users extends React.Component<AllProps, State> {
@@ -38,8 +43,7 @@ export class Users extends React.Component<AllProps, State> {
         super(props);
 
         this.state = {
-            isEditMode: false,
-            targetUsername: null,
+            mode: RowMode.None,
             rawUsername: '',
             rawEmail: ''
         };
@@ -64,20 +68,20 @@ export class Users extends React.Component<AllProps, State> {
     };
 
     private handleAdd(): void {
-        this.setState({ isEditMode: true, rawUsername: '', rawEmail: '' });
+        this.setState({ mode: RowMode.Create, rawUsername: '', rawEmail: '' });
     }
 
     private handleConfirmedAdd(): void {
         this.props.saveUser({ username: this.state.rawUsername, email: this.state.rawEmail, isActive: true });
-        this.setState({ isEditMode: false, rawUsername: '', rawEmail: '' });
+        this.setState({ mode: RowMode.None, rawUsername: '', rawEmail: '' });
     }
 
     private handleCanceledAdd(): void {
-        this.setState({ isEditMode: false, rawUsername: '', rawEmail: '' });
+        this.setState({ mode: RowMode.None, rawUsername: '', rawEmail: '' });
     }
 
     private handleEdit(user: User): void {
-        this.setState({ isEditMode: true, targetUsername: user.username, rawUsername: user.username, rawEmail: user.email });
+        this.setState({ mode: RowMode.Edit, rawUsername: user.username, rawEmail: user.email });
     }
 
     private handleActivity(user: User): void {
@@ -100,9 +104,9 @@ export class Users extends React.Component<AllProps, State> {
             return (<Loading />);
         }
 
-        const { isEditMode, targetUsername, rawUsername, rawEmail } = this.state;
+        const { mode, rawUsername, rawEmail } = this.state;
         let users = [...this.props.users];
-        if (isEditMode && targetUsername == null) {
+        if (mode == RowMode.Create) {
             const rawUser: User = { username: rawUsername, email: rawEmail, isActive: true };
             users.unshift(rawUser);
         }
@@ -114,30 +118,30 @@ export class Users extends React.Component<AllProps, State> {
             const activityTitle = usr.isActive
                 ? strings.user_form_deactivate_action
                 : strings.user_form_activate_action;
-            const isEdit = isEditMode && (targetUsername == null && index == 0 || usr.username == targetUsername);
+            const isUnderEdit = mode != RowMode.None && (index == 0 || usr.username == rawUsername);
             const isLimited = usr.username == this.props.username || usr.isSuper;
 
             return (
                 <tr key={usr.username}>
                     <td className="entities__prop">
-                        {isEdit && !isLimited && <input
+                        {isUnderEdit && mode == RowMode.Create && <input
                             type="text"
                             autoFocus
                             name="rawUsername"
                             onChange={this.handleChange}
                             value={rawUsername} />}
-                        {(!isEdit || isLimited) && usr.username}
+                        {(!isUnderEdit || mode != RowMode.Create) && usr.username}
                     </td>
                     <td className="entities__prop">
-                        {isEdit && <input
+                        {isUnderEdit && <input
                             type="text"
                             name="rawEmail"
                             onChange={this.handleChange}
                             value={rawEmail} />}
-                        {!isEdit && usr.email}
+                        {!isUnderEdit && usr.email}
                     </td>
                     <td className="entities__actions">
-                        {!isEdit &&
+                        {!isUnderEdit &&
                             <React.Fragment>
                                 <ActionButton
                                     className="typcn typcn-edit"
@@ -152,7 +156,7 @@ export class Users extends React.Component<AllProps, State> {
                                     title={strings.user_form_delete_action}
                                     onClick={() => this.handleDelete(usr)} /> }
                             </React.Fragment> }
-                        {isEdit &&
+                        {isUnderEdit &&
                             <React.Fragment>
                                 <ActionButton
                                     className="typcn typcn-tick"

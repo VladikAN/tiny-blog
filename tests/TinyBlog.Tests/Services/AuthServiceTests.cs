@@ -7,6 +7,7 @@ using TinyBlog.DataServices.Services;
 using TinyBlog.DataServices.Services.Dto;
 using TinyBlog.Web.Configuration.Settings;
 using TinyBlog.Web.Services;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Tests.Services
 {
@@ -59,7 +60,7 @@ namespace TinyBlog.Tests.Services
             // Arrange
             var credentials = SetCredentials();
 
-            // Act && Assert
+            // Act & Assert
             var result = await _target.TryAuthorize(credentials.Username, "invalid-password");
             Assert.IsNull(result);
 
@@ -72,7 +73,7 @@ namespace TinyBlog.Tests.Services
             // Arrange
             var credentials = SetCredentials(useDefaultPassword: true);
 
-            // Act && Assert
+            // Act & Assert
             var result = await _target.TryAuthorize(credentials.Username, DefaultPassword);
             Assert.IsNotNull(result);
             Assert.AreEqual(credentials.Username, result.Username);
@@ -88,7 +89,7 @@ namespace TinyBlog.Tests.Services
             // Arrange
             var credentials = SetCredentials(changePassword: true, useDefaultPassword: true);
 
-            // Act && Assert
+            // Act & Assert
             var result = await _target.TryAuthorize(credentials.Username, DefaultPassword);
             Assert.IsNotNull(result);
             Assert.AreEqual(credentials.Username, result.Username);
@@ -118,7 +119,7 @@ namespace TinyBlog.Tests.Services
             // Arrange
             var credentials = SetCredentials();
 
-            // Act && Assert
+            // Act & Assert
             var result = await _target.TryChangePassword(credentials.Username, "new-password", "token");
             Assert.IsFalse(result);
 
@@ -133,7 +134,7 @@ namespace TinyBlog.Tests.Services
             // Arrange
             var credentials = SetCredentials(changePassword: true);
 
-            // Act && Assert
+            // Act & Assert
             var result = await _target.TryChangePassword(credentials.Username, "new-password", "wrong-token");
             Assert.IsFalse(result);
 
@@ -152,7 +153,7 @@ namespace TinyBlog.Tests.Services
                 .Setup(x => x.SaveNewCredentials(credentials.Username, It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(false);
 
-            // Act && Assert
+            // Act & Assert
             var result = await _target.TryChangePassword(credentials.Username, DefaultPassword, credentials.ChangePasswordToken);
             Assert.IsFalse(result);
 
@@ -171,7 +172,7 @@ namespace TinyBlog.Tests.Services
                 .Setup(x => x.SaveNewCredentials(credentials.Username, It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
 
-            // Act && Assert
+            // Act & Assert
             var result = await _target.TryChangePassword(credentials.Username, DefaultPassword, credentials.ChangePasswordToken);
             Assert.IsTrue(result);
 
@@ -183,15 +184,84 @@ namespace TinyBlog.Tests.Services
 
         #region SaveUser
         [Test]
-        public async Task SaveUser_UserIsKnown_ChangesApplied()
+        public async Task SaveUser_UserIsKnown_Edited()
         {
-            await Task.CompletedTask;
+            // Arrange
+            var model = new UserViewModel { Username = "username", Email = "new-email" };
+            var userDto = new UserDto("username", "email", true, false);
+
+            _userDataSerice
+                .Setup(x => x.Get(model.Username))
+                .ReturnsAsync(userDto);
+            _userDataSerice
+                .Setup(x => x.Save(It.IsAny<UserDto>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+            // Act & Assert
+            var result = await _target.SaveUser(model);
+            Assert.IsTrue(result);
+
+            _userDataSerice.Verify(x => x.Get(model.Username), Times.Once);
+            _userDataSerice.Verify(x => x.Save(
+                It.Is<UserDto>(dt => dt.Email == model.Email && dt.Username == model.Username),
+                null,
+                null),
+                Times.Once);
+            _emailService.Verify(x => x.NewUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [Test]
         public async Task SaveUser_UserIsUnknown_UserCreated()
         {
-            await Task.CompletedTask;
+            // Arrange
+            var model = new UserViewModel { Username = "username", Email = "new-email" };
+
+            _userDataSerice
+                .Setup(x => x.Get(model.Username))
+                .ReturnsAsync((UserDto)null);
+            _userDataSerice
+                .Setup(x => x.Save(It.IsAny<UserDto>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+            // Act & Assert
+            var result = await _target.SaveUser(model);
+            Assert.IsTrue(result);
+
+            _userDataSerice.Verify(x => x.Get(model.Username), Times.Once);
+            _userDataSerice
+                .Verify(x => x.Save(
+                    It.Is<UserDto>(dt => dt.Email == model.Email && dt.Username == model.Username),
+                    It.Is<string>(str => str.Length > 0),
+                    It.Is<string>(str => str.Length > 0)),
+                    Times.Once);
+            _emailService.Verify(x => x.NewUser(model.Username, model.Email, It.Is<string>(str => str.Length > 0)), Times.Once);
+        }
+
+        [Test]
+        public async Task SaveUser_FailedSaveForNewUser_FalseReturned()
+        {
+            // Arrange
+            var model = new UserViewModel { Username = "username", Email = "new-email" };
+
+            _userDataSerice
+                .Setup(x => x.Get(model.Username))
+                .ReturnsAsync((UserDto)null);
+            _userDataSerice
+                .Setup(x => x.Save(It.IsAny<UserDto>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(false);
+
+            // Act & Assert
+            var result = await _target.SaveUser(model);
+            Assert.IsFalse(result);
+
+            _userDataSerice.Verify(x => x.Get(model.Username), Times.Once);
+            _userDataSerice
+                .Verify(x => x.Save(
+                    It.Is<UserDto>(dt => dt.Email == model.Email && dt.Username == model.Username),
+                    It.Is<string>(str => str.Length > 0),
+                    It.Is<string>(str => str.Length > 0)),
+                    Times.Once);
+            _emailService.Verify(x => x.NewUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
         #endregion
 

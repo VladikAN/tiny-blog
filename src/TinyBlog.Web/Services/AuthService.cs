@@ -86,26 +86,28 @@ namespace TinyBlog.Web.Services
         public async Task<bool> SaveUser(UserViewModel model)
         {
             var dto = model.BuildDto();
-
             var user = await _userDataSerice.Get(dto.Username);
+
+            string tmpPassword = null;
+            string hash = null;
+            string salt = null;
+            var createFlow = false;
+
             if (user == null)
             {
-                // New user flow
-                var tmpPassword = Guid.NewGuid().ToString("N").Substring(20);
-                var salt = GetSalt();
-                var hash = GetHash(tmpPassword, salt);
-                var created = await _userDataSerice.Save(dto, hash, salt);
-                if (created)
-                {
-                    await _emailService.NewUser(dto.Username, dto.Email, tmpPassword);
-                }
+                createFlow = true;
+                tmpPassword = Guid.NewGuid().ToString("N").Substring(20);
+                salt = GetSalt();
+                hash = GetHash(tmpPassword, salt);
+            }
 
-                return created;
-            }
-            else
+            var created = await _userDataSerice.Save(dto, hash, salt);
+            if (createFlow && created)
             {
-                return await _userDataSerice.Save(dto);
+                await _emailService.NewUser(dto.Username, dto.Email, tmpPassword);
             }
+
+            return created;
         }
 
         private string GetToken(AuthDto auth)

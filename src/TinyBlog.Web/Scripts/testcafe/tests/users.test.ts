@@ -22,7 +22,7 @@ test('User created as active by default, saved to database and persist after pag
     const email = `${username}@${EmailDomain}`;
 
     await t.click(usersPage.btnAddUser);
-    await usersPage.UpdateUserFromUi(username, email);
+    await usersPage.UpdateUserFromUi(username, email, true);
     await t.navigateTo(UsersUri);
 
     // Assert
@@ -80,19 +80,18 @@ test('User can be deleted by button click', async t => {
 test('User can be edited by button click', async t => {
     // Preparation
     const user = await usersPage.UpsertUserToDb('edit-user');
-    const expectedUsername = 'edited-user';
     const expectedEmail = `edited-email@${EmailDomain}`;
 
     await t.navigateTo(UsersUri);
 
     // Test
     await usersPage.StartEditFromUi(user.email);
-    await usersPage.UpdateUserFromUi(expectedUsername, expectedEmail);
+    await usersPage.UpdateUserFromUi(user.username, expectedEmail, false);
 
     // Assert
     await t.wait(200); // wait until save is completed
     const updated = await usersPage.GetFromDb(expectedEmail);
     await t
-        .expect(updated.username).eql(expectedUsername)
+        .expect(updated.username).eql(user.username)
         .expect(updated.email).eql(expectedEmail);
 });

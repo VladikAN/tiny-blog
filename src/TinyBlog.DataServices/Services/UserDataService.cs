@@ -105,12 +105,6 @@ namespace TinyBlog.DataServices.Services
             var definition = Builders<User>.Update
                 .Set(x => x.Email, dto.Email);
 
-            if(isCreate || !entity.IsSuper)
-            {
-                definition = definition
-                    .Set(x => x.Username, dto.Username);
-            }
-
             if (isCreate)
             {
                 if (string.IsNullOrWhiteSpace(hash))
@@ -126,6 +120,7 @@ namespace TinyBlog.DataServices.Services
                 var changePasswordToken = Guid.NewGuid().ToString("N");
 
                 definition = definition
+                    .Set(x => x.Username, dto.Username)
                     .Set(x => x.IsActive, true)
                     .Set(x => x.PasswordHash, hash)
                     .Set(x => x.PasswordSalt, salt)

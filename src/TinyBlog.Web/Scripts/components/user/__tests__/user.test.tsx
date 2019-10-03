@@ -279,8 +279,8 @@ describe('<User />', () => {
         expect(rows).toHaveLength(1);
 
         const simpleRows = rows.at(0).find('input[type="text"]');
-        expect(simpleRows.at(0).prop('value')).toEqual(simpleUser.username);
-        expect(simpleRows.at(1).prop('value')).toEqual(simpleUser.email);
+        expect(simpleRows).toHaveLength(1);
+        expect(simpleRows.at(0).prop('value')).toEqual(simpleUser.email);
     });
 
     it('not allowed to edit username for super user', () => {
