@@ -14,7 +14,7 @@ namespace TinyBlog.DataServices.Services
     {
         private const string CollectionName = "users";
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public UserDataService(
             IDatabaseSettings settings,

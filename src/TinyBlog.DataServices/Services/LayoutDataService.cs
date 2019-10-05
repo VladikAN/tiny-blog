@@ -12,7 +12,7 @@ namespace TinyBlog.DataServices.Services
     {
         private const string CollectionName = "layout";
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public LayoutDataService(
             IDatabaseSettings settings,

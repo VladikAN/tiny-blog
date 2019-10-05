@@ -16,7 +16,7 @@ namespace TinyBlog.Tests.Services
     {
         private const string DefaultPassword = "password";
         private const string PasswordHash = "MCweguHdWAupai7MloFR9xOKFsio4C7n4Wgj6dEMC10=";
-        private string PasswordSalt = "cGFzc3dvcmQtc2FsdA==";
+        private readonly string PasswordSalt = "cGFzc3dvcmQtc2FsdA==";
 
         private Mock<IEmailService> _emailService;
         private Mock<IUserDataService> _userDataSerice;

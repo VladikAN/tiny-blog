@@ -15,7 +15,7 @@ namespace TinyBlog.DataServices.Services
     {
         private const string CollectionName = "posts";
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public PostDataService(
             IDatabaseSettings settings,
@@ -27,7 +27,6 @@ namespace TinyBlog.DataServices.Services
         public async Task<PostDto[]> GetAll(bool publishedOnly = false)
         {
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            
             var data = await DataCollection().FindAsync(x => !publishedOnly || x.IsPublished, options);
             return data.ToList().Select(pst => pst.BuildDto()).ToArray();
         }

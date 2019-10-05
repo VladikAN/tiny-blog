@@ -10,10 +10,10 @@ namespace TinyBlog.Web.Services
 {
     public class FeedService : IFeedService
     {
-        private static Markdown MarkdownTransformer = new Markdown();
+        private static readonly Markdown MarkdownTransformer = new Markdown();
 
-        private IPostDataService _postDataService;
-        private ILayoutDataService _layoutDataService;
+        private readonly IPostDataService _postDataService;
+        private readonly ILayoutDataService _layoutDataService;
 
         public FeedService(
             IPostDataService postDataService,

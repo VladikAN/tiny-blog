@@ -6,7 +6,7 @@ namespace TinyBlog.Web.Helpers
 {
     public static class MarkdownHelper
     {
-        private static Markdown MarkdownTransformer = new Markdown();
+        private static readonly Markdown MarkdownTransformer = new Markdown();
 
         public static IHtmlContent Markdown(this IHtmlHelper helper, string text)
         {

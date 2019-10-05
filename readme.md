@@ -57,13 +57,3 @@ After application start you can login as admin role by using /admin uri and spec
 * **GoogleTagsCode** special [GoogleTags](https://tagmanager.google.com/) code. You can used it for additional html meta tags management. Blank value means disabled.
 * **HeaderContent** this field supports markdown syntax and used to populate web page header section.
 * **FooterContent** this field supports markdown syntax and used to populate web page footer section.
-
-# Development TODO list
-
-## Better markdown editor
-
-Admin UI contains of markdown editor with live preview. This editor is not handy and needs to be changed to some other npm package or custom implementation. Most of the packages are heavy by size or required dependencies, so I've put basic implementation for now.
-
-## Consider about unit tests
-
-There is nothing really to unit test. Probably integration tests or end-to-end tests will give more benefit.
