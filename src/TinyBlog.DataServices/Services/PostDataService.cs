@@ -24,10 +24,11 @@ namespace TinyBlog.DataServices.Services
             _logger = logger;
         }
 
-        public async Task<PostDto[]> GetAll()
+        public async Task<PostDto[]> GetAll(bool publishedOnly = false)
         {
             var options = new FindOptions<Post> { Sort = Builders<Post>.Sort.Descending(x => x.PublishedAt) };
-            var data = await DataCollection().FindAsync(FilterDefinition<Post>.Empty, options);
+            
+            var data = await DataCollection().FindAsync(x => !publishedOnly || x.IsPublished, options);
             return data.ToList().Select(pst => pst.BuildDto()).ToArray();
         }
 
