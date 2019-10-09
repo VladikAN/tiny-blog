@@ -10,11 +10,13 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh \
 WORKDIR /src
 COPY . .
 
-RUN dotnet restore -v=q src/TinyBlog.Web/TinyBlog.Web.csproj
+RUN dotnet restore -v=q
+RUN dotnet test -c=Release --no-restore
 RUN dotnet publish \
     -c=Release \
     -o=$(pwd)/publish/web \
     -f=netcoreapp2.2 \
+    --no-restore \
     src/TinyBlog.Web/TinyBlog.Web.csproj
 
 # Runtime image definition

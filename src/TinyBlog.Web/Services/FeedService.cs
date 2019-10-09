@@ -10,10 +10,10 @@ namespace TinyBlog.Web.Services
 {
     public class FeedService : IFeedService
     {
-        private static Markdown MarkdownTransformer = new Markdown();
+        private static readonly Markdown MarkdownTransformer = new Markdown();
 
-        private IPostDataService _postDataService;
-        private ILayoutDataService _layoutDataService;
+        private readonly IPostDataService _postDataService;
+        private readonly ILayoutDataService _layoutDataService;
 
         public FeedService(
             IPostDataService postDataService,
@@ -25,7 +25,7 @@ namespace TinyBlog.Web.Services
 
         public async Task<Atom10FeedFormatter> BuildFeed()
         {
-            var postsTask = _postDataService.GetAll();
+            var postsTask = _postDataService.GetAll(true);
             var layoutTask = _layoutDataService.Get();
             await Task.WhenAll(postsTask, layoutTask);
             var posts = await postsTask;
@@ -35,7 +35,6 @@ namespace TinyBlog.Web.Services
             var feed = new SyndicationFeed(layout.Title, layout.Description, baseUri);
             feed.Language = layout.Language;
             feed.Authors.Add(new SyndicationPerson(layout.Author));
-            feed.Description = new TextSyndicationContent(layout.Description);
 
             // Tags
             var tags = posts
@@ -57,6 +56,7 @@ namespace TinyBlog.Web.Services
                     new Uri(baseUri, $"post/{post.LinkText}"),
                     post.LinkText,
                     post.PublishedAt);
+                item.PublishDate = post.PublishedAt;
                 items.Add(item);
             }
 

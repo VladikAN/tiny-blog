@@ -21,7 +21,7 @@ namespace TinyBlog.Web.Controllers
         [ResponseCache(CacheProfileName = "Default")]
         public async Task<IActionResult> Index()
         {
-            var posts = (await _postDataService.GetAll()).Where(x => x.IsPublished).ToArray();
+            var posts = (await _postDataService.GetAll(true)).ToArray();
             var model = new ThreadViewModel(posts);
             return View(model);
         }
