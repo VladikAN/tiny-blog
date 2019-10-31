@@ -27,7 +27,7 @@ namespace TinyBlog.Web
                 .AddMvcWithFilters(_configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app
                 .UseForwardedHeaders()
