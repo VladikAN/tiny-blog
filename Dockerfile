@@ -10,7 +10,7 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh \
 WORKDIR /src
 COPY . .
 
-RUN dotnet restore -v=q
+RUN dotnet restore -v=m
 RUN dotnet test -c=Release --no-restore
 RUN dotnet publish \
     -c=Release \

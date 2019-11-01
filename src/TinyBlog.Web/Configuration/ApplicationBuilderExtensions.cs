@@ -38,10 +38,10 @@ namespace TinyBlog.Web.Configuration
         public static IApplicationBuilder UseMvcWithRoutes(this IApplicationBuilder app)
         {
             app
-                .UseMvc(routes =>
-                {
-                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                });
+                .UseRouting()
+                .UseCors("default")
+                .UseAuthorization()
+                .UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
 
             return app;
         }
