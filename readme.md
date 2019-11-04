@@ -1,7 +1,5 @@
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/vladikan/tinyblog?label=tinyblog%3Alatest&style=flat-square)
 
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/vladikan/tinyblog?label=tinyblog%3Apreview&style=flat-square)
-
 # Idea and Goals
 
 The original idea is to implement basic blog engine on dotnet core. I'm using it for myself and going to support this further.
