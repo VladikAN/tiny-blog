@@ -75,14 +75,13 @@ namespace TinyBlog.Web.Configuration
         {
             var siteSettings = new SiteSettings(configuration);
             services
-                .AddMvc(options =>
+                .AddControllersWithViews(options =>
                 {
                     options.Filters.Add<SiteSettingsFilter>();
 
                     var defaultCacheProfile = new CacheProfile { Location = ResponseCacheLocation.Any, Duration = siteSettings.DefaultCacheDuration, NoStore = siteSettings.DefaultCacheDuration <= 0 };
                     options.CacheProfiles.Add("Default", defaultCacheProfile);
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1); /* According to MS: version 2_2 may consist of breaking changes and not for production use */
+                });
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 
@@ -7,7 +8,7 @@ namespace TinyBlog.Web.Configuration
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseCustomErrorHandling(this IApplicationBuilder app, IHostingEnvironment env)
+        public static IApplicationBuilder UseCustomErrorHandling(this IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -37,10 +38,10 @@ namespace TinyBlog.Web.Configuration
         public static IApplicationBuilder UseMvcWithRoutes(this IApplicationBuilder app)
         {
             app
-                .UseMvc(routes =>
-                {
-                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                });
+                .UseRouting()
+                .UseCors("default")
+                .UseAuthorization()
+                .UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
 
             return app;
         }
