@@ -29,6 +29,6 @@ COPY --from=builder /src/publish/web .
 ENV ASPNETCORE_ENVIRONMENT="Production" \
     ASPNETCORE_URLS="http://+:80"
 EXPOSE 80
-HEALTHCHECK --interval=45s --timeout=10s --retries=5 CMD curl --fail http://localhost:80/health || exit 1
+HEALTHCHECK --interval=2m --timeout=10s --retries=5 CMD curl --fail http://localhost:80/health || exit 1
 
 ENTRYPOINT ["dotnet", "TinyBlog.Web.dll"]
