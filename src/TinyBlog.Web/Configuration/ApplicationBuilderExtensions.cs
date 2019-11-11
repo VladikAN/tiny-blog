@@ -41,7 +41,11 @@ namespace TinyBlog.Web.Configuration
                 .UseRouting()
                 .UseCors("default")
                 .UseAuthorization()
-                .UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapHealthChecks("/health");
+                    endpoints.MapDefaultControllerRoute();
+                });
 
             return app;
         }
