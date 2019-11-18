@@ -22,13 +22,13 @@ services:
 
       - WEB_SiteSettings__DefaultCacheDuration
 
-      - WEB_Smtp_Enabled
-      - WEB_Smtp_UseSsl
-      - WEB_Smtp_Address
-      - WEB_Smtp_Port
-      - WEB_Smtp_Username
-      - WEB_Smtp_Password
-      - WEB_Smtp_FromEmail
+      - WEB_Smtp__Enabled
+      - WEB_Smtp__UseSsl
+      - WEB_Smtp__Address
+      - WEB_Smtp__Port
+      - WEB_Smtp__Username
+      - WEB_Smtp__Password
+      - WEB_Smtp__FromEmail
 
       - WEB_KeyVault__Enabled
       - WEB_KeyVault__Vault
