@@ -18,6 +18,7 @@ namespace TinyBlog.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .ConfigureForwardedHeaders()
                 .AddAppHeathCheck(_configuration)
                 .AddServices(_configuration)
                 .AddApplicationInsights(_configuration)
