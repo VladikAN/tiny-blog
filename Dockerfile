@@ -1,5 +1,5 @@
 ﻿# Build image definition
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS builder
 
 ## install nodejs with npm
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh \
@@ -20,7 +20,7 @@ RUN dotnet publish \
     src/TinyBlog.Web/TinyBlog.Web.csproj
 
 # Runtime image definition
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 LABEL maintainer="https://github.com/vladikan/tiny-blog"
 
 WORKDIR /app
