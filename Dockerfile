@@ -15,7 +15,7 @@ RUN dotnet test -c=Release --no-restore
 RUN dotnet publish \
     -c=Release \
     -o=$(pwd)/publish/web \
-    -f=netcoreapp3.0 \
+    -f=netcoreapp3.1 \
     --no-restore \
     src/TinyBlog.Web/TinyBlog.Web.csproj
 
