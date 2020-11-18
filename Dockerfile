@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS builder
 
 ## install nodejs with npm
-RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh \
+RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
 	&& bash nodesource_setup.sh \
 	&& apt-get install -y nodejs
 
