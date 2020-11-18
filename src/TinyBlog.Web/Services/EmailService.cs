@@ -28,8 +28,8 @@ namespace TinyBlog.Web.Services
             var siteSettings = await _layoutDataService.Get();
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(_settings.FromEmail));
-            message.To.Add(new MailboxAddress(email));
+            message.From.Add(MailboxAddress.Parse(_settings.FromEmail));
+            message.To.Add(MailboxAddress.Parse(email));
             message.Subject = $"Welcome to {siteSettings.Title}";
 
             message.Body = new TextPart("plain")
@@ -54,7 +54,7 @@ Thanks."
         {
             if (!_settings.Enabled)
             {
-                _logger.LogWarning("Smtp client is disabled. No messages will be sended");
+                _logger.LogWarning("Smtp client is disabled. No messages will be sent");
                 return;
             }
 
@@ -65,15 +65,15 @@ Thanks."
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
                 }
                 
-                client.Connect(_settings.Address, _settings.Port, _settings.UseSsl);
+                await client.ConnectAsync(_settings.Address, _settings.Port, _settings.UseSsl);
 
                 if (!string.IsNullOrWhiteSpace(_settings.Username) && !string.IsNullOrWhiteSpace(_settings.Password))
                 {
-                    client.Authenticate(_settings.Username, _settings.Password);
+                    await client.AuthenticateAsync(_settings.Username, _settings.Password);
                 }
 
                 await client.SendAsync(message);
-                client.Disconnect(true);
+                await client.DisconnectAsync(true);
             }
         }
     }
