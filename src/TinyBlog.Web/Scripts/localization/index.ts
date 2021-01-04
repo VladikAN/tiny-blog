@@ -10,9 +10,12 @@ interface Strings extends LocalizedStringsMethods {
 
     change_password_label: string;
     change_password_placeholder: string;
+    confirm_password_label: string;
+    confirm_password_placeholder: string;
     change_password_button: string;
     change_password_operation_title: string;
     change_password_operation_success: string;
+    change_password_confirm_not_matched: string;
 
     dashboard_toggle: string;
     dashboard_link_posts: string;
@@ -129,9 +132,12 @@ export const strings: Strings = new LocalizedStrings({
 
         change_password_label: 'Please enter a new password for your username login.',
         change_password_placeholder: 'minimum 6 symbols length',
+        confirm_password_label: 'Type password one more time to confirm',
+        confirm_password_placeholder: 'password must match',
         change_password_button: 'Change Password',
         change_password_operation_title: 'Change Password',
         change_password_operation_success: 'Password was successfully changed',
+        change_password_confirm_not_matched: 'Password not matched. Please type again',
 
         dashboard_toggle: 'Toggle panel',
         dashboard_link_posts: 'Posts',

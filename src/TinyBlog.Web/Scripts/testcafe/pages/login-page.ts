@@ -7,6 +7,7 @@ export default class LoginPage {
     public form: Selector;
     public inpUsername: Selector;
     public inpPassword: Selector;
+    public inpConfirmPassword: Selector;
     public btnSubmit: Selector;
 
     private userService: UserService;
@@ -15,6 +16,7 @@ export default class LoginPage {
         this.form = Selector('div.login form');
         this.inpUsername = this.form.find('input[type=text][name=username]');
         this.inpPassword = this.form.find('input[type=password][name=password]');
+        this.inpConfirmPassword = this.form.find('input[type=password][name=confirmPassword]');
         this.btnSubmit = this.form.find('button[type=submit]');
 
         this.userService = new UserService();
@@ -34,6 +36,7 @@ export default class LoginPage {
             .expect(this.form.exists).ok()
             .expect(this.inpUsername.exists).notOk()
             .expect(this.inpPassword.exists).ok()
+            .expect(this.inpConfirmPassword.exists).ok()
             .expect(this.btnSubmit.exists).ok()
             .expect(this.btnSubmit.innerText).eql('Change Password');
     }
