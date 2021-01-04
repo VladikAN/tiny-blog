@@ -31,7 +31,7 @@ Frontent part of the code is presented by:
 
 You can build and run entire application by simple docker-compose command:
 
-```docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -D```
+```docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d```
 
 Command will build and run the application. Application will be available at [8080](http://localhost:8080/) port.
 

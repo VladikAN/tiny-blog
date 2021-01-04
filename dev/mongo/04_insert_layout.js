@@ -1,7 +1,7 @@
 db.layout.insert({
     title: "Tiny Blog",
     description: "Tiny Blog is an open source engine",
-    uri: "https://localhost:5001/",
+    uri: "https://localhost:8080/",
     author: "https://github.com/vladikan",
     language: "en",
     googleTagsCode: "",
