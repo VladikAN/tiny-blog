@@ -5,6 +5,7 @@ import { changePassword } from './../../store/login/actions';
 import { strings } from '../../localization';
 import { AuthState } from '../../store/login/reducers';
 import { AppState } from '../../store';
+import { toastr } from 'react-redux-toastr';
 
 interface StateProps {
     auth: AuthState;
@@ -18,13 +19,14 @@ export type AllProps = StateProps & DispatchProps;
 
 interface State {
     password: string;
+    confirmPassword: string;
 }
 
 export class ChangePassword extends React.Component<AllProps, State> {
     public constructor(props: AllProps) {
         super(props);
 
-        this.state = { password: '' };
+        this.state = { password: '', confirmPassword: '' };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,13 +37,21 @@ export class ChangePassword extends React.Component<AllProps, State> {
     };
 
     private handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+        event.preventDefault();
+
         const { username, passwordToken } = this.props.auth;
-        const { password } = this.state;
-        if (password.length != 0) {
-            this.props.changePassword(username, password, passwordToken);
+        const { password, confirmPassword } = this.state;
+
+        if (password.length == 0) {
+            return;
         }
 
-        event.preventDefault();
+        if (password != confirmPassword) {
+            toastr.error(strings.change_password_operation_title, strings.change_password_confirm_not_matched);
+            return;
+        }
+
+        this.props.changePassword(username, password, passwordToken);
     };
 
     public render(): React.ReactNode {
@@ -62,6 +72,20 @@ export class ChangePassword extends React.Component<AllProps, State> {
                                 name="password"
                                 placeholder={strings.change_password_placeholder}
                                 value={this.state.password}
+                                onChange={this.handleChange} />
+                        </label>
+                    </div>
+                    <div className="login__password">
+                        <label>
+                            <span>{strings.confirm_password_label}</span>
+                            <input
+                                type="password"
+                                autoComplete="off"
+                                required={true}
+                                minLength={6}
+                                name="confirmPassword"
+                                placeholder={strings.confirm_password_placeholder}
+                                value={this.state.confirmPassword}
                                 onChange={this.handleChange} />
                         </label>
                     </div>

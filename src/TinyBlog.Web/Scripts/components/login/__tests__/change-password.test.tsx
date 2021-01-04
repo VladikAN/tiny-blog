@@ -16,6 +16,7 @@ describe('<ChangePassword />', () => {
     it('should render change password form with input', () => {
         const wrapper = shallow(<ChangePassword {...defaultProps} />);
         expect(wrapper.exists('form input[type=\'password\'][name=\'password\']')).toBeTruthy();
+        expect(wrapper.exists('form input[type=\'password\'][name=\'confirmPassword\']')).toBeTruthy();
         expect(wrapper.exists('form button[type=\'submit\']')).toBeTruthy();
     });
 
@@ -25,6 +26,16 @@ describe('<ChangePassword />', () => {
             .find('form input[type=\'password\'][name=\'password\']')
             .simulate('change', { currentTarget: { name: 'password', value: 'my-password' } });
         expect(wrapper.state('password')).toEqual('my-password');
+        expect(wrapper.state('confirmPassword')).toEqual('');
+    });
+
+    it('update confirm password state on input change', () => {
+        const wrapper = shallow(<ChangePassword {...defaultProps} />);
+        wrapper
+            .find('form input[type=\'password\'][name=\'confirmPassword\']')
+            .simulate('change', { currentTarget: { name: 'confirmPassword', value: 'my-password' } });
+        expect(wrapper.state('password')).toEqual('');
+        expect(wrapper.state('confirmPassword')).toEqual('my-password');
     });
 
     it('call for change password on submit', () => {
@@ -32,7 +43,7 @@ describe('<ChangePassword />', () => {
         const props = {...defaultProps, changePassword};
         const wrapper = shallow(<ChangePassword {...props} />);
 
-        wrapper.setState({password: 'my-password'});
+        wrapper.setState({password: 'my-password', confirmPassword: 'my-password'});
         wrapper
             .find('form')
             .simulate('submit', { preventDefault: jest.fn() });
@@ -49,6 +60,32 @@ describe('<ChangePassword />', () => {
         const wrapper = shallow(<ChangePassword {...props} />);
 
         wrapper.setState({password: ''});
+        wrapper
+            .find('form')
+            .simulate('submit', { preventDefault: jest.fn() });
+
+        expect(changePassword.mock.calls.length).toEqual(0);
+    });
+
+    it('can\'t submit empty confirm password', () => {
+        const changePassword = jest.fn();
+        const props = {...defaultProps, changePassword};
+        const wrapper = shallow(<ChangePassword {...props} />);
+
+        wrapper.setState({password: 'my-password', confirmPassword: ''});
+        wrapper
+            .find('form')
+            .simulate('submit', { preventDefault: jest.fn() });
+
+        expect(changePassword.mock.calls.length).toEqual(0);
+    });
+
+    it('can\'t submit password which is not matched', () => {
+        const changePassword = jest.fn();
+        const props = {...defaultProps, changePassword};
+        const wrapper = shallow(<ChangePassword {...props} />);
+
+        wrapper.setState({password: 'my-password', confirmPassword: 'wrong-password'});
         wrapper
             .find('form')
             .simulate('submit', { preventDefault: jest.fn() });
