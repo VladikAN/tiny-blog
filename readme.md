@@ -23,7 +23,7 @@ Also supporting: [Azure Key Vault](https://azure.microsoft.com/en-in/services/ke
 
 ### Frontend
 
-Frontent part of the code is presented by:
+Frontend part of the code is presented by:
 * Regular user will see already rendered page. Implemented by using pure AspNet MVC Razor views. User gets basic html and css only without any javascript.
 * Admin area is implemented by using typescript, react and redux.
 
@@ -35,7 +35,7 @@ You can build and run entire application by simple docker-compose command:
 
 Command will build and run the application. Application will be available at [8080](http://localhost:8080/) port.
 
-To access admin page use [/admin](http://localhost:8080/admin) path and *admin* / *admin* user credentials. Remember, this is DEV instance, strongly recomended to avoid similar settings for PROD instance.
+To access admin page use [/admin](http://localhost:8080/admin) path and *admin* / *admin* user credentials. Remember, this is DEV instance, strongly recommended to avoid similar settings for PROD instance.
 
 Stop application be this command line:
 
@@ -55,7 +55,7 @@ Please provide this value to start application:
 After application start you can login as admin role by using /admin uri and specify general site settings:
 * **Title** will be show on web page header and used inside of atom feed.
 * **Description** is used to populate html meta tag for search engines and atom feed metadata.
-* **Uri** is used to populate atom feed metadata. Tthis is your site address or domain.
+* **Uri** is used to populate atom feed metadata. This is your site address or domain.
 * **Author** is used to populate atom feed metadata.
 * **Language** is used to populate html meta tag for search engines.
 * **GoogleTagsCode** special [GoogleTags](https://tagmanager.google.com/) code. You can used it for additional html meta tags management. Blank value means disabled.
