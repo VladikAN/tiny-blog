@@ -17,7 +17,6 @@ interface Strings extends LocalizedStringsMethods {
     change_password_operation_success: string;
     change_password_confirm_not_matched: string;
 
-    dashboard_toggle: string;
     dashboard_link_posts: string;
     dashboard_link_user: string;
     dashboard_link_layout: string;
@@ -139,7 +138,6 @@ export const strings: Strings = new LocalizedStrings({
         change_password_operation_success: 'Password was successfully changed',
         change_password_confirm_not_matched: 'Password not matched. Please type again',
 
-        dashboard_toggle: 'Toggle panel',
         dashboard_link_posts: 'Posts',
         dashboard_link_user: 'Users',
         dashboard_link_layout: 'Settings',

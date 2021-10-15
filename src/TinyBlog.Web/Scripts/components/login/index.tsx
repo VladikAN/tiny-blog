@@ -15,7 +15,11 @@ interface DispatchProps {
     getToken: typeof getToken;
 }
 
-export type AllProps = StateProps & DispatchProps;
+interface OwnProps {
+    children?: React.ReactNode;
+}
+
+export type AllProps = StateProps & DispatchProps & OwnProps;
 
 export class Login extends React.Component<AllProps> {
     public constructor(props: AllProps) {

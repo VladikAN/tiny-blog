@@ -34,45 +34,34 @@ class Menu extends React.Component<AllProps, State> {
     }
 
     public render(): React.ReactNode {
-        const { isOpen } = this.state;
-        const toggleClassName = isOpen
-            ? 'typcn-media-play-reverse'
-            : 'typcn-media-play';
-
         return (
             <div className="dashboard__menu">
-                <div
-                    className="dashboard__menu__toggle"
-                    onClick={this.handleToggle}
-                    title={strings.dashboard_toggle}>
-                    <span className={`typcn ${toggleClassName}`}/>
-                </div>
                 <NavLink
-                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
+                    className={`dashboard__menu__link`}
                     activeClassName="link-active"
                     to="/admin"
                     title={strings.dashboard_link_posts}>
-                    <span className="typcn typcn-document-text"/>{isOpen && strings.dashboard_link_posts}
+                    <span className="typcn typcn-document-text"/>{strings.dashboard_link_posts}
                 </NavLink>
                 <NavLink
-                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
+                    className={`dashboard__menu__link`}
                     activeClassName="link-active"
                     to="/admin/layout"
                     title={strings.dashboard_link_layout}>
-                    <span className="typcn typcn-spanner"/>{isOpen && strings.dashboard_link_layout}
+                    <span className="typcn typcn-spanner"/>{strings.dashboard_link_layout}
                 </NavLink>
                 <NavLink
-                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
+                    className={`dashboard__menu__link`}
                     activeClassName="link-active"
                     to="/admin/user"
                     title={strings.dashboard_link_user}>
-                    <span className="typcn typcn-user"/>{isOpen && strings.dashboard_link_user}
+                    <span className="typcn typcn-user"/>{strings.dashboard_link_user}
                 </NavLink>
                 <a
-                    className={`dashboard__menu__link ${!isOpen && 'link-no-text'}`}
+                    className={`dashboard__menu__link`}
                     title={strings.dashboard_logout}
                     onClick={this.handleLogout}>
-                    <span className="typcn typcn-key"/>{isOpen && strings.dashboard_logout}
+                    <span className="typcn typcn-key"/>{strings.dashboard_logout}
                 </a>
             </div>);
     }
