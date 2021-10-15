@@ -30,7 +30,7 @@ test('Draft post is not displayed on page', async t => {
     await t.expect(exists).notOk();
 });
 
-test('Post is dosplayed with its preview content', async t => {
+test('Post is displayed with its preview content', async t => {
     // Prepare
     const title = `View post #${new Date().toJSON()}`;
     const post = await homePage.UpsertPostToDb(title, 'preview-text', 'f', true, ['tag-1']);
