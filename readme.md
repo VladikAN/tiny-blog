@@ -1,8 +1,4 @@
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/vladikan/tinyblog?label=tinyblog%3Alatest&style=flat-square)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/09xyeef7ilvff8hh/branch/master?svg=true&passingText=master%20-%20OK)](https://ci.appveyor.com/project/VladikAN/tiny-blog/branch/master)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/09xyeef7ilvff8hh/branch/master?svg=true&passingText=develop%20-%20OK)](https://ci.appveyor.com/project/VladikAN/tiny-blog/branch/develop)
+[![Build status](https://ci.appveyor.com/api/projects/status/7egfdfg03r2mw8nm?svg=true)](https://ci.appveyor.com/project/VladikAN/tiny-blog)
 
 # Idea and Goals
 
