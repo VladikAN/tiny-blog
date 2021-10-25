@@ -6,10 +6,8 @@ db.users.update({ username: "admin" }, { $set: {
         passwordSalt: "y+56USuj6xTRtTa8ln5AAw==",
         isActive: true,
         isSuper: true,
-        changePassword: {
-            token: '1pnsk7ZoR0+VogyT+XzJxQ=='
-        },
-        refreshToken: '',
+        changePassword: null,
+        refresh: null,
         failedLogins: []
     }
 }, { upsert: true });

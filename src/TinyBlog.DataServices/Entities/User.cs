@@ -25,10 +25,10 @@ namespace TinyBlog.DataServices.Entities
         public bool IsSuper { get; set; }
 
         [BsonElement("changePassword")]
-        public ChangePassword ChangePassword { get; set; }
+        public SecurityToken ChangePassword { get; set; }
 
-        [BsonElement("refreshToken")]
-        public string RefreshToken { get; set; }
+        [BsonElement("refresh")]
+        public SecurityToken Refresh { get; set; }
 
         [BsonElement("failedLogins")]
         public DateTime[] FailedLogins { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using TinyBlog.DataServices.Settings;
 using TinyBlog.Web.Services;
 using TinyBlog.Web.ViewModels;
 
@@ -29,7 +30,10 @@ namespace TinyBlog.Web.Controllers.Api
                 {
                     if (!string.IsNullOrEmpty(user.RefreshToken))
                     {
-                        Response.Cookies.Append("refreshToken", user.RefreshToken, new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(1) });
+                        Response.Cookies.Append(
+                            "refreshToken",
+                            user.RefreshToken,
+                            new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(AuthConsts.JwtRefreshTokenExpiration) });
                     }
                     else
                     {
@@ -43,7 +47,7 @@ namespace TinyBlog.Web.Controllers.Api
             return StatusCode(StatusCodes.Status401Unauthorized, ApiResponseViewModel.Failed());
         }
 
-        [HttpPost, Route("refresh-token")]
+        [HttpPost, AllowAnonymous, Route("refresh-token")]
         public async Task<IActionResult> RefreshToken()
         {
             if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
@@ -54,7 +58,10 @@ namespace TinyBlog.Web.Controllers.Api
             var user = await _authService.RefreshJwt(refreshToken);
             if (user != null)
             {
-                Response.Cookies.Append("refreshToken", user.RefreshToken, new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(1) });
+                Response.Cookies.Append(
+                    "refreshToken",
+                    user.RefreshToken,
+                    new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(AuthConsts.JwtRefreshTokenExpiration) });
                 return Ok(ApiResponseViewModel.Success(user));
             }
 

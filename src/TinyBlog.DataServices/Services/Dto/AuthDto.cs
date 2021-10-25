@@ -2,40 +2,13 @@
 {
     public class AuthDto
     {
-        public AuthDto()
-        {
-        }
-
-        public AuthDto(
-            string username,
-            string email,
-            string hash,
-            string salt,
-            bool isChangePasswordRequired,
-            string changePasswordToken,
-            string refreshToken,
-            bool isLocked)
-        {
-            Username = username;
-            Email = email;
-            PasswordHash = hash;
-            PasswordSalt = salt;
-
-            ChangePasswordRequired = isChangePasswordRequired;
-            ChangePasswordToken = changePasswordToken;
-            RefreshToken = refreshToken;
-
-            IsLocked = isLocked;
-        }
-
         public string Username { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
 
-        public bool ChangePasswordRequired { get; set; }
-        public string ChangePasswordToken { get; set; }
-        public string RefreshToken { get; set; }
+        public SecurityTokenDto ChangePassword { get; set; }
+        public SecurityTokenDto Refresh { get; set; }
 
         public bool IsLocked { get; set; }
     }

@@ -32,14 +32,19 @@ namespace TinyBlog.DataServices.Services
             return user?.BuildAuthDto();
         }
 
-        public async Task<AuthDto> GetCredentialsByRefresh(string refreshToken)
+        public async Task<AuthDto> GetByRefresh(string refreshToken)
         {
-            var userQuery = await DataCollection().FindAsync(usr => usr.RefreshToken == refreshToken && usr.IsActive);
+            var now = DateTime.UtcNow;
+            var userQuery = await DataCollection().FindAsync(usr => 
+                usr.Refresh != null
+                && usr.Refresh.Token == refreshToken
+                && usr.Refresh.Expires > now
+                && usr.IsActive);
             var user = await userQuery.FirstOrDefaultAsync();
             return user?.BuildAuthDto();
         }
 
-        public async Task<bool> SaveNewCredentials(string username, string hash, string salt)
+        public async Task<bool> Save(string username, string passwordHash, string passwordSalt)
         {
             var entity = await GetByUsername(username);
             if (entity == null || !entity.IsActive)
@@ -48,8 +53,8 @@ namespace TinyBlog.DataServices.Services
             }
 
             var definition = Builders<User>.Update
-                .Set(x => x.PasswordHash, hash)
-                .Set(x => x.PasswordSalt, salt)
+                .Set(x => x.PasswordHash, passwordHash)
+                .Set(x => x.PasswordSalt, passwordSalt)
                 .Set(x => x.ChangePassword, null);
 
             var options = new UpdateOptions { IsUpsert = false };
@@ -125,14 +130,17 @@ namespace TinyBlog.DataServices.Services
                     throw new ArgumentNullException(nameof(salt));
                 }
 
-                var changePasswordToken = Guid.NewGuid().ToString("N");
-
                 definition = definition
                     .Set(x => x.Username, dto.Username)
                     .Set(x => x.IsActive, true)
                     .Set(x => x.PasswordHash, hash)
                     .Set(x => x.PasswordSalt, salt)
-                    .Set(x => x.ChangePassword, new ChangePassword { Token = changePasswordToken });
+                    .Set(x => x.ChangePassword, new SecurityToken
+                    {
+                        Token = Guid.NewGuid().ToString("N"),
+                        Expires = DateTime.UtcNow.AddMinutes(AuthConsts.ChangePasswordExpiration)
+                    })
+                    .Set(x => x.Refresh, null);
             }
 
             var options = new UpdateOptions { IsUpsert = true };
@@ -146,7 +154,11 @@ namespace TinyBlog.DataServices.Services
         {
             var user = await GetByUsername(username);
             var definition = Builders<User>.Update
-                .Set(x => x.RefreshToken, token);
+                .Set(x => x.Refresh, new SecurityToken
+                {
+                    Token = token,
+                    Expires = DateTime.UtcNow.AddMinutes(AuthConsts.JwtRefreshTokenExpiration)
+                });
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().UpdateOneAsync(pst => pst.EntityId == user.EntityId, definition, options);
@@ -159,7 +171,7 @@ namespace TinyBlog.DataServices.Services
             logins.Add(DateTime.UtcNow);
 
             var definition = Builders<User>.Update
-                .Set(x => x.FailedLogins, logins.TakeLast(5));
+                .Set(x => x.FailedLogins, logins.TakeLast(AuthConsts.FailedLoginAttempts + 1));
 
             var options = new UpdateOptions { IsUpsert = false };
             await DataCollection().UpdateOneAsync(pst => pst.EntityId == user.EntityId, definition, options);

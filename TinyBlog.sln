@@ -9,13 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.DataServices", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52FC10AF-CC53-446B-A241-F1A1FD17266B}"
 	ProjectSection(SolutionItems) = preProject
+		dev\mongo\01_setup_db.js = dev\mongo\01_setup_db.js
+		dev\mongo\02_upsert_admin.js = dev\mongo\02_upsert_admin.js
+		dev\mongo\03_insert_post.js = dev\mongo\03_insert_post.js
+		dev\mongo\04_insert_layout.js = dev\mongo\04_insert_layout.js
 		docker-compose.dev.yml = docker-compose.dev.yml
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyBlog.Tests", "tests\TinyBlog.Tests\TinyBlog.Tests.csproj", "{54D8CF6F-0BD6-4964-AEED-A36DB48C4E86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.Tests", "tests\TinyBlog.Tests\TinyBlog.Tests.csproj", "{54D8CF6F-0BD6-4964-AEED-A36DB48C4E86}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A641AADE-F267-4AFB-BEB6-9B889DB09A48}"
 EndProject
