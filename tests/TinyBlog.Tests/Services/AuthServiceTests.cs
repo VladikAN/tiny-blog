@@ -65,6 +65,7 @@ namespace TinyBlog.Tests.Services
             Assert.IsNull(result);
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
+            _userDataSerice.Verify(x => x.PutFailedLogin(credentials.Username), Times.Once);
         }
 
         [Test]
@@ -128,6 +129,7 @@ namespace TinyBlog.Tests.Services
                 .Verify(x => x.SaveNewCredentials(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
+
         [Test]
         public async Task TryChangePassword_PasswordChangeTokenMismatch_NothingIsHappen()
         {
@@ -141,6 +143,7 @@ namespace TinyBlog.Tests.Services
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
             _userDataSerice
                 .Verify(x => x.SaveNewCredentials(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            _userDataSerice.Verify(x => x.PutFailedLogin(credentials.Username), Times.Once);
         }
 
         [Test]
@@ -188,7 +191,7 @@ namespace TinyBlog.Tests.Services
         {
             // Arrange
             var model = new UserViewModel { Username = "username", Email = "new-email" };
-            var userDto = new UserDto("username", "email", true, false);
+            var userDto = new UserDto("username", "email", true, false, false);
 
             _userDataSerice
                 .Setup(x => x.Get(model.Username))
@@ -265,7 +268,7 @@ namespace TinyBlog.Tests.Services
         }
         #endregion
 
-        private AuthDto SetCredentials(bool changePassword = false, bool useDefaultPassword = false)
+        private AuthDto SetCredentials(bool changePassword = false, bool useDefaultPassword = false, bool isLocked = false)
         {
             var hash = useDefaultPassword
                 ? PasswordHash
@@ -278,7 +281,7 @@ namespace TinyBlog.Tests.Services
                 salt: PasswordSalt,
                 changePassword,
                 changePasswordToken: Guid.NewGuid().ToString("N"),
-                isLocked: false);
+                isLocked);
 
             _userDataSerice
                 .Setup(x => x.GetCredentials(credentials.Username))

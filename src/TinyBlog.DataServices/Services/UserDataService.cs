@@ -32,6 +32,13 @@ namespace TinyBlog.DataServices.Services
             return user?.BuildAuthDto();
         }
 
+        public async Task<AuthDto> GetCredentialsByRefresh(string refreshToken)
+        {
+            var userQuery = await DataCollection().FindAsync(usr => usr.RefreshToken == refreshToken && usr.IsActive);
+            var user = await userQuery.FirstOrDefaultAsync();
+            return user?.BuildAuthDto();
+        }
+
         public async Task<bool> SaveNewCredentials(string username, string hash, string salt)
         {
             var entity = await GetByUsername(username);

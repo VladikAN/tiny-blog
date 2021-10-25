@@ -20,35 +20,60 @@ namespace TinyBlog.Web.Controllers.Api
         }
 
         [HttpPost, AllowAnonymous]
-        public async Task<ApiResponseViewModel> Authorize([FromBody] AuthViewModel model)
+        public async Task<IActionResult> Authorize([FromBody] AuthViewModel model)
         {
             if (model != null && ModelState.IsValid)
             {
                 var user = await _authService.TryAuthorize(model.Username, model.Password);
                 if (user != null)
                 {
-                    Response.Cookies.Append("refreshToken", user.RefreshToken, new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(1), Secure = true });
-                    return ApiResponseViewModel.Success(user);
+                    if (!string.IsNullOrEmpty(user.RefreshToken))
+                    {
+                        Response.Cookies.Append("refreshToken", user.RefreshToken, new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(1) });
+                    }
+                    else
+                    {
+                        Response.Cookies.Delete("refreshToken");
+                    }
+                    
+                    return Ok(ApiResponseViewModel.Success(user));
                 }
             }
 
-            return ApiResponseViewModel.Failed();
+            return StatusCode(StatusCodes.Status401Unauthorized, ApiResponseViewModel.Failed());
+        }
+
+        [HttpPost, Route("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
+            {
+                return BadRequest();
+            }
+
+            var user = await _authService.TryRefreshJwt(refreshToken);
+            if (user != null)
+            {
+                Response.Cookies.Append("refreshToken", user.RefreshToken, new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(1) });
+                return Ok(ApiResponseViewModel.Success(user));
+            }
+
+            return StatusCode(StatusCodes.Status401Unauthorized, ApiResponseViewModel.Failed());
         }
 
         [HttpPost, AllowAnonymous, Route("change-password")]
-        public async Task<ApiResponseViewModel> ChangePassword([FromBody] ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordViewModel model)
         {
             if (model != null && ModelState.IsValid)
             {
                 var success = await _authService.TryChangePassword(model.Username, model.Password, model.Token);
                 if (success)
                 {
-                    return ApiResponseViewModel.Success();
+                    return Ok(ApiResponseViewModel.Success());
                 }
             }
 
-            await Task.Delay(100); // Small timeout to prevent password guess
-            return ApiResponseViewModel.Failed();
+            return StatusCode(StatusCodes.Status401Unauthorized, ApiResponseViewModel.Failed());
         }
 
         [HttpGet, Route("verify")]
