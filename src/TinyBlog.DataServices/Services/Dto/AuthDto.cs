@@ -13,6 +13,7 @@
             string salt,
             bool isChangePasswordRequired,
             string changePasswordToken,
+            string refreshToken,
             bool isLocked)
         {
             Username = username;
@@ -22,6 +23,7 @@
 
             ChangePasswordRequired = isChangePasswordRequired;
             ChangePasswordToken = changePasswordToken;
+            RefreshToken = refreshToken;
 
             IsLocked = isLocked;
         }
@@ -33,6 +35,7 @@
 
         public bool ChangePasswordRequired { get; set; }
         public string ChangePasswordToken { get; set; }
+        public string RefreshToken { get; set; }
 
         public bool IsLocked { get; set; }
     }

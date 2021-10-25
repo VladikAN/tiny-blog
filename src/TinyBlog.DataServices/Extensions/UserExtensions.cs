@@ -20,6 +20,7 @@ namespace TinyBlog.DataServices.Extensions
                 user.PasswordSalt,
                 changePasswordRequired,
                 changepasswordToken,
+                user.RefreshToken,
                 user.IsLocked());
         }
 

@@ -11,7 +11,7 @@ namespace TinyBlog.Web.ViewModels
 
         public string Username { get; set; }
         public string Token { get; set; }
-        public DateTime Expires { get; set; }
+        public DateTime? Expires { get; set; }
 
         [JsonIgnore]
         public string RefreshToken { get; set; }

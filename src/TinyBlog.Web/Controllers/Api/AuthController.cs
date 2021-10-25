@@ -51,7 +51,7 @@ namespace TinyBlog.Web.Controllers.Api
                 return BadRequest();
             }
 
-            var user = await _authService.TryRefreshJwt(refreshToken);
+            var user = await _authService.RefreshJwt(refreshToken);
             if (user != null)
             {
                 Response.Cookies.Append("refreshToken", user.RefreshToken, new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(1) });

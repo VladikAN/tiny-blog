@@ -71,7 +71,7 @@ namespace TinyBlog.Web.Services
             return null;
         }
 
-        public async Task<AuthResponseViewModel> TryRefreshJwt(string refreshToken)
+        public async Task<AuthResponseViewModel> RefreshJwt(string refreshToken)
         {
             var user = await _userDataSerice.GetCredentialsByRefresh(refreshToken);
             if (user == null || user.IsLocked)

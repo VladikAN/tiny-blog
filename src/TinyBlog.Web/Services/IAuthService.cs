@@ -6,7 +6,7 @@ namespace TinyBlog.Web.Services
     public interface IAuthService
     {
         Task<AuthResponseViewModel> TryAuthorize(string username, string password);
-        Task<AuthResponseViewModel> TryRefreshJwt(string refreshToken);
+        Task<AuthResponseViewModel> RefreshJwt(string refreshToken);
         Task<bool> TryChangePassword(string username, string password, string token);
         Task<bool> SaveUser(UserViewModel model);
     }
