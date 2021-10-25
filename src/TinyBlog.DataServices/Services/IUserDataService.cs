@@ -13,5 +13,7 @@ namespace TinyBlog.DataServices.Services
         Task<bool> SetActivity(string username, bool isActive);
         Task<bool> Delete(string username);
         Task<bool> Save(UserDto dto, string hash = null, string salt = null);
+        Task SetRefreshToken(string username, string token);
+        Task PutFailedLogin(string username);
     }
 }

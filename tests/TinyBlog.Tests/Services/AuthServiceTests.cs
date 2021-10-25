@@ -277,7 +277,8 @@ namespace TinyBlog.Tests.Services
                 hash: hash,
                 salt: PasswordSalt,
                 changePassword,
-                changePasswordToken: Guid.NewGuid().ToString("N"));
+                changePasswordToken: Guid.NewGuid().ToString("N"),
+                isLocked: false);
 
             _userDataSerice
                 .Setup(x => x.GetCredentials(credentials.Username))

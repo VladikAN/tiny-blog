@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace TinyBlog.DataServices.Entities
 {
@@ -25,5 +26,11 @@ namespace TinyBlog.DataServices.Entities
 
         [BsonElement("changePassword")]
         public ChangePassword ChangePassword { get; set; }
+
+        [BsonElement("refreshToken")]
+        public string RefreshToken { get; set; }
+
+        [BsonElement("failedLogins")]
+        public DateTime[] FailedLogins { get; set; }
     }
 }

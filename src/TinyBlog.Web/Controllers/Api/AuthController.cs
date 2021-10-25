@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using TinyBlog.Web.Services;
 using TinyBlog.Web.ViewModels;
@@ -25,11 +27,11 @@ namespace TinyBlog.Web.Controllers.Api
                 var user = await _authService.TryAuthorize(model.Username, model.Password);
                 if (user != null)
                 {
+                    Response.Cookies.Append("refreshToken", user.RefreshToken, new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(1), Secure = true });
                     return ApiResponseViewModel.Success(user);
                 }
             }
 
-            await Task.Delay(100); // Small timeout to prevent password guess
             return ApiResponseViewModel.Failed();
         }
 

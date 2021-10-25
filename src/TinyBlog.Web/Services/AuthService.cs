@@ -43,13 +43,10 @@ namespace TinyBlog.Web.Services
             }
 
             var hashed = GetHash(password, user.PasswordSalt);
-            var success = user.PasswordHash.Equals(hashed, StringComparison.Ordinal);
-            _logger.LogInformation(success
-                ? $"Successful attempt to authorize with '{username}'"
-                : $"Failed attempt to authorize with '{username}'. Wrong password");
-            
+            var success = !user.IsLocked && user.PasswordHash.Equals(hashed, StringComparison.Ordinal);
             if (success)
             {
+                _logger.LogInformation($"Successful attempt to authorize with '{username}'");
                 if (user.ChangePasswordRequired)
                 {
                     _logger.LogInformation($"User {username} promted to change current password");
@@ -57,7 +54,15 @@ namespace TinyBlog.Web.Services
                 }
 
                 var token = GetToken(user);
-                return AuthResponseViewModel.Authorized(username, token);
+                var refreshToken = Guid.NewGuid().ToString("N");
+                await _userDataSerice.SetRefreshToken(username, refreshToken);
+
+                return AuthResponseViewModel.Authorized(username, token, refreshToken);
+            }
+            else
+            {
+                _logger.LogWarning($"Failed attempt to authorize with '{username}'. Wrong password or user is locked");
+                await _userDataSerice.PutFailedLogin(username);
             }
             
             return null;
@@ -122,7 +127,7 @@ namespace TinyBlog.Web.Services
                     new Claim(ClaimTypes.Name, auth.Username),
                     new Claim(ClaimTypes.Email, auth.Email)
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

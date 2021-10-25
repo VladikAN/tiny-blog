@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Entities;
@@ -132,6 +133,29 @@ namespace TinyBlog.DataServices.Services
             _logger.LogInformation($"User {dto.Username} was saved");
 
             return true;
+        }
+
+        public async Task SetRefreshToken(string username, string token)
+        {
+            var user = await GetByUsername(username);
+            var definition = Builders<User>.Update
+                .Set(x => x.RefreshToken, token);
+
+            var options = new UpdateOptions { IsUpsert = false };
+            await DataCollection().UpdateOneAsync(pst => pst.EntityId == user.EntityId, definition, options);
+        }
+        
+        public async Task PutFailedLogin(string username)
+        {
+            var user = await GetByUsername(username);
+            var logins = new List<DateTime>(user.FailedLogins ?? new DateTime[0]);
+            logins.Add(DateTime.UtcNow);
+
+            var definition = Builders<User>.Update
+                .Set(x => x.FailedLogins, logins.TakeLast(5));
+
+            var options = new UpdateOptions { IsUpsert = false };
+            await DataCollection().UpdateOneAsync(pst => pst.EntityId == user.EntityId, definition, options);
         }
 
         private async Task<User> GetByUsername(string username)

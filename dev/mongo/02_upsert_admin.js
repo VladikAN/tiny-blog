@@ -8,6 +8,8 @@ db.users.update({ username: "admin" }, { $set: {
         isSuper: true,
         changePassword: {
             token: '1pnsk7ZoR0+VogyT+XzJxQ=='
-        }
+        },
+        refreshToken: '',
+        failedLogins: []
     }
 }, { upsert: true });

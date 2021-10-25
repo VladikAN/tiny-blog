@@ -12,7 +12,8 @@
             string hash,
             string salt,
             bool isChangePasswordRequired,
-            string changePasswordToken)
+            string changePasswordToken,
+            bool isLocked)
         {
             Username = username;
             Email = email;
@@ -21,6 +22,8 @@
 
             ChangePasswordRequired = isChangePasswordRequired;
             ChangePasswordToken = changePasswordToken;
+
+            IsLocked = isLocked;
         }
 
         public string Username { get; set; }
@@ -30,5 +33,7 @@
 
         public bool ChangePasswordRequired { get; set; }
         public string ChangePasswordToken { get; set; }
+
+        public bool IsLocked { get; set; }
     }
 }
