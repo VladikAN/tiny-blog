@@ -1,5 +1,5 @@
 ﻿# Build image definition
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS builder
 
 ## install nodejs with npm
 RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
@@ -12,15 +12,19 @@ COPY . .
 
 RUN dotnet restore -v=m
 RUN dotnet test -c=Release --no-restore
+
+WORKDIR \src\TinyBlog.Web
+RUN npm install
+RUN npm run release
 RUN dotnet publish \
     -c=Release \
     -o=$(pwd)/publish/web \
-    -f=net5.0 \
+    -f=net6.0 \
     --no-restore \
     src/TinyBlog.Web/TinyBlog.Web.csproj
 
 # Runtime image definition
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 LABEL maintainer="https://github.com/vladikan/tiny-blog"
 
 WORKDIR /app

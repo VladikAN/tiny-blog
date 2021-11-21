@@ -1,15 +1,15 @@
 # common
-.vs/
-.idea/
-.git/
+.vs
+.idea
+.git
 
 # dotnet
-**/bin/
-**/obj/
+*/bin
+*/obj
 *.csproj.user
 
 # frontend
-**/node_modules/
-**/wwwroot/css/
-**/wwwroot/fonts/
-**/wwwroot/js/
+*/node_modules
+*/wwwroot/css
+*/wwwroot/fonts
+*/wwwroot/js

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.Web", "src\TinyBlog.Web\TinyBlog.Web.csproj", "{D94A7687-4A75-4F6A-A84A-9F180E1B822F}"
 EndProject
@@ -9,10 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.DataServices", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52FC10AF-CC53-446B-A241-F1A1FD17266B}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
 		dev\mongo\01_setup_db.js = dev\mongo\01_setup_db.js
 		dev\mongo\02_upsert_admin.js = dev\mongo\02_upsert_admin.js
 		dev\mongo\03_insert_post.js = dev\mongo\03_insert_post.js
 		dev\mongo\04_insert_layout.js = dev\mongo\04_insert_layout.js
+		appveyor.yml = appveyor.yml
 		docker-compose.dev.yml = docker-compose.dev.yml
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
