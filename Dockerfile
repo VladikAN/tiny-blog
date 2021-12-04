@@ -1,21 +1,12 @@
-﻿# Build image definition
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS builder
+﻿#
+# NET build container
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS netbuilder
 
-## install nodejs with npm
-RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
-	&& bash nodesource_setup.sh \
-	&& apt-get install -y nodejs
-
-## restore & publish dotnet app
 WORKDIR /src
 COPY . .
 
 RUN dotnet restore -v=m
 RUN dotnet test -c=Release --no-restore
-
-WORKDIR \src\TinyBlog.Web
-RUN npm install
-RUN npm run release
 RUN dotnet publish \
     -c=Release \
     -o=$(pwd)/publish/web \
@@ -23,12 +14,24 @@ RUN dotnet publish \
     --no-restore \
     src/TinyBlog.Web/TinyBlog.Web.csproj
 
+#
+# NODE build container
+FROM node:14 as nodebuilder
+
+WORKDIR /src
+COPY src/TinyBlog.Web . 
+
+RUN npm install
+RUN npm run release
+
+#
 # Runtime image definition
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 LABEL maintainer="https://github.com/vladikan/tiny-blog"
 
 WORKDIR /app
-COPY --from=builder /src/publish/web .
+COPY --from=netbuilder /src/publish/web .
+COPY --from=nodebuilder /src/wwwroot/ .
 
 ENV ASPNETCORE_ENVIRONMENT="Production" \
     ASPNETCORE_URLS="http://+:80"
