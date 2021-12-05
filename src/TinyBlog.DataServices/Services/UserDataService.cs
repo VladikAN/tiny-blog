@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Entities;
@@ -31,7 +32,19 @@ namespace TinyBlog.DataServices.Services
             return user?.BuildAuthDto();
         }
 
-        public async Task<bool> SaveNewCredentials(string username, string hash, string salt)
+        public async Task<AuthDto> GetByRefresh(string refreshToken)
+        {
+            var now = DateTime.UtcNow;
+            var userQuery = await DataCollection().FindAsync(usr => 
+                usr.Refresh != null
+                && usr.Refresh.Token == refreshToken
+                && usr.Refresh.Expires > now
+                && usr.IsActive);
+            var user = await userQuery.FirstOrDefaultAsync();
+            return user?.BuildAuthDto();
+        }
+
+        public async Task<bool> Save(string username, string passwordHash, string passwordSalt)
         {
             var entity = await GetByUsername(username);
             if (entity == null || !entity.IsActive)
@@ -40,8 +53,8 @@ namespace TinyBlog.DataServices.Services
             }
 
             var definition = Builders<User>.Update
-                .Set(x => x.PasswordHash, hash)
-                .Set(x => x.PasswordSalt, salt)
+                .Set(x => x.PasswordHash, passwordHash)
+                .Set(x => x.PasswordSalt, passwordSalt)
                 .Set(x => x.ChangePassword, null);
 
             var options = new UpdateOptions { IsUpsert = false };
@@ -117,14 +130,17 @@ namespace TinyBlog.DataServices.Services
                     throw new ArgumentNullException(nameof(salt));
                 }
 
-                var changePasswordToken = Guid.NewGuid().ToString("N");
-
                 definition = definition
                     .Set(x => x.Username, dto.Username)
                     .Set(x => x.IsActive, true)
                     .Set(x => x.PasswordHash, hash)
                     .Set(x => x.PasswordSalt, salt)
-                    .Set(x => x.ChangePassword, new ChangePassword { Token = changePasswordToken });
+                    .Set(x => x.ChangePassword, new SecurityToken
+                    {
+                        Token = Guid.NewGuid().ToString("N"),
+                        Expires = DateTime.UtcNow.AddMinutes(AuthConsts.ChangePasswordExpiration)
+                    })
+                    .Set(x => x.Refresh, null);
             }
 
             var options = new UpdateOptions { IsUpsert = true };
@@ -132,6 +148,33 @@ namespace TinyBlog.DataServices.Services
             _logger.LogInformation($"User {dto.Username} was saved");
 
             return true;
+        }
+
+        public async Task SetRefreshToken(string username, string token)
+        {
+            var user = await GetByUsername(username);
+            var definition = Builders<User>.Update
+                .Set(x => x.Refresh, new SecurityToken
+                {
+                    Token = token,
+                    Expires = DateTime.UtcNow.AddMinutes(AuthConsts.JwtRefreshTokenExpiration)
+                });
+
+            var options = new UpdateOptions { IsUpsert = false };
+            await DataCollection().UpdateOneAsync(pst => pst.EntityId == user.EntityId, definition, options);
+        }
+        
+        public async Task PutFailedLogin(string username)
+        {
+            var user = await GetByUsername(username);
+            var logins = new List<DateTime>(user.FailedLogins ?? new DateTime[0]);
+            logins.Add(DateTime.UtcNow);
+
+            var definition = Builders<User>.Update
+                .Set(x => x.FailedLogins, logins.TakeLast(AuthConsts.FailedLoginAttempts + 1));
+
+            var options = new UpdateOptions { IsUpsert = false };
+            await DataCollection().UpdateOneAsync(pst => pst.EntityId == user.EntityId, definition, options);
         }
 
         private async Task<User> GetByUsername(string username)

@@ -16,7 +16,8 @@ namespace TinyBlog.Tests.Services
     {
         private const string DefaultPassword = "password";
         private const string PasswordHash = "MCweguHdWAupai7MloFR9xOKFsio4C7n4Wgj6dEMC10=";
-        private readonly string PasswordSalt = "cGFzc3dvcmQtc2FsdA==";
+        private const string PasswordSalt = "cGFzc3dvcmQtc2FsdA==";
+        private const string RefreshToken = "unique-refresh-token";
 
         private Mock<IEmailService> _emailService;
         private Mock<IUserDataService> _userDataSerice;
@@ -43,6 +44,13 @@ namespace TinyBlog.Tests.Services
                 new Mock<ILogger<AuthService>>().Object);
         }
 
+        [TearDown]
+        public void Down()
+        {
+            _emailService.VerifyNoOtherCalls();
+            _userDataSerice.VerifyNoOtherCalls();
+        }
+
         #region TryAuthorize
         [Test]
         public async Task TryAuthorize_UserIsUnknown_NothingIsHappen()
@@ -65,6 +73,7 @@ namespace TinyBlog.Tests.Services
             Assert.IsNull(result);
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
+            _userDataSerice.Verify(x => x.PutFailedLogin(credentials.Username), Times.Once);
         }
 
         [Test]
@@ -78,9 +87,12 @@ namespace TinyBlog.Tests.Services
             Assert.IsNotNull(result);
             Assert.AreEqual(credentials.Username, result.Username);
             Assert.IsNotNull(result.Token);
+            Assert.IsNotNull(result.RefreshToken);
+            Assert.IsNotNull(result.Expires);
             Assert.IsNull(result.PasswordToken);
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
+            _userDataSerice.Verify(x => x.SetRefreshToken(credentials.Username, It.IsAny<string>()), Times.Once);
         }
 
         [Test]
@@ -94,7 +106,7 @@ namespace TinyBlog.Tests.Services
             Assert.IsNotNull(result);
             Assert.AreEqual(credentials.Username, result.Username);
             Assert.IsNull(result.Token);
-            Assert.AreEqual(credentials.ChangePasswordToken, result.PasswordToken);
+            Assert.AreEqual(credentials.ChangePassword.Token, result.PasswordToken);
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
         }
@@ -110,7 +122,7 @@ namespace TinyBlog.Tests.Services
 
             _userDataSerice.Verify(x => x.GetCredentials("username"), Times.Once);
             _userDataSerice
-                .Verify(x => x.SaveNewCredentials(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+                .Verify(x => x.Save(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [Test]
@@ -125,8 +137,10 @@ namespace TinyBlog.Tests.Services
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
             _userDataSerice
-                .Verify(x => x.SaveNewCredentials(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+                .Verify(x => x.Save(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            _userDataSerice.Verify(x => x.PutFailedLogin(credentials.Username), Times.Once);
         }
+
 
         [Test]
         public async Task TryChangePassword_PasswordChangeTokenMismatch_NothingIsHappen()
@@ -140,7 +154,8 @@ namespace TinyBlog.Tests.Services
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
             _userDataSerice
-                .Verify(x => x.SaveNewCredentials(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+                .Verify(x => x.Save(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            _userDataSerice.Verify(x => x.PutFailedLogin(credentials.Username), Times.Once);
         }
 
         [Test]
@@ -150,16 +165,16 @@ namespace TinyBlog.Tests.Services
             var credentials = SetCredentials(changePassword: true);
 
             _userDataSerice
-                .Setup(x => x.SaveNewCredentials(credentials.Username, It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.Save(credentials.Username, It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(false);
 
             // Act & Assert
-            var result = await _target.TryChangePassword(credentials.Username, DefaultPassword, credentials.ChangePasswordToken);
+            var result = await _target.TryChangePassword(credentials.Username, DefaultPassword, credentials.ChangePassword.Token);
             Assert.IsFalse(result);
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
             _userDataSerice
-                .Verify(x => x.SaveNewCredentials(credentials.Username, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                .Verify(x => x.Save(credentials.Username, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Test]
@@ -169,16 +184,16 @@ namespace TinyBlog.Tests.Services
             var credentials = SetCredentials(changePassword: true);
 
             _userDataSerice
-                .Setup(x => x.SaveNewCredentials(credentials.Username, It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(x => x.Save(credentials.Username, It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
 
             // Act & Assert
-            var result = await _target.TryChangePassword(credentials.Username, DefaultPassword, credentials.ChangePasswordToken);
+            var result = await _target.TryChangePassword(credentials.Username, DefaultPassword, credentials.ChangePassword.Token);
             Assert.IsTrue(result);
 
             _userDataSerice.Verify(x => x.GetCredentials(credentials.Username), Times.Once);
             _userDataSerice
-                .Verify(x => x.SaveNewCredentials(credentials.Username, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                .Verify(x => x.Save(credentials.Username, It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
         #endregion
 
@@ -188,7 +203,7 @@ namespace TinyBlog.Tests.Services
         {
             // Arrange
             var model = new UserViewModel { Username = "username", Email = "new-email" };
-            var userDto = new UserDto("username", "email", true, false);
+            var userDto = new UserDto("username", "email", true, false, false);
 
             _userDataSerice
                 .Setup(x => x.Get(model.Username))
@@ -265,22 +280,74 @@ namespace TinyBlog.Tests.Services
         }
         #endregion
 
-        private AuthDto SetCredentials(bool changePassword = false, bool useDefaultPassword = false)
+        #region RefreshJwt
+        [Test]
+        public async Task RefreshJwt_UserIsUnknown_NothingIsHappen()
+        {
+            // Act & Assert
+            var result = await _target.RefreshJwt(RefreshToken);
+            Assert.IsNull(result);
+
+            _userDataSerice.Verify(x => x.GetByRefresh(RefreshToken), Times.Once);
+        }
+
+        [Test]
+        public async Task RefreshJwt_UserIsLocked_NothingIsHappen()
+        {
+            // Arrange
+            SetCredentials(isLocked: true);
+
+            // Act & Assert
+            var result = await _target.RefreshJwt(RefreshToken);
+            Assert.IsNull(result);
+
+            _userDataSerice.Verify(x => x.GetByRefresh(RefreshToken), Times.Once);
+        }
+
+        [Test]
+        public async Task RefreshJwt_UserIsKnown_TokenRefreshed()
+        {
+            // Arrange
+            var credentials = SetCredentials();
+
+            // Act & Assert
+            var result = await _target.RefreshJwt(RefreshToken);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(credentials.Username, result.Username);
+            Assert.IsNotNull(result.Token);
+            Assert.IsNotNull(result.RefreshToken);
+            Assert.IsNotNull(result.Expires);
+            Assert.IsNull(result.PasswordToken);
+
+            _userDataSerice.Verify(x => x.GetByRefresh(RefreshToken), Times.Once);
+            _userDataSerice.Verify(x => x.SetRefreshToken(credentials.Username, It.IsAny<string>()), Times.Once);
+        }
+        #endregion
+
+        private AuthDto SetCredentials(bool changePassword = false, bool useDefaultPassword = false, bool isLocked = false)
         {
             var hash = useDefaultPassword
                 ? PasswordHash
                 : Guid.NewGuid().ToString("N");
 
-            var credentials = new AuthDto(
-                $"username-{Guid.NewGuid().ToString("N")}",
-                $"email-{Guid.NewGuid().ToString("N")}",
-                hash: hash,
-                salt: PasswordSalt,
-                changePassword,
-                changePasswordToken: Guid.NewGuid().ToString("N"));
+            var credentials = new AuthDto
+            {
+                Username = $"username-{Guid.NewGuid().ToString("N")}",
+                Email = $"email-{Guid.NewGuid().ToString("N")}",
+                PasswordHash = hash,
+                PasswordSalt = PasswordSalt,
+                ChangePassword = changePassword
+                    ? new SecurityTokenDto(Guid.NewGuid().ToString("N"), DateTime.UtcNow.AddDays(1))
+                    : null,
+                Refresh = new SecurityTokenDto(RefreshToken, DateTime.UtcNow.AddDays(1)),
+                IsLocked = isLocked
+            };
 
             _userDataSerice
                 .Setup(x => x.GetCredentials(credentials.Username))
+                .ReturnsAsync(credentials);
+            _userDataSerice
+                .Setup(x => x.GetByRefresh(RefreshToken))
                 .ReturnsAsync(credentials);
 
             return credentials;

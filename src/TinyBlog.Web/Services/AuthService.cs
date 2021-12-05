@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TinyBlog.DataServices.Services;
 using TinyBlog.DataServices.Services.Dto;
+using TinyBlog.DataServices.Settings;
 using TinyBlog.Web.Configuration.Settings;
 using TinyBlog.Web.ViewModels;
 
@@ -36,7 +37,7 @@ namespace TinyBlog.Web.Services
         public async Task<AuthResponseViewModel> TryAuthorize(string username, string password)
         {
             var user = await _userDataSerice.GetCredentials(username);
-            if (user == null)
+            if (user == null || user.IsLocked)
             {
                 _logger.LogInformation($"Failed attempt to authorize with '{username}'. User was not found or not active.");
                 return null;
@@ -44,42 +45,69 @@ namespace TinyBlog.Web.Services
 
             var hashed = GetHash(password, user.PasswordSalt);
             var success = user.PasswordHash.Equals(hashed, StringComparison.Ordinal);
-            _logger.LogInformation(success
-                ? $"Successful attempt to authorize with '{username}'"
-                : $"Failed attempt to authorize with '{username}'. Wrong password");
-            
             if (success)
             {
-                if (user.ChangePasswordRequired)
+                _logger.LogInformation($"Successful attempt to authorize with '{username}'");
+                if (user.ChangePassword != null)
                 {
                     _logger.LogInformation($"User {username} promted to change current password");
-                    return AuthResponseViewModel.ChangePassword(username, user.ChangePasswordToken);
+                    return AuthResponseViewModel.ChangePassword(username, user.ChangePassword.Token);
                 }
 
-                var token = GetToken(user);
-                return AuthResponseViewModel.Authorized(username, token);
+                var jwtExpiration = DateTime.UtcNow.AddMinutes(AuthConsts.JwtTokenExpiration);
+                var jwtToken = GetToken(user, jwtExpiration);
+                var refreshToken = Guid.NewGuid().ToString("N");
+                await _userDataSerice.SetRefreshToken(username, refreshToken);
+
+                return AuthResponseViewModel.Authorized(username, jwtToken, refreshToken, jwtExpiration);
+            }
+            else
+            {
+                _logger.LogWarning($"Failed attempt to authorize with '{username}'. Wrong password");
+                await _userDataSerice.PutFailedLogin(username);
             }
             
             return null;
         }
 
+        public async Task<AuthResponseViewModel> RefreshJwt(string refreshToken)
+        {
+            var user = await _userDataSerice.GetByRefresh(refreshToken);
+            if (user == null || user.IsLocked)
+            {
+                _logger.LogInformation($"Failed attempt to refresh JWT. User was not found or not active or token expired.");
+                return null;
+            }
+
+            var jwtExpiration = DateTime.UtcNow.AddMinutes(AuthConsts.JwtTokenExpiration);
+            var jwtToken = GetToken(user, jwtExpiration);
+            var newToken = Guid.NewGuid().ToString("N");
+            await _userDataSerice.SetRefreshToken(user.Username, newToken);
+
+            return AuthResponseViewModel.Authorized(user.Username, jwtToken, newToken, jwtExpiration);
+        }
+
         public async Task<bool> TryChangePassword(string username, string password, string token)
         {
             var user = await _userDataSerice.GetCredentials(username);
-            if (user == null)
+            if (user == null || user.IsLocked)
             {
                 _logger.LogInformation($"Failed attempt to change password for '{username}'. User was not found or not active.");
                 return false;
             }
 
-            if (user.ChangePasswordRequired && user.ChangePasswordToken == token)
+            if (user.ChangePassword != null
+                && !user.ChangePassword.IsExpired
+                && user.ChangePassword.Token.Equals(token, StringComparison.Ordinal))
             {
                 var salt = GetSalt();
                 var hash = GetHash(password, salt);
-                return await _userDataSerice.SaveNewCredentials(username, hash, salt);
+                return await _userDataSerice.Save(username, hash, salt);
             }
 
-            _logger.LogInformation($"Requested for password change but it is not allowed for user ${username}");
+            _logger.LogInformation($"Requested for password change is not allowed for user ${username}");
+            await _userDataSerice.PutFailedLogin(username);
+
             return false;
         }
 
@@ -110,7 +138,7 @@ namespace TinyBlog.Web.Services
             return created;
         }
 
-        private string GetToken(AuthDto auth)
+        private string GetToken(AuthDto auth, DateTime expires)
         {
             var key = Encoding.UTF8.GetBytes(_authSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -122,7 +150,7 @@ namespace TinyBlog.Web.Services
                     new Claim(ClaimTypes.Name, auth.Username),
                     new Claim(ClaimTypes.Email, auth.Email)
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = expires,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
