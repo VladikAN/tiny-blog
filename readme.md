@@ -15,8 +15,6 @@ Everything is written with mantra 'keep it simple' in mind. All parts of code is
 
 Backend part of the application is written on C# by using latest released dotnet core. Database communication is made by using official MongoDb driver.
 
-Also supporting: [Azure Key Vault](https://azure.microsoft.com/en-in/services/key-vault/) and [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview).
-
 ### Frontend
 
 Frontend part of the code is presented by:

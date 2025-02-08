@@ -16,7 +16,6 @@
   "repository": "https://github.com/vladikan/tiny-blog.git",
   "license": "ISC",
   "dependencies": {
-    "jwt-decode": "^2.2.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-localization": "^1.0.17",
