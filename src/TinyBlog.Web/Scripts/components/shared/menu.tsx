@@ -37,28 +37,28 @@ class Menu extends React.Component<AllProps, State> {
         return (
             <div className="dashboard__menu">
                 <NavLink
-                    className={`dashboard__menu__link`}
+                    className={'dashboard__menu__link'}
                     activeClassName="link-active"
                     to="/admin"
                     title={strings.dashboard_link_posts}>
                     <span className="typcn typcn-document-text"/>{strings.dashboard_link_posts}
                 </NavLink>
                 <NavLink
-                    className={`dashboard__menu__link`}
+                    className={'dashboard__menu__link'}
                     activeClassName="link-active"
                     to="/admin/layout"
                     title={strings.dashboard_link_layout}>
                     <span className="typcn typcn-spanner"/>{strings.dashboard_link_layout}
                 </NavLink>
                 <NavLink
-                    className={`dashboard__menu__link`}
+                    className={'dashboard__menu__link'}
                     activeClassName="link-active"
                     to="/admin/user"
                     title={strings.dashboard_link_user}>
                     <span className="typcn typcn-user"/>{strings.dashboard_link_user}
                 </NavLink>
                 <a
-                    className={`dashboard__menu__link`}
+                    className={'dashboard__menu__link'}
                     title={strings.dashboard_logout}
                     onClick={this.handleLogout}>
                     <span className="typcn typcn-key"/>{strings.dashboard_logout}
