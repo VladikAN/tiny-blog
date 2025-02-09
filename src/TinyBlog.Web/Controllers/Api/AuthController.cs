@@ -10,7 +10,6 @@ namespace TinyBlog.Web.Controllers.Api
     [ApiController, Route("api/auth")]
     public class AuthController : Controller
     {
-        private const int PenaltyMs = 1000;
         private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
@@ -26,12 +25,11 @@ namespace TinyBlog.Web.Controllers.Api
                 var user = await _authService.TryAuthorize(model.Username, model.Password);
                 if (user != null)
                 {
-                    Response.Headers.Authorization = user.Token;
-                    return ApiResponseViewModel.Success();
+                    return ApiResponseViewModel.Success(user);
                 }
             }
 
-            await Task.Delay(PenaltyMs); // Small timeout to prevent password guess
+            await Task.Delay(100); // Small timeout to prevent password guess
             return ApiResponseViewModel.Failed();
         }
 
@@ -47,7 +45,7 @@ namespace TinyBlog.Web.Controllers.Api
                 }
             }
 
-            await Task.Delay(PenaltyMs); // Small timeout to prevent password guess
+            await Task.Delay(100); // Small timeout to prevent password guess
             return ApiResponseViewModel.Failed();
         }
 

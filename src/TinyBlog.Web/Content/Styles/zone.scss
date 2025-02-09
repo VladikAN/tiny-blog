@@ -1,4 +1,4 @@
-@import 'variables.scss';
+@use 'variables.scss';
 
 .zone {
     border-radius: 5px;
@@ -9,11 +9,11 @@
     margin: 20px 0;
 
     &.zone-success {
-        background-color: $successColor;
+        background-color: variables.$successColor;
     }
 
     &.zone-danger {
-        background-color: $dangerColor;
+        background-color: variables.$dangerColor;
     }
 
     .zone__text {

@@ -1,8 +1,12 @@
+import { getJwtToken } from './jwt';
+
 export const http = <T>(request: RequestInfo): Promise<T> => {
+    const token = getJwtToken();
     const merged = new Request(request, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',
             'X-Requested-With': 'XMLHttpRequest'
         }
     });
@@ -15,7 +19,7 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
                 } else {
                     if (response.headers.has('content-length')
                         && response.headers.get('content-length') == '0') {
-                        resolve(undefined);
+                        resolve();
                     } else {
                         resolve(response.json());
                     }

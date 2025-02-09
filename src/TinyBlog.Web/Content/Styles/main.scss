@@ -1,4 +1,4 @@
-﻿@import 'variables.scss';
+﻿@use 'variables.scss';
 
 * {
     box-sizing: border-box;
@@ -15,7 +15,7 @@ html {
 }
 
 body {
-    background-color: $backgroundColor;
+    background-color: variables.$backgroundColor;
     color: #818181;
     font-family: "Open Sans",sans-serif;
     font-size: 1rem;
@@ -39,17 +39,17 @@ button {
     text-transform: capitalize;
 
     &.btn-login {
-        background-color: $brandColor;
+        background-color: variables.$brandColor;
         color: #fff;
     }
 
     &.btn-success {
-        background-color: $successColorBtn;
+        background-color: variables.$successColorBtn;
         color: #fff;
     }
 
     &.btn-danger {
-        background-color: $dangerColorBtn;
+        background-color: variables.$dangerColorBtn;
         color: #fff;
     }
     
@@ -60,7 +60,7 @@ button {
 
 a {
     cursor: pointer;
-    color: $linkColor;
+    color: variables.$linkColor;
     text-decoration: underline;
 }
 
@@ -117,14 +117,14 @@ a.site-title {
 }
 
 .header {
-    background-color: $brandColor;
+    background-color: variables.$brandColor;
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
 
     .header__body {
-        width: $contentWidth;
+        width: variables.$contentWidth;
         margin: 0 auto;
 
         font-size: 130%;
@@ -156,8 +156,8 @@ a.site-title {
     height: 100%;
 
     .content {
-        background-color: $contentBackColor;
-        width: $contentWidth;
+        background-color: variables.$contentBackColor;
+        width: variables.$contentWidth;
         margin: 3rem auto 0;
         flex: 1 0 auto;
         padding: 5px;
@@ -166,14 +166,14 @@ a.site-title {
     }
 
     .footer {
-        background-color: $brandColor;
+        background-color: variables.$brandColor;
         color: #dcdcdc;
         flex: 0 0 auto;
 
         .footer__body {
             font-size: 100%;
             text-align: center;
-            width: $contentWidth;
+            width: variables.$contentWidth;
             margin: 0 auto;
             padding: 12px 0;
         }
@@ -249,14 +249,14 @@ a.site-title {
         text-decoration: none;
 
         &:hover {
-            box-shadow: 0 1px 2px rgba($linkColor, .6);
+            box-shadow: 0 1px 2px rgba(variables.$linkColor, .6);
             transition: box-shadow 0.2s ease-in-out;
         }
     }
 }
 
 .action {
-    color: $linkColor;
+    color: variables.$linkColor;
     font-size: 1.5rem;
     padding-left: 10px;
 
