@@ -29,8 +29,3 @@ services:
       - WEB_Smtp__Username
       - WEB_Smtp__Password
       - WEB_Smtp__FromEmail
-
-      - WEB_KeyVault__Enabled
-      - WEB_KeyVault__Vault
-      - WEB_KeyVault__ClientId
-      - WEB_KeyVault__ClientSecret

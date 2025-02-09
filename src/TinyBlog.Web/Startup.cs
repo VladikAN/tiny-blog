@@ -18,11 +18,10 @@ namespace TinyBlog.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddLogs(_configuration)
                 .ConfigureForwardedHeaders()
                 .AddAppHeathCheck(_configuration)
                 .AddServices(_configuration)
-                .AddApplicationInsights(_configuration)
-                .AddDataProtection(_configuration)
                 .AddResponseCompression(options => options.EnableForHttps = true)
                 .AddJwtAuthentication(_configuration)
                 .AddMvcWithFilters(_configuration);

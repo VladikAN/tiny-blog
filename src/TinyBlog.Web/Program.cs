@@ -1,6 +1,5 @@
 ﻿using TinyBlog.Web.Configuration;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 
@@ -13,7 +12,6 @@ namespace TinyBlog.Web
             var host = WebHost
                 .CreateDefaultBuilder(args)
                 .UseCustomConfiguration()
-                .UseCustomSerilog()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>();

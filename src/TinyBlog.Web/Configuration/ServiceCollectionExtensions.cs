@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using TinyBlog.DataServices.Services;
 using TinyBlog.DataServices.Settings;
 using TinyBlog.Web.Configuration.Settings;
@@ -42,8 +43,24 @@ namespace TinyBlog.Web.Configuration
             
             return services
                 .AddHealthChecks()
-                .AddMongoDb(connectionString, databaseName, name: "database-health-check")
                 .Services;
+        }
+
+        public static IServiceCollection AddLogs(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSerilog((context, loggerConfiguration) =>
+            {
+                loggerConfiguration
+                    .ReadFrom.Configuration(configuration);
+            });
+            
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddSerilog(dispose: true);
+            });
+
+            return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
@@ -82,42 +99,6 @@ namespace TinyBlog.Web.Configuration
                     var defaultCacheProfile = new CacheProfile { Location = ResponseCacheLocation.Any, Duration = siteSettings.DefaultCacheDuration, NoStore = siteSettings.DefaultCacheDuration <= 0 };
                     options.CacheProfiles.Add("Default", defaultCacheProfile);
                 });
-
-            return services;
-        }
-
-        public static IServiceCollection AddApplicationInsights(this IServiceCollection services, IConfiguration configuration)
-        {
-            var settings = new ApplicationInsightsSettings(configuration);
-            if (settings.Enabled)
-            {
-                services
-                    .AddApplicationInsightsTelemetry(settings.Key);
-            }
-
-            return services;
-        }
-
-        public static IServiceCollection AddDataProtection(this IServiceCollection services, IConfiguration configuration)
-        {
-            var protectionSettings = new DataProtectionSettings(configuration);
-            if (protectionSettings.Enabled)
-            {
-                var protection = services
-                    .AddDataProtection()
-                    .PersistKeysToAzureBlobStorage(protectionSettings.BlobUriWithSas);
-
-                var vaultSettings = new KeyVaultSettings(configuration);
-                if (vaultSettings.Enabled)
-                {
-                    protection.ProtectKeysWithAzureKeyVault(
-                        protectionSettings.VaultKeyIdentifier,
-                        vaultSettings.ClientId,
-                        vaultSettings.ClientSecret);
-                }
-
-                return protection.Services;
-            }
 
             return services;
         }
