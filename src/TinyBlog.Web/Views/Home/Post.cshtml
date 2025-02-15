@@ -9,7 +9,7 @@
 <span class="date-upper">@Model.PublishedAt.ToString("MMM yyyy")</span>
 
 <div class="markdown">
-    @Html.Markdown(Model.FullText)
+    <markdown markdown="@Model.FullText"/>
 </div>
 
 @if (Model.Tags != null || Model.Tags.Length > 0)

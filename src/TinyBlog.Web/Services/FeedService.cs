@@ -1,19 +1,18 @@
-﻿using MarkdownSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using Markdig;
 using TinyBlog.DataServices.Services;
 
 namespace TinyBlog.Web.Services
 {
     public class FeedService : IFeedService
     {
-        private static readonly Markdown MarkdownTransformer = new Markdown();
-
         private readonly IPostDataService _postDataService;
         private readonly ILayoutDataService _layoutDataService;
+        private readonly MarkdownPipeline _pipeline;
 
         public FeedService(
             IPostDataService postDataService,
@@ -21,6 +20,10 @@ namespace TinyBlog.Web.Services
         {
             _postDataService = postDataService;
             _layoutDataService = siteSettings;
+            
+            _pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .Build();
         }
 
         public async Task<Atom10FeedFormatter> BuildFeed()
@@ -66,8 +69,7 @@ namespace TinyBlog.Web.Services
 
         private string RenderText(string markdown)
         {
-            var html = MarkdownTransformer.Transform(markdown);
-            return html;
+            return Markdown.ToHtml(markdown, _pipeline);
         }
     }
 }
