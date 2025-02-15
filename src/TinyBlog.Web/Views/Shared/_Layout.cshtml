@@ -31,6 +31,9 @@
 
     <title>@fullTitle</title>
     <link rel="stylesheet" asp-href-include="~/css/*.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
     @{await Html.RenderPartialAsync("_GoogleTagsBody", ViewData); }
@@ -46,7 +49,9 @@
         <div class="content">
             @if (!isAdmin && !string.IsNullOrWhiteSpace(header))
             {
-                <div class="content__header">@Html.Markdown(header)</div>
+                <div class="content__header">
+                    <markdown markdown="@header"/>
+                </div>
             }
 
             @RenderBody()
@@ -56,12 +61,13 @@
         {
             <div class="footer">
                 <div class="footer__body">
-                    @Html.Markdown(footer)
+                    <markdown markdown="@footer"/>
                 </div>
             </div>
         }
     </div>
 
+    <script>hljs.highlightAll();</script>
     @RenderSection("scripts", false)
 </body>
 </html>

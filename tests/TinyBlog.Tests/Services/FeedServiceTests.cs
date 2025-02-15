@@ -62,8 +62,8 @@ namespace TinyBlog.Tests.Services
             var layout = BuildLayout();
             var posts = new[]
             {
-                new PostDto { Tags = new[] { "t1", "t2" }, PublishedAt = DateTime.UtcNow },
-                new PostDto { Tags = new[] { "t2", "t3" }, PublishedAt = DateTime.UtcNow }
+                new PostDto { Tags = new[] { "t1", "t2" }, PreviewText = "preview", FullText = "full", LinkText = "link-1", PublishedAt = DateTime.UtcNow },
+                new PostDto { Tags = new[] { "t2", "t3" }, PreviewText = "preview", FullText = "full", LinkText = "link-1", PublishedAt = DateTime.UtcNow }
             };
 
             _layoutDataService
