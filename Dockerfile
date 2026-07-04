@@ -12,6 +12,7 @@ COPY . .
 
 RUN dotnet restore -v=m
 RUN dotnet test -c=Release --no-restore
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 RUN dotnet publish \
     -c=Release \
     -o=$(pwd)/publish/web \
