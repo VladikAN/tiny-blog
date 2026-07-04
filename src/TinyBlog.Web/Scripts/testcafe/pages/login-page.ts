@@ -13,10 +13,10 @@ export default class LoginPage {
     private userService: UserService;
 
     public constructor() {
-        this.form = Selector('div.login form');
-        this.inpUsername = this.form.find('input[type=text][name=username]');
-        this.inpPassword = this.form.find('input[type=password][name=password]');
-        this.inpConfirmPassword = this.form.find('input[type=password][name=confirmPassword]');
+        this.form = Selector('form');
+        this.inpUsername = this.form.find('input[name=username]');
+        this.inpPassword = this.form.find('input[name=password]');
+        this.inpConfirmPassword = this.form.find('input[name=confirmPassword]');
         this.btnSubmit = this.form.find('button[type=submit]');
 
         this.userService = new UserService();
@@ -45,6 +45,7 @@ export default class LoginPage {
         const username = 'default-admin';
         await this.UpsertUserToDB(username, false, true);
         await this.Login(username, DefaultPassword);
+        await t.expect(Selector('.ant-layout-sider').exists).ok({ timeout: 10000 });
     }
 
     public async Login(username: string, password: string): Promise<void> {
@@ -54,7 +55,7 @@ export default class LoginPage {
             .click(this.btnSubmit);
     }
 
-    public async UpsertUserToDB(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
+    public async UpsertUserToDB(username: string, requestPasswordChange = false, isActive = true): Promise<UserDomain> {
         return await this.userService.UpsertUser(username, requestPasswordChange, isActive);
     }
 

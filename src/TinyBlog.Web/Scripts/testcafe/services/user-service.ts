@@ -1,9 +1,9 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { User, UserDomain } from '../types/user';
 import { MongoConnection, DefaultPasswordHash, DefaultPasswordSalt, EmailDomain } from '../constants';
 
 export default class UserService {
-    public async UpsertUser(username: string, requestPasswordChange: boolean = false, isActive: boolean = true): Promise<UserDomain> {
+    public async UpsertUser(username: string, requestPasswordChange = false, isActive = true): Promise<UserDomain> {
         await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
         let record = await User.findOne({ username: username });

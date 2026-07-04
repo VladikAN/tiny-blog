@@ -3,7 +3,7 @@ import { Layout } from './types';
 import { GetLayoutUrl, SaveLayoutUrl } from '../../api/urls';
 import { http } from '../../api/http';
 import { requestFailedCreator } from '../shared/actions';
-import { toastr } from 'react-redux-toastr';
+import { notifyError, notifySuccess } from '../../utils/notification';
 import { strings } from '../../localization';
 
 /* Messages */
@@ -55,7 +55,7 @@ export const getLayout = () => async (dispatch: Dispatch): Promise<void> => {
         dispatch(getLayoutCompletedCreator(response));
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -70,12 +70,12 @@ export const saveLayout = (layout: Layout) => async (dispatch: Dispatch): Promis
     return await http<{isSuccess: boolean}>(request).then(response => {
         dispatch(saveLayoutCompletedCreator(response.isSuccess, layout));
         if (response.isSuccess) {
-            toastr.success(strings.layout_operation_title, strings.layout_save_response_success);
+            notifySuccess(strings.layout_operation_title, strings.layout_save_response_success);
         } else {
-            toastr.error(strings.layout_operation_title, strings.layout_save_response_failed);
+            notifyError(strings.layout_operation_title, strings.layout_save_response_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };

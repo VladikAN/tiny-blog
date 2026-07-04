@@ -43,7 +43,7 @@ export class Login extends React.Component<AllProps> {
         }
 
         return <LoginForm />;
-    };
+    }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({

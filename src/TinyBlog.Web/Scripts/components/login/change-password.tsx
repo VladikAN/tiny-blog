@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Button, Card, Form, Input } from 'antd';
 import { changePassword } from './../../store/login/actions';
 import { strings } from '../../localization';
 import { AuthState } from '../../store/login/reducers';
 import { AppState } from '../../store';
-import { toastr } from 'react-redux-toastr';
+import { notifyError } from '../../utils/notification';
 
 interface StateProps {
     auth: AuthState;
@@ -47,7 +48,7 @@ export class ChangePassword extends React.Component<AllProps, State> {
         }
 
         if (password != confirmPassword) {
-            toastr.error(strings.change_password_operation_title, strings.change_password_confirm_not_matched);
+            notifyError(strings.change_password_operation_title, strings.change_password_confirm_not_matched);
             return;
         }
 
@@ -55,16 +56,14 @@ export class ChangePassword extends React.Component<AllProps, State> {
     };
 
     public render(): React.ReactNode {
-        const {isFetching} = this.props.auth;
+        const { isFetching } = this.props.auth;
 
         return (
-            <div className="login">
-                <form onSubmit={this.handleSubmit}>
-                    <div className="login__password">
-                        <label>
-                            <span>{strings.change_password_label}</span>
-                            <input
-                                type="password"
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+                <Card title={strings.change_password_button} style={{ width: 400 }}>
+                    <Form layout="vertical" onSubmitCapture={this.handleSubmit}>
+                        <Form.Item label={strings.change_password_label}>
+                            <Input.Password
                                 autoComplete="off"
                                 autoFocus
                                 required={true}
@@ -73,13 +72,9 @@ export class ChangePassword extends React.Component<AllProps, State> {
                                 placeholder={strings.change_password_placeholder}
                                 value={this.state.password}
                                 onChange={this.handleChange} />
-                        </label>
-                    </div>
-                    <div className="login__password">
-                        <label>
-                            <span>{strings.confirm_password_label}</span>
-                            <input
-                                type="password"
+                        </Form.Item>
+                        <Form.Item label={strings.confirm_password_label}>
+                            <Input.Password
                                 autoComplete="off"
                                 required={true}
                                 minLength={6}
@@ -87,17 +82,16 @@ export class ChangePassword extends React.Component<AllProps, State> {
                                 placeholder={strings.confirm_password_placeholder}
                                 value={this.state.confirmPassword}
                                 onChange={this.handleChange} />
-                        </label>
-                    </div>
-                    <div className="login__buttons">
-                        <button
-                            className="btn-login"
-                            disabled={isFetching}
-                            type="submit">{strings.change_password_button}</button>
-                    </div>
-                </form>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" block loading={isFetching}>
+                                {strings.change_password_button}
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Card>
             </div>);
-    };
+    }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({

@@ -3,7 +3,7 @@ import { Post } from './../post/types';
 import { http } from './../../api/http';
 import { LoadThreadUrl } from './../../api/urls';
 import { requestFailedCreator } from '../shared/actions';
-import { toastr } from 'react-redux-toastr';
+import { notifyError } from '../../utils/notification';
 import { strings } from '../../localization';
 
 /* Messages */
@@ -35,6 +35,6 @@ export const loadThread = () => async (dispatch: Dispatch): Promise<void> => {
         dispatch(loadThreadActionCreator(response.posts));
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };

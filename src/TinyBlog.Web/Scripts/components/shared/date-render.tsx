@@ -29,7 +29,7 @@ export default class DateRender extends React.Component<AllProps> {
             return null;
         }
 
-        let converted = new Date(date);
+        const converted = new Date(date);
         return (<span>{months[converted.getMonth()]} {converted.getFullYear()}</span>);
     }
 }

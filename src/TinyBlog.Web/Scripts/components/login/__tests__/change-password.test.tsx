@@ -1,6 +1,13 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { ConfigProvider } from 'antd';
 import { ChangePassword, AllProps } from '../change-password';
+
+const renderForm = (props: AllProps) => render(
+    <ConfigProvider>
+        <ChangePassword {...props} />
+    </ConfigProvider>
+);
 
 describe('<ChangePassword />', () => {
     const defaultProps: AllProps = {
@@ -14,81 +21,47 @@ describe('<ChangePassword />', () => {
     };
 
     it('should render change password form with input', () => {
-        const wrapper = shallow(<ChangePassword {...defaultProps} />);
-        expect(wrapper.exists('form input[type=\'password\'][name=\'password\']')).toBeTruthy();
-        expect(wrapper.exists('form input[type=\'password\'][name=\'confirmPassword\']')).toBeTruthy();
-        expect(wrapper.exists('form button[type=\'submit\']')).toBeTruthy();
-    });
-
-    it('update password state on input change', () => {
-        const wrapper = shallow(<ChangePassword {...defaultProps} />);
-        wrapper
-            .find('form input[type=\'password\'][name=\'password\']')
-            .simulate('change', { currentTarget: { name: 'password', value: 'my-password' } });
-        expect(wrapper.state('password')).toEqual('my-password');
-        expect(wrapper.state('confirmPassword')).toEqual('');
-    });
-
-    it('update confirm password state on input change', () => {
-        const wrapper = shallow(<ChangePassword {...defaultProps} />);
-        wrapper
-            .find('form input[type=\'password\'][name=\'confirmPassword\']')
-            .simulate('change', { currentTarget: { name: 'confirmPassword', value: 'my-password' } });
-        expect(wrapper.state('password')).toEqual('');
-        expect(wrapper.state('confirmPassword')).toEqual('my-password');
+        renderForm(defaultProps);
+        expect(document.querySelector('input[name="password"]')).toBeTruthy();
+        expect(document.querySelector('input[name="confirmPassword"]')).toBeTruthy();
     });
 
     it('call for change password on submit', () => {
         const changePassword = jest.fn();
-        const props = {...defaultProps, changePassword};
-        const wrapper = shallow(<ChangePassword {...props} />);
+        renderForm({ ...defaultProps, changePassword });
 
-        wrapper.setState({password: 'my-password', confirmPassword: 'my-password'});
-        wrapper
-            .find('form')
-            .simulate('submit', { preventDefault: jest.fn() });
+        fireEvent.change(document.querySelector('input[name="password"]')!, {
+            target: { name: 'password', value: 'my-password' }
+        });
+        fireEvent.change(document.querySelector('input[name="confirmPassword"]')!, {
+            target: { name: 'confirmPassword', value: 'my-password' }
+        });
+        fireEvent.click(screen.getByRole('button', { name: /change password/i }));
 
         expect(changePassword.mock.calls.length).toEqual(1);
-        expect(changePassword.mock.calls[0][0]).toEqual(props.auth.username);
+        expect(changePassword.mock.calls[0][0]).toEqual(defaultProps.auth.username);
         expect(changePassword.mock.calls[0][1]).toEqual('my-password');
-        expect(changePassword.mock.calls[0][2]).toEqual(props.auth.passwordToken);
+        expect(changePassword.mock.calls[0][2]).toEqual(defaultProps.auth.passwordToken);
     });
 
     it('can\'t submit empty password', () => {
         const changePassword = jest.fn();
-        const props = {...defaultProps, changePassword};
-        const wrapper = shallow(<ChangePassword {...props} />);
-
-        wrapper.setState({password: ''});
-        wrapper
-            .find('form')
-            .simulate('submit', { preventDefault: jest.fn() });
-
-        expect(changePassword.mock.calls.length).toEqual(0);
-    });
-
-    it('can\'t submit empty confirm password', () => {
-        const changePassword = jest.fn();
-        const props = {...defaultProps, changePassword};
-        const wrapper = shallow(<ChangePassword {...props} />);
-
-        wrapper.setState({password: 'my-password', confirmPassword: ''});
-        wrapper
-            .find('form')
-            .simulate('submit', { preventDefault: jest.fn() });
-
+        renderForm({ ...defaultProps, changePassword });
+        fireEvent.click(screen.getByRole('button', { name: /change password/i }));
         expect(changePassword.mock.calls.length).toEqual(0);
     });
 
     it('can\'t submit password which is not matched', () => {
         const changePassword = jest.fn();
-        const props = {...defaultProps, changePassword};
-        const wrapper = shallow(<ChangePassword {...props} />);
+        renderForm({ ...defaultProps, changePassword });
 
-        wrapper.setState({password: 'my-password', confirmPassword: 'wrong-password'});
-        wrapper
-            .find('form')
-            .simulate('submit', { preventDefault: jest.fn() });
+        fireEvent.change(document.querySelector('input[name="password"]')!, {
+            target: { name: 'password', value: 'my-password' }
+        });
+        fireEvent.change(document.querySelector('input[name="confirmPassword"]')!, {
+            target: { name: 'confirmPassword', value: 'wrong-password' }
+        });
+        fireEvent.click(screen.getByRole('button', { name: /change password/i }));
 
         expect(changePassword.mock.calls.length).toEqual(0);
     });

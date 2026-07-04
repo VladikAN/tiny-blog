@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Alert, Button } from 'antd';
 
 export enum ZoneType {
     success,
@@ -19,29 +20,24 @@ type AllProps = OwnProps & DispatchProps;
 
 class Zone extends React.Component<AllProps> {
     public render(): React.ReactNode {
-        const { type, text, buttonText } = this.props;
-        const className = type == ZoneType.success
-            ? 'zone-success'
-            : 'zone-danger';
-        const btnClassName = type == ZoneType.success
-            ? 'btn-success'
-            : 'btn-danger';
+        const { type, text, buttonText, onClick } = this.props;
+        const alertType = type == ZoneType.success ? 'success' : 'error';
 
         return (
-            <div className={`zone ${className}`}>
-                <div className="zone__text">
-                    {text}
-                </div>
-                <div className="zone__button">
-                    <button
-                        className={btnClassName}
-                        type="button"
-                        onClick={this.props.onClick}>
+            <Alert
+                style={{ marginTop: 16 }}
+                type={alertType}
+                message={text}
+                action={
+                    <Button
+                        danger={type == ZoneType.danger}
+                        type={type == ZoneType.success ? 'primary' : 'default'}
+                        onClick={onClick}>
                         {buttonText}
-                    </button>
-                </div>
-            </div>);
-    };
+                    </Button>
+                }
+            />);
+    }
 }
 
 export default Zone;

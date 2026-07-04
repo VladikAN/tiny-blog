@@ -1,6 +1,6 @@
 import LocalizedStrings, { LocalizedStringsMethods } from 'react-localization';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 interface Strings extends LocalizedStringsMethods {
     login_username: string;
     login_password: string;
@@ -119,7 +119,7 @@ interface Strings extends LocalizedStringsMethods {
 
     shared_server_error_title: string;
     shared_server_error_msg: string;
-};
+}
 
 export const strings: Strings = new LocalizedStrings({
     en: {
@@ -242,4 +242,4 @@ export const strings: Strings = new LocalizedStrings({
         shared_server_error_msg: 'Server responded with error'
     }
 });
-/* eslint-enable @typescript-eslint/camelcase */
+/* eslint-enable @typescript-eslint/naming-convention */

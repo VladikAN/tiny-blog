@@ -1,6 +1,13 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { ConfigProvider } from 'antd';
 import { LoginForm, AllProps } from '../login-form';
+
+const renderForm = (props: AllProps) => render(
+    <ConfigProvider>
+        <LoginForm {...props} />
+    </ConfigProvider>
+);
 
 describe('<LoginForm />', () => {
     const defaultProps: AllProps = {
@@ -8,41 +15,23 @@ describe('<LoginForm />', () => {
     };
 
     it('should render login form with username and password inputs', () => {
-        const wrapper = shallow(<LoginForm {...defaultProps} />);
-        const username = wrapper.find('form input[type=\'text\'][name=\'username\']');
-        const password = wrapper.find('form input[type=\'password\'][name=\'password\']');
-        const submit = wrapper.find('form button[type=\'submit\']');
-
-        expect(username).toHaveLength(1);
-        expect(password).toHaveLength(1);
-        expect(submit).toHaveLength(1);
-    });
-
-    it('update username state on input change', () => {
-        const wrapper = shallow(<LoginForm {...defaultProps} />);
-        const input = wrapper.find('form input[type=\'text\'][name=\'username\']');
-
-        input.simulate('change', { currentTarget: { name: 'username', value: 'my-name' } });
-
-        expect(wrapper.state('username')).toEqual('my-name');
-    });
-
-    it('update password state on input change', () => {
-        const wrapper = shallow(<LoginForm {...defaultProps} />);
-        const input = wrapper.find('form input[type=\'password\'][name=\'password\']');
-
-        input.simulate('change', { currentTarget: { name: 'password', value: 'my-password' } });
-
-        expect(wrapper.state('password')).toEqual('my-password');
+        renderForm(defaultProps);
+        expect(document.querySelector('input[name="username"]')).toBeTruthy();
+        expect(document.querySelector('input[name="password"]')).toBeTruthy();
+        expect(screen.getByRole('button', { name: /sign in/i })).toBeTruthy();
     });
 
     it('call for authorize with username/password from state', () => {
         const authCredentials = jest.fn();
-        const props = {...defaultProps, authCredentials};
-        const wrapper = shallow(<LoginForm {...props} />);
+        renderForm({ ...defaultProps, authCredentials });
 
-        wrapper.setState({username: 'my-name', password: 'my-password'});
-        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+        fireEvent.change(document.querySelector('input[name="username"]')!, {
+            target: { name: 'username', value: 'my-name' }
+        });
+        fireEvent.change(document.querySelector('input[name="password"]')!, {
+            target: { name: 'password', value: 'my-password' }
+        });
+        fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
 
         expect(authCredentials.mock.calls.length).toEqual(1);
         expect(authCredentials.mock.calls[0][0]).toEqual('my-name');

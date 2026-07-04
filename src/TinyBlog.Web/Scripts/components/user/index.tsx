@@ -2,12 +2,22 @@ import * as React from 'react';
 import { AppState } from '../../store';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Button, Input, Modal, Space, Table, Typography } from 'antd';
+import {
+    CheckOutlined,
+    CloseOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    ThunderboltOutlined,
+    UserAddOutlined
+} from '@ant-design/icons';
 import Loading from '../shared/loading';
 import { strings } from '../../localization';
 import { UsersState } from '../../store/user/reducers';
 import { getUsers, saveUser, activateUser, deactivateUser, deleteUser } from '../../store/user/actions';
-import ActionButton from '../shared/action-button';
 import { User } from '../../store/user/types';
+
+const { Title } = Typography;
 
 interface StateProps extends UsersState {
     username: string;
@@ -86,17 +96,22 @@ export class Users extends React.Component<AllProps, State> {
 
     private handleActivity(user: User): void {
         const message = user.isActive ? strings.user_form_deactivate_confirm : strings.user_form_activate_confirm;
-        if (confirm(message)) {
-            user.isActive
-                ? this.props.deactivateUser(user.username)
-                : this.props.activateUser(user.username);
-        }
+        Modal.confirm({
+            title: message,
+            onOk: () => {
+                user.isActive
+                    ? this.props.deactivateUser(user.username)
+                    : this.props.activateUser(user.username);
+            }
+        });
     }
 
     private handleDelete(user: User): void {
-        if (confirm(strings.user_form_delete_confirm)) {
-            this.props.deleteUser(user.username);
-        }
+        Modal.confirm({
+            title: strings.user_form_delete_confirm,
+            okType: 'danger',
+            onOk: () => this.props.deleteUser(user.username)
+        });
     }
 
     public render(): React.ReactNode {
@@ -105,99 +120,124 @@ export class Users extends React.Component<AllProps, State> {
         }
 
         const { mode, rawUsername, rawEmail } = this.state;
-        let users = [...this.props.users];
+        const users = [...this.props.users];
         if (mode == RowMode.Create) {
             const rawUser: User = { username: rawUsername, email: rawEmail, isActive: true };
             users.unshift(rawUser);
         }
 
-        const lines = users.map((usr, index) => {
-            const activityClass = usr.isActive
-                ? 'typcn-flash-outline'
-                : 'typcn-flash';
-            const activityTitle = usr.isActive
-                ? strings.user_form_deactivate_action
-                : strings.user_form_activate_action;
-            const isUnderEdit = mode != RowMode.None && (index == 0 || usr.username == rawUsername);
-            const isLimited = usr.username == this.props.username || usr.isSuper;
+        const columns = [
+            {
+                title: strings.user_form_username_title,
+                dataIndex: 'username',
+                key: 'username',
+                render: (value: string, record: User, index: number) => {
+                    const isUnderEdit = mode != RowMode.None && (index == 0 || record.username == rawUsername);
+                    if (isUnderEdit && mode == RowMode.Create) {
+                        return (
+                            <Input
+                                type="text"
+                                autoFocus
+                                name="rawUsername"
+                                onChange={this.handleChange}
+                                value={rawUsername} />
+                        );
+                    }
+                    return value;
+                }
+            },
+            {
+                title: strings.user_form_email_title,
+                dataIndex: 'email',
+                key: 'email',
+                render: (value: string, record: User, index: number) => {
+                    const isUnderEdit = mode != RowMode.None && (index == 0 || record.username == rawUsername);
+                    if (isUnderEdit) {
+                        return (
+                            <Input
+                                type="text"
+                                name="rawEmail"
+                                onChange={this.handleChange}
+                                value={rawEmail} />
+                        );
+                    }
+                    return value;
+                }
+            },
+            {
+                title: '',
+                key: 'actions',
+                width: 160,
+                render: (_: unknown, record: User, index: number) => {
+                    const isUnderEdit = mode != RowMode.None && (index == 0 || record.username == rawUsername);
+                    const isLimited = record.username == this.props.username || record.isSuper;
 
-            return (
-                <tr key={usr.username}>
-                    <td className="entities__prop">
-                        {isUnderEdit && mode == RowMode.Create && <input
-                            type="text"
-                            autoFocus
-                            name="rawUsername"
-                            onChange={this.handleChange}
-                            value={rawUsername} />}
-                        {(!isUnderEdit || mode != RowMode.Create) && usr.username}
-                    </td>
-                    <td className="entities__prop">
-                        {isUnderEdit && <input
-                            type="text"
-                            name="rawEmail"
-                            onChange={this.handleChange}
-                            value={rawEmail} />}
-                        {!isUnderEdit && usr.email}
-                    </td>
-                    <td className="entities__actions">
-                        {!isUnderEdit &&
-                            <React.Fragment>
-                                <ActionButton
-                                    className="typcn typcn-edit"
-                                    title={strings.user_form_edit_action}
-                                    onClick={() => this.handleEdit(usr)} />
-                                {!isLimited && <ActionButton
-                                    className={`typcn ${activityClass}`}
-                                    title={activityTitle}
-                                    onClick={() => this.handleActivity(usr)} />}
-                                {!isLimited && <ActionButton
-                                    className="typcn typcn-trash"
-                                    title={strings.user_form_delete_action}
-                                    onClick={() => this.handleDelete(usr)} /> }
-                            </React.Fragment> }
-                        {isUnderEdit &&
-                            <React.Fragment>
-                                <ActionButton
-                                    className="typcn typcn-tick"
+                    if (isUnderEdit) {
+                        return (
+                            <Space>
+                                <Button
+                                    type="text"
+                                    icon={<CheckOutlined />}
                                     title={strings.user_form_save_action}
                                     onClick={this.handleConfirmedAdd} />
-                                <ActionButton
-                                    className="typcn typcn-times"
+                                <Button
+                                    type="text"
+                                    icon={<CloseOutlined />}
                                     title={strings.user_form_cancel_action}
                                     onClick={this.handleCanceledAdd} />
-                            </React.Fragment> }
-                    </td>
-                </tr>);
-        });
+                            </Space>
+                        );
+                    }
+
+                    return (
+                        <Space>
+                            <Button
+                                type="text"
+                                icon={<EditOutlined />}
+                                title={strings.user_form_edit_action}
+                                onClick={() => this.handleEdit(record)} />
+                            {!isLimited && (
+                                <Button
+                                    type="text"
+                                    icon={<ThunderboltOutlined />}
+                                    title={record.isActive
+                                        ? strings.user_form_deactivate_action
+                                        : strings.user_form_activate_action}
+                                    onClick={() => this.handleActivity(record)} />
+                            )}
+                            {!isLimited && (
+                                <Button
+                                    type="text"
+                                    danger
+                                    icon={<DeleteOutlined />}
+                                    title={strings.user_form_delete_action}
+                                    onClick={() => this.handleDelete(record)} />
+                            )}
+                        </Space>
+                    );
+                }
+            }
+        ];
 
         return (
             <div>
-                <h1>{strings.user_page_title}</h1>
+                <Title level={2}>{strings.user_page_title}</Title>
 
-                <div className="controls">
-                    <div className="controls__btn">
-                        <ActionButton
-                            className="typcn typcn-user-add"
-                            title={strings.user_form_add_action}
-                            text={strings.user_form_add_action}
-                            onClick={this.handleAdd}>
-                        </ActionButton>
-                    </div>
+                <div style={{ marginBottom: 16, textAlign: 'right' }}>
+                    <Button
+                        type="primary"
+                        icon={<UserAddOutlined />}
+                        onClick={this.handleAdd}>
+                        {strings.user_form_add_action}
+                    </Button>
                 </div>
 
-                <table className="entities">
-                    <thead>
-                        <tr>
-                            <th className="entities__prop">{strings.user_form_username_title}</th>
-                            <th className="entities__prop">{strings.user_form_email_title}</th>
-                            <th className="entities__actions"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {lines}
-                    </tbody>
-                </table>
+                <Table
+                    dataSource={users}
+                    columns={columns}
+                    rowKey="username"
+                    pagination={false}
+                />
             </div>);
     }
 }

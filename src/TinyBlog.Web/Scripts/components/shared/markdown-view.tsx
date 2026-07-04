@@ -15,7 +15,7 @@ class MarkdownView extends React.Component<AllProps> {
             <div className="markdown">
                 <Markdown markup={text || ''} />
             </div>);
-    };
+    }
 }
 
 export default MarkdownView;

@@ -5,9 +5,10 @@ import { PostState } from '../../store/post/reducers';
 import { AppState } from '../../store';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Button, Form, Input } from 'antd';
 import Loading from '../shared/loading';
 import MarkdownEditor from '../shared/markdown-editor';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { strings } from '../../localization';
 import ZonePostPublish from '../shared/zone-post-publish';
 import ZonePostDelete from '../shared/zone-post-delete';
@@ -93,73 +94,57 @@ export class Post extends React.Component<AllProps, State> {
 
         return (
             <div>
-                <NavLink to="/admin">{strings.post_link_back}</NavLink>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="editor-field">
-                        <label>
-                            <span>{strings.post_form_title}</span>
-                            <input
-                                required={true}
-                                type="text"
-                                name="title"
-                                value={title}
-                                onChange={this.handleChange} />
-                        </label>
-                    </div>
-                    <div className="editor-field">
-                        <label>
-                            <span>{strings.post_form_link}</span>
-                            <input
-                                required={true}
-                                type="text"
-                                name="linkText"
-                                disabled={isPublished}
-                                value={linkText}
-                                onChange={this.handleChange} />
-                            <span className="editor-field__help">{strings.post_form_link_description}</span>
-                        </label>
-                    </div>
-                    <div className="editor-field">
-                        <span>{strings.post_form_previewText}</span>
+                <Link to="/admin">{strings.post_link_back}</Link>
+                <Form layout="vertical" onSubmitCapture={this.handleSubmit} style={{ marginTop: 16 }}>
+                    <Form.Item label={strings.post_form_title}>
+                        <Input
+                            required={true}
+                            type="text"
+                            name="title"
+                            value={title}
+                            onChange={this.handleChange} />
+                    </Form.Item>
+                    <Form.Item label={strings.post_form_link} extra={strings.post_form_link_description}>
+                        <Input
+                            required={true}
+                            type="text"
+                            name="linkText"
+                            disabled={isPublished}
+                            value={linkText}
+                            onChange={this.handleChange} />
+                    </Form.Item>
+                    <Form.Item label={strings.post_form_previewText}>
                         <MarkdownEditor
                             name="previewText"
                             text={previewText}
                             onChange={this.handleMdChange} />
-                    </div>
-                    <div className="editor-field">
-                        <span>{strings.post_form_fullText}</span>
+                    </Form.Item>
+                    <Form.Item label={strings.post_form_fullText}>
                         <MarkdownEditor
                             name="fullText"
                             text={fullText}
                             onChange={this.handleMdChange} />
-                    </div>
-                    <div className="editor-field">
-                        <label>
-                            <span>{strings.post_form_tags}</span>
-                            <input
-                                type="text"
-                                name="tags"
-                                value={tags}
-                                pattern="([\w\d]*[\w\d\- ]*?)*"
-                                onChange={this.handleChange} />
-                        </label>
-                        <span className="editor-field__help">{strings.post_form_tags_description}</span>
-                    </div>
+                    </Form.Item>
+                    <Form.Item label={strings.post_form_tags} extra={strings.post_form_tags_description}>
+                        <Input
+                            type="text"
+                            name="tags"
+                            value={tags}
+                            pattern="([\w\d]*[\w\d\- ]*?)*"
+                            onChange={this.handleChange} />
+                    </Form.Item>
 
-                    <div className="align-right">
-                        <button
-                            className="btn-success"
-                            type="submit"
-                            disabled={isSaving}>
+                    <Form.Item style={{ textAlign: 'right' }}>
+                        <Button type="primary" htmlType="submit" loading={isSaving}>
                             {strings.post_form_save}
-                        </button>
-                    </div>
-                </form>
+                        </Button>
+                    </Form.Item>
+                </Form>
 
                 {isEdit && <ZonePostPublish id={id} isPublished={isPublished} />}
                 {isEdit && !isPublished && <ZonePostDelete id={id} />}
             </div>);
-    };
+    }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({

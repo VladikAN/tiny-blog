@@ -3,7 +3,7 @@ import { dropJwtToken, setJwtToken, getUsername } from './../../api/jwt';
 import { http } from './../../api/http';
 import { Action, Dispatch } from 'redux';
 import { requestFailedCreator } from '../shared/actions';
-import { toastr } from 'react-redux-toastr';
+import { notifyError, notifySuccess } from '../../utils/notification';
 import { strings } from '../../localization';
 
 /* Messages */
@@ -100,7 +100,7 @@ export const changePassword = (username: string, password: string, token: string
     return await http(request).then(
         () => {
             dispatch(changePasswordCompletedCreator());
-            toastr.success(strings.change_password_operation_title, strings.change_password_operation_success);
+            notifySuccess(strings.change_password_operation_title, strings.change_password_operation_success);
         },
         () => { dispatch(changePasswordFailedCreator()); });
 };
@@ -123,7 +123,7 @@ export const authCredentials = (username: string, password: string) => async (di
             dispatch(authSuccessCreator(payload.username, payload.passwordToken));
         } else {
             dispatch(authFailedCreator());
-            toastr.error(strings.login_invalid_creds_title, strings.login_invalid_creds_msg);
+            notifyError(strings.login_invalid_creds_title, strings.login_invalid_creds_msg);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));

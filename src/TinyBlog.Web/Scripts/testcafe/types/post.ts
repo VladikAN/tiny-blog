@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 export interface PostDomain extends mongoose.Document {
     title: string;

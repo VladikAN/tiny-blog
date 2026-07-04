@@ -1,52 +1,59 @@
 import * as React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { ConfigProvider, Modal } from 'antd';
 import { ZonePostDelete, AllProps } from '../zone-post-delete';
-import { mount } from 'enzyme';
 import { strings } from '../../../localization';
 
+const renderZone = (props: AllProps) => render(
+    <ConfigProvider>
+        <ZonePostDelete {...props} />
+    </ConfigProvider>
+);
+
 describe('<ZonePostDelete />', () => {
-    let confirmMock:jest.Mock = null;
+    let modalConfirm: jest.SpyInstance;
+
     beforeEach(() => {
-        confirmMock = jest.fn();
-        window.confirm = confirmMock;
+        modalConfirm = jest.spyOn(Modal, 'confirm').mockImplementation(() => ({ destroy: jest.fn(), update: jest.fn() }));
+    });
+
+    afterEach(() => {
+        modalConfirm.mockRestore();
     });
 
     const defaultProps: AllProps = { id: '1', deletePost: jest.fn() };
 
-    it ('should render description and action button for delete zone', () => {
-        const wrapper = mount(<ZonePostDelete {...defaultProps} />);
-        expect(wrapper.find('.zone__text').text()).toEqual(strings.post_zone_delete_description);
-        expect(wrapper.find('.zone__button button').text()).toEqual(strings.post_zone_delete_button);
+    it('should render description and action button for delete zone', () => {
+        renderZone(defaultProps);
+        expect(screen.getByText(strings.post_zone_delete_description)).toBeTruthy();
+        expect(screen.getByRole('button', { name: strings.post_zone_delete_button })).toBeTruthy();
     });
 
-    it ('should show confirmation on delete attempt', () => {
-        const wrapper = mount(<ZonePostDelete {...defaultProps} />);
-        wrapper.find('.zone__button button').simulate('click');
-        expect(confirmMock.mock.calls).toHaveLength(1);
-        expect(confirmMock.mock.calls[0][0]).toEqual(strings.post_zone_delete_confirm);
+    it('should show confirmation on delete attempt', () => {
+        renderZone(defaultProps);
+        fireEvent.click(screen.getByRole('button', { name: strings.post_zone_delete_button }));
+        expect(modalConfirm.mock.calls).toHaveLength(1);
+        expect(modalConfirm.mock.calls[0][0].title).toEqual(strings.post_zone_delete_confirm);
     });
 
-    it ('should not call dispatch on rejected confirmation to delete', () => {
+    it('should not call dispatch on rejected confirmation to delete', () => {
         const deletePostMock = jest.fn();
-        confirmMock = jest.fn(() => false);
-        window.confirm = confirmMock;
-
-        const props = {...defaultProps, deletePost: deletePostMock };
-        const wrapper = mount(<ZonePostDelete {...props } />);
-        wrapper.find('.zone__button button').simulate('click');
-
+        renderZone({ ...defaultProps, deletePost: deletePostMock });
+        fireEvent.click(screen.getByRole('button', { name: strings.post_zone_delete_button }));
         expect(deletePostMock.mock.calls).toHaveLength(0);
     });
 
-    it ('should call dispatch on confirm to delete', () => {
+    it('should call dispatch on confirm to delete', () => {
         const deletePostMock = jest.fn();
-        confirmMock = jest.fn(() => true);
-        window.confirm = confirmMock;
+        modalConfirm.mockImplementation(({ onOk }) => {
+            onOk?.();
+            return { destroy: jest.fn(), update: jest.fn() };
+        });
 
-        const props = {...defaultProps, deletePost: deletePostMock };
-        const wrapper = mount(<ZonePostDelete {...props } />);
-        wrapper.find('.zone__button button').simulate('click');
+        renderZone({ ...defaultProps, deletePost: deletePostMock });
+        fireEvent.click(screen.getByRole('button', { name: strings.post_zone_delete_button }));
 
         expect(deletePostMock.mock.calls).toHaveLength(1);
-        expect(deletePostMock.mock.calls[0][0]).toEqual(props.id);
+        expect(deletePostMock.mock.calls[0][0]).toEqual('1');
     });
 });

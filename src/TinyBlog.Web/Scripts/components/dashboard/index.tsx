@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
+import { Button, Empty, Typography } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { AppState } from '../../store';
 import { ThreadState } from '../../store/thread/reducers';
 import { loadThread } from '../../store/thread/actions';
 import Post from './../shared/post';
 import Loading from './../shared/loading';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { strings } from '../../localization';
+
+const { Title } = Typography;
 
 interface StateProps extends ThreadState {}
 
@@ -31,25 +35,25 @@ class Dashboard extends React.Component<AllProps> {
 
         const posts = this.props.posts.length > 0
             ? this.props.posts.map(ps => (<Post key={ps.linkText} {...ps} /> ))
-            : <div className="thread__no-records">{strings.dashboard_no_records}</div>;
+            : <Empty description={strings.dashboard_no_records} />;
 
         return (
             <React.Fragment>
-                <div className="controls">
-                    <div className="controls__btn">
-                        <NavLink to="/admin/post">
-                            <span className="typcn typcn-document-add"></span>&nbsp;{strings.dashboard_add}
-                        </NavLink>
-                    </div>
+                <div style={{ marginBottom: 16, textAlign: 'right' }}>
+                    <Link to="/admin/post">
+                        <Button type="primary" icon={<PlusOutlined />}>
+                            {strings.dashboard_add}
+                        </Button>
+                    </Link>
                 </div>
 
-                <h1>{strings.post_page_title}</h1>
+                <Title level={2}>{strings.post_page_title}</Title>
 
                 <div className="thread">
                     {posts}
                 </div>
             </React.Fragment>);
-    };
+    }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
