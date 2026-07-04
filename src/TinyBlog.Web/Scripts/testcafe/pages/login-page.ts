@@ -45,6 +45,7 @@ export default class LoginPage {
         const username = 'default-admin';
         await this.UpsertUserToDB(username, false, true);
         await this.Login(username, DefaultPassword);
+        await t.expect(Selector('.ant-layout-sider').exists).ok({ timeout: 10000 });
     }
 
     public async Login(username: string, password: string): Promise<void> {

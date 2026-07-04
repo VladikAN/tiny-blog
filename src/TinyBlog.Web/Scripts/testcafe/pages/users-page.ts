@@ -12,6 +12,7 @@ export default class UsersPage {
     public btnSaveChanges: Selector;
     public btnCancelChanges: Selector;
     public btnModalOk: Selector;
+    public btnModalDangerOk: Selector;
 
     private userService: UserService;
 
@@ -22,22 +23,23 @@ export default class UsersPage {
 
     public constructor() {
         this.blkControls = Selector('.ant-table');
-        this.btnAddUser = Selector('button').withText('Add user');
+        this.btnAddUser = Selector('.anticon-user-add').parent('button');
 
         this.blkUsers = Selector('.ant-table-tbody tr');
         this.inpUsername = this.blkUsers.find('input[name=rawUsername]');
         this.inpEmail = this.blkUsers.find('input[name=rawEmail]');
         this.btnSaveChanges = this.blkUsers.find('[title="Save user"]');
         this.btnCancelChanges = this.blkUsers.find('[title="Cancel"]');
-        this.btnModalOk = Selector('.ant-modal-confirm-btns .ant-btn-primary');
+        this.btnModalOk = Selector('.ant-modal-confirm-btns .ant-btn-primary:not(.ant-btn-dangerous)');
+        this.btnModalDangerOk = Selector('.ant-modal-confirm-btns .ant-btn-dangerous');
 
         this.userService = new UserService();
     }
 
     public async IsPageDisplayed(): Promise<void> {
         await t
-            .expect(this.btnAddUser.exists).eql(true)
-            .expect(this.blkUsers.exists).eql(true)
+            .expect(this.btnAddUser.exists).ok({ timeout: 10000 })
+            .expect(this.blkUsers.exists).ok()
             .expect(this.blkUsers.count).gte(2); /* build-in user & current test admin */
     }
 
@@ -76,7 +78,7 @@ export default class UsersPage {
         const onPage = await this.FindUserOnPage(email);
         await t
             .click(onPage.find(this.btnDeleteSelector))
-            .click(this.btnModalOk);
+            .click(this.btnModalDangerOk);
     }
 
     public async StartEditFromUi(email: string): Promise<void> {

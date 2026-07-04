@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Layout, LayoutDomain } from '../types/layout';
 import { MongoConnection } from '../constants';
 

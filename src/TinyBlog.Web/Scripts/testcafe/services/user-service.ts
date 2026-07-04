@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { User, UserDomain } from '../types/user';
 import { MongoConnection, DefaultPasswordHash, DefaultPasswordSalt, EmailDomain } from '../constants';
 

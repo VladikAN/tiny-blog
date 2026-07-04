@@ -1,5 +1,18 @@
 {
-    "browsers": ["firefox:headless"],
+    "browsers": ["chrome:headless --no-sandbox --disable-dev-shm-usage"],
     "src": "./Scripts/testcafe/tests/*.ts",
-    "stopOnFirstFail": true
+    "stopOnFirstFail": false,
+    "disableNativeAutomation": true,
+    "hostname": "127.0.0.1",
+    "pageLoadMode": "eager",
+    "pageLoadTimeout": 30000,
+    "selectorTimeout": 10000,
+    "assertionTimeout": 10000,
+    "testExecutionTimeout": 60000,
+    "compilerOptions": {
+        "typescript": {
+            "configPath": "Scripts/testcafe/tsconfig.json",
+            "customCompilerModulePath": "../typescript"
+        }
+    }
 }
