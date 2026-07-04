@@ -19,9 +19,9 @@ export default class HomePage {
     private postService: PostService;
     private initialLayout: LayoutDomain;
 
-    private headerSelector: string = 'h2';
-    private markdownSelector: string = 'div.markdown';
-    private tagsSelector: string = '.tags a';
+    private headerSelector = 'h2';
+    private markdownSelector = 'div.markdown';
+    private tagsSelector = '.tags a';
 
     public constructor() {
         this.blkHeader = Selector('div.header');
@@ -106,7 +106,7 @@ export default class HomePage {
 
     private async FindPostOnPage(title: string): Promise<Selector> {
         const count = await this.blkThread.count;
-        for (var _i = 0; _i < count; _i++) {
+        for (let _i = 0; _i < count; _i++) {
             const entries = this.blkThread.nth(_i).find('.link-header h2');
             const postTitle = await entries.nth(0).innerText;
 

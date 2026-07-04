@@ -14,9 +14,7 @@
     "rules": {
         "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/no-empty-interface": "off",
-        "@typescript-eslint/type-annotation-spacing": { "before": "false", "after": "true" },
-        "@typescript-eslint/explicit-function-return-type": { "allowExpressions": true },
-        "@typescript-eslint/semi": "warn",
+        "@typescript-eslint/explicit-function-return-type": ["warn", { "allowExpressions": true }],
         "curly": ["error", "all"],
         "no-duplicate-imports": "warn",
         "no-irregular-whitespace": "warn",

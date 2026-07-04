@@ -1,6 +1,26 @@
 import * as React from 'react';
+import { render, screen } from '@testing-library/react';
+import { ConfigProvider } from 'antd';
+import { MemoryRouter } from 'react-router-dom';
 import { Post, AllProps } from '..';
-import { shallow } from 'enzyme';
+import { strings } from '../../../localization';
+
+jest.mock('../../shared/zone-post-publish', () => {
+    const MockZonePostPublish = () => <div data-testid="zone-publish" />;
+    return MockZonePostPublish;
+});
+jest.mock('../../shared/zone-post-delete', () => {
+    const MockZonePostDelete = () => <div data-testid="zone-delete" />;
+    return MockZonePostDelete;
+});
+
+const renderPost = (props: AllProps) => render(
+    <ConfigProvider>
+        <MemoryRouter>
+            <Post {...props} />
+        </MemoryRouter>
+    </ConfigProvider>
+);
 
 describe('<Post />', () => {
     const editProps: AllProps = {
@@ -18,11 +38,11 @@ describe('<Post />', () => {
         },
         loadPost: jest.fn(),
         resetPost: jest.fn(),
-        savePost: jest.fn
+        savePost: jest.fn()
     };
 
     const createProps: AllProps = {
-        entityId: null,
+        entityId: undefined,
         post: {
             id: '',
             title: '',
@@ -34,36 +54,34 @@ describe('<Post />', () => {
         },
         loadPost: jest.fn(),
         resetPost: jest.fn(),
-        savePost: jest.fn
+        savePost: jest.fn()
     };
 
-    it ('should show publish/unpublish zone for edit mode', () => {
-        const props = { ...editProps, post: { ...editProps.post } };
-        const wrapper = shallow(<Post {...props} />);
-        expect(wrapper.exists('Connect(ZonePostPublish)')).toBeTruthy();
+    it('should show publish/unpublish zone for edit mode', () => {
+        renderPost({ ...editProps, post: { ...editProps.post } });
+        expect(screen.getByTestId('zone-publish')).toBeTruthy();
     });
 
-    it ('should hide publish/unpublish zone for create mode', () => {
-        const props = { ...createProps, post: { ...createProps.post } };
-        const wrapper = shallow(<Post {...props} />);
-        expect(wrapper.exists('Connect(ZonePostPublish)')).toBeFalsy();
+    it('should hide publish/unpublish zone for create mode', () => {
+        renderPost({ ...createProps, post: { ...createProps.post } });
+        expect(screen.queryByTestId('zone-publish')).toBeNull();
     });
 
-    it ('should show delete zone for edit mode and unpublished post', () => {
-        const props = { ...editProps, post: { ...editProps.post, isPublished: false } };
-        const wrapper = shallow(<Post {...props} />);
-        expect(wrapper.exists('Connect(ZonePostDelete)')).toBeTruthy();
+    it('should show delete zone for edit mode and unpublished post', () => {
+        renderPost({
+            ...editProps,
+            post: { ...editProps.post, isPublished: false }
+        });
+        expect(screen.getByTestId('zone-delete')).toBeTruthy();
     });
 
-    it ('should hide delete zone for edit mode and published post', () => {
-        const props = { ...editProps, post: { ...editProps.post } };
-        const wrapper = shallow(<Post {...props} />);
-        expect(wrapper.exists('Connect(ZonePostDelete)')).toBeFalsy();
+    it('should hide delete zone for edit mode and published post', () => {
+        renderPost({ ...editProps, post: { ...editProps.post } });
+        expect(screen.queryByTestId('zone-delete')).toBeNull();
     });
 
-    it ('should hide delete zone for create mode', () => {
-        const props = { ...createProps, post: { ...createProps.post } };
-        const wrapper = shallow(<Post {...props} />);
-        expect(wrapper.exists('Connect(ZonePostDelete)')).toBeFalsy();
+    it('should hide delete zone for create mode', () => {
+        renderPost({ ...createProps, post: { ...createProps.post } });
+        expect(screen.queryByTestId('zone-delete')).toBeNull();
     });
 });

@@ -3,7 +3,7 @@ import { Post } from './../post/types';
 import { http } from './../../api/http';
 import { DeletePostUrl, LoadPostUrl, SavePostUrl, TogglePostUrl } from './../../api/urls';
 import { requestFailedCreator } from '../shared/actions';
-import { toastr } from 'react-redux-toastr';
+import { notifyError, notifySuccess } from '../../utils/notification';
 import { strings } from '../../localization';
 
 /* Messages */
@@ -109,7 +109,7 @@ export const loadPost = (id: string) => async (dispatch: Dispatch): Promise<void
         dispatch(loadPostCompletedCreator(response));
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -125,13 +125,13 @@ export const savePost = (post: Post) => async (dispatch: Dispatch): Promise<void
     return await http<{ isSuccess: boolean; payload: Post }>(request).then(response => {
         dispatch(SavePostCompletedCreator(response.isSuccess, isEdit, response.payload));
         if (response.isSuccess) {
-            toastr.success(strings.post_operation_title, strings.post_save_response_success);
+            notifySuccess(strings.post_operation_title, strings.post_save_response_success);
         } else {
-            toastr.error(strings.post_operation_title, strings.post_save_response_failed);
+            notifyError(strings.post_operation_title, strings.post_save_response_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -147,17 +147,17 @@ export const togglePost = (id: string, publish: boolean) => async (dispatch: Dis
         const published = response.isSuccess ? publish : !publish;
         dispatch(TogglePostCompletedCreator(id, response.isSuccess, published));
         if (response.isSuccess) {
-            toastr.success(
+            notifySuccess(
                 strings.post_operation_title,
                 published ? strings.post_publish_response_success : strings.post_unpublish_response_success);
         } else {
-            toastr.error(
+            notifyError(
                 strings.post_operation_title,
                 published ? strings.post_publish_response_failed : strings.post_unpublish_response_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -168,12 +168,12 @@ export const deletePost = (id: string) => async (dispatch: Dispatch): Promise<vo
     return await http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(DeletePostCompletedCreator(id, response.isSuccess));
         if (response.isSuccess) {
-            toastr.success(strings.post_operation_title, strings.post_delete_response_success);
+            notifySuccess(strings.post_operation_title, strings.post_delete_response_success);
         } else {
-            toastr.error(strings.post_operation_title, strings.post_delete_response_failed);
+            notifyError(strings.post_operation_title, strings.post_delete_response_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };

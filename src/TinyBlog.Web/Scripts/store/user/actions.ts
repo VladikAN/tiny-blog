@@ -2,7 +2,7 @@ import { Action, Dispatch } from 'redux';
 import { User } from './types';
 import { GetUsersUrl, ActivateUserUrl, DeactivateUserUrl, DeleteUserUrl, SaveUserUrl } from '../../api/urls';
 import { strings } from '../../localization';
-import { toastr } from 'react-redux-toastr';
+import { notifyError, notifySuccess } from '../../utils/notification';
 import { requestFailedCreator } from '../shared/actions';
 import { http } from '../../api/http';
 
@@ -116,7 +116,7 @@ export const getUsers = () => async (dispatch: Dispatch): Promise<void> => {
         dispatch(GetUsersCompletedCreator(response));
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -131,13 +131,13 @@ export const activateUser = (username: string) => async (dispatch: Dispatch): Pr
     return await http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(ActivateUserCompletedCreator(response.isSuccess, username));
         if (response.isSuccess) {
-            toastr.success(strings.user_operation_title, strings.user_activate_reponse_success);
+            notifySuccess(strings.user_operation_title, strings.user_activate_reponse_success);
         } else {
-            toastr.error(strings.user_operation_title, strings.user_activate_reponse_failed);
+            notifyError(strings.user_operation_title, strings.user_activate_reponse_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -152,13 +152,13 @@ export const deactivateUser = (username: string) => async (dispatch: Dispatch): 
     return await http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(DeactivateUserCompletedCreator(response.isSuccess, username));
         if (response.isSuccess) {
-            toastr.success(strings.user_operation_title, strings.user_deactivate_reponse_success);
+            notifySuccess(strings.user_operation_title, strings.user_deactivate_reponse_success);
         } else {
-            toastr.error(strings.user_operation_title, strings.user_deactivate_reponse_failed);
+            notifyError(strings.user_operation_title, strings.user_deactivate_reponse_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -173,13 +173,13 @@ export const deleteUser = (username: string) => async (dispatch: Dispatch): Prom
     return await http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(DeleteUserCompletedCreator(response.isSuccess, username));
         if (response.isSuccess) {
-            toastr.success(strings.user_operation_title, strings.user_delete_reponse_success);
+            notifySuccess(strings.user_operation_title, strings.user_delete_reponse_success);
         } else {
-            toastr.error(strings.user_operation_title, strings.user_delete_reponse_failed);
+            notifyError(strings.user_operation_title, strings.user_delete_reponse_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };
 
@@ -194,12 +194,12 @@ export const saveUser = (user: User) => async (dispatch: Dispatch): Promise<void
     return await http<{ isSuccess: boolean }>(request).then(response => {
         dispatch(SaveUserCompletedCreator(response.isSuccess, user));
         if (response.isSuccess) {
-            toastr.success(strings.user_operation_title, strings.user_save_reponse_success);
+            notifySuccess(strings.user_operation_title, strings.user_save_reponse_success);
         } else {
-            toastr.error(strings.user_operation_title, strings.user_save_reponse_failed);
+            notifyError(strings.user_operation_title, strings.user_save_reponse_failed);
         }
     }, reject => {
         dispatch(requestFailedCreator(reject));
-        toastr.error(strings.shared_server_error_title, strings.shared_server_error_msg);
+        notifyError(strings.shared_server_error_title, strings.shared_server_error_msg);
     });
 };

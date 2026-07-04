@@ -11,23 +11,25 @@ export default class UsersPage {
     public inpEmail: Selector;
     public btnSaveChanges: Selector;
     public btnCancelChanges: Selector;
+    public btnModalOk: Selector;
 
     private userService: UserService;
 
-    private btnEditSelector: string = '.action .typcn-edit';
-    private btnActivateSelector: string = '.action .typcn-flash';
-    private btnDeactivateSelector: string = '.action .typcn-flash-outline';
-    private btnDeleteSelector: string = '.action .typcn-trash';
+    private btnEditSelector = '[title="Edit user"]';
+    private btnActivateSelector = '[title="Activate user"]';
+    private btnDeactivateSelector = '[title="Deactivate user"]';
+    private btnDeleteSelector = '[title="Delete user"]';
 
     public constructor() {
-        this.blkControls = Selector('div.controls');
-        this.btnAddUser = this.blkControls.find('span.typcn.typcn-user-add');
+        this.blkControls = Selector('.ant-table');
+        this.btnAddUser = Selector('button').withText('Add user');
 
-        this.blkUsers = Selector('table.entities tbody tr');
+        this.blkUsers = Selector('.ant-table-tbody tr');
         this.inpUsername = this.blkUsers.find('input[name=rawUsername]');
         this.inpEmail = this.blkUsers.find('input[name=rawEmail]');
-        this.btnSaveChanges = this.blkUsers.find('.action .typcn-tick');
-        this.btnCancelChanges = this.blkUsers.find('.action .typcn-times');
+        this.btnSaveChanges = this.blkUsers.find('[title="Save user"]');
+        this.btnCancelChanges = this.blkUsers.find('[title="Cancel"]');
+        this.btnModalOk = Selector('.ant-modal-confirm-btns .ant-btn-primary');
 
         this.userService = new UserService();
     }
@@ -66,15 +68,15 @@ export default class UsersPage {
     public async ToggleActivity(email: string, active: boolean): Promise<void> {
         const onPage = await this.FindUserOnPage(email);
         await t
-            .setNativeDialogHandler(() => true)
-            .click(onPage.find(active ? this.btnActivateSelector : this.btnDeactivateSelector));
+            .click(onPage.find(active ? this.btnActivateSelector : this.btnDeactivateSelector))
+            .click(this.btnModalOk);
     }
 
     public async DeleteFromUi(email: string): Promise<void> {
         const onPage = await this.FindUserOnPage(email);
         await t
-            .setNativeDialogHandler(() => true)
-            .click(onPage.find(this.btnDeleteSelector));
+            .click(onPage.find(this.btnDeleteSelector))
+            .click(this.btnModalOk);
     }
 
     public async StartEditFromUi(email: string): Promise<void> {
@@ -86,7 +88,7 @@ export default class UsersPage {
         return await this.userService.Get(email);
     }
 
-    public async UpsertUserToDb(username: string, isActive: boolean = true): Promise<UserDomain> {
+    public async UpsertUserToDb(username: string, isActive = true): Promise<UserDomain> {
         return await this.userService.UpsertUser(username, false, isActive);
     }
 
@@ -100,7 +102,7 @@ export default class UsersPage {
 
     private async FindUserOnPage(email: string): Promise<Selector> {
         const count = await this.blkUsers.count;
-        for (var _i = 0; _i < count; _i++) {
+        for (let _i = 0; _i < count; _i++) {
             const entries = this.blkUsers.nth(_i).find('td');
             const userEmail = await entries.nth(1).innerText;
 

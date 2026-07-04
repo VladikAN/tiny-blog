@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Modal } from 'antd';
 import { deletePost } from '../../store/post/actions';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -21,10 +22,12 @@ export class ZonePostDelete extends React.Component<AllProps> {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    private handleDelete = (id: string):void => {
-        if (confirm(strings.post_zone_delete_confirm)) {
-            this.props.deletePost(id);
-        }
+    private handleDelete = (): void => {
+        Modal.confirm({
+            title: strings.post_zone_delete_confirm,
+            okType: 'danger',
+            onOk: () => this.props.deletePost(this.props.id)
+        });
     };
 
     public render(): React.ReactNode {
@@ -33,12 +36,12 @@ export class ZonePostDelete extends React.Component<AllProps> {
                 type={ZoneType.danger}
                 text={strings.post_zone_delete_description}
                 buttonText={strings.post_zone_delete_button}
-                onClick={() => this.handleDelete(this.props.id)} />);
-    };
+                onClick={this.handleDelete} />);
+    }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ deletePost }, dispatch)
 });
 
-export default connect<{}, DispatchProps, OwnProps>(null, mapDispatchToProps)(ZonePostDelete);
+export default connect<Record<string, never>, DispatchProps, OwnProps>(null, mapDispatchToProps)(ZonePostDelete);

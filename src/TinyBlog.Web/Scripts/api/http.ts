@@ -19,7 +19,7 @@ export const http = <T>(request: RequestInfo): Promise<T> => {
                 } else {
                     if (response.headers.has('content-length')
                         && response.headers.get('content-length') == '0') {
-                        resolve();
+                        resolve(undefined as T);
                     } else {
                         resolve(response.json());
                     }

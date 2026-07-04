@@ -1,6 +1,5 @@
 import { Store, applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { reducer as toastrReducer } from 'react-redux-toastr';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import { threadReducer } from './thread/reducers';
@@ -14,11 +13,10 @@ const rootReducer = combineReducers({
     post: postReducer,
     login: loginReducer,
     layout: layoutReducer,
-    user: userReducer,
-    toastr: toastrReducer
+    user: userReducer
 });
 
-let middleware = [thunk];
+const middleware = [thunk];
 
 export default function configureStore(initialState={}): Store {
     return createStore(

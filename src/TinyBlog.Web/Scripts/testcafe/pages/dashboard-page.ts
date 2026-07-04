@@ -9,13 +9,13 @@ export default class DashboardPage {
     public lnkLogout: Selector;
 
     public constructor() {
-        this.dashboard = Selector('div.dashboard');
-        this.dashboardMenu = this.dashboard.find('div.dashboard__menu');
+        this.dashboard = Selector('.ant-layout');
+        this.dashboardMenu = Selector('.ant-layout-sider');
 
-        this.lnkposts = this.dashboardMenu.find('a.dashboard__menu__link[href=/admin]');
-        this.lnkSettings = this.dashboardMenu.find('a.dashboard__menu__link[href=/admin/layout]');
-        this.lnkUsers = this.dashboardMenu.find('a.dashboard__menu__link[href=/admin/user]');
-        this.lnkLogout = this.dashboardMenu.find('a.dashboard__menu__link[title=Logout]');
+        this.lnkposts = Selector('.ant-menu-item').withText('Posts');
+        this.lnkSettings = Selector('.ant-menu-item').withText('Settings');
+        this.lnkUsers = Selector('.ant-menu-item').withText('Users');
+        this.lnkLogout = Selector('.ant-menu-item').withText('Logout');
     }
 
     public async IsDisplayed(): Promise<void> {

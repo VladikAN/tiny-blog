@@ -6,7 +6,7 @@ export default class LayoutService {
     public async SetTitle(title: string): Promise<LayoutDomain> {
         await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
-        let record = await Layout.findOne();
+        const record = await Layout.findOne();
         record.title = title;
 
         await Layout.updateOne({}, record);
@@ -19,7 +19,7 @@ export default class LayoutService {
     public async SetHeader(headerMd: string): Promise<LayoutDomain> {
         await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
-        let record = await Layout.findOne();
+        const record = await Layout.findOne();
         record.headerContent = headerMd;
 
         await Layout.updateOne({}, record);
@@ -32,7 +32,7 @@ export default class LayoutService {
     public async SetFooter(footerMd: string): Promise<LayoutDomain> {
         await mongoose.connect(MongoConnection, { useNewUrlParser: true });
 
-        let record = await Layout.findOne();
+        const record = await Layout.findOne();
         record.footerContent = footerMd;
 
         await Layout.updateOne({}, record);

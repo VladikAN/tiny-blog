@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Button, Card, Form, Input } from 'antd';
 import { authCredentials } from './../../store/login/actions';
 import { strings } from '../../localization';
 
@@ -38,43 +39,38 @@ export class LoginForm extends React.Component<AllProps, State> {
 
     public render(): React.ReactNode {
         return (
-            <div className="login">
-                <form onSubmit={this.handleSubmit}>
-                    <div className="login__username">
-                        <label>
-                            <span>{strings.login_username}</span>
-                            <input
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+                <Card title={strings.login_signIn} style={{ width: 400 }}>
+                    <Form layout="vertical" onSubmitCapture={this.handleSubmit}>
+                        <Form.Item label={strings.login_username}>
+                            <Input
                                 type="text"
                                 autoComplete="off"
                                 autoFocus
                                 name="username"
                                 value={this.state.username}
                                 onChange={this.handleChange} />
-                        </label>
-                    </div>
-                    <div className="login__password">
-                        <label>
-                            <span>{strings.login_password}</span>
-                            <input
-                                type="password"
+                        </Form.Item>
+                        <Form.Item label={strings.login_password}>
+                            <Input.Password
                                 autoComplete="off"
                                 name="password"
                                 value={this.state.password}
                                 onChange={this.handleChange} />
-                        </label>
-                    </div>
-                    <div className="login__buttons">
-                        <button
-                            className="btn-login"
-                            type="submit">{strings.login_signIn}</button>
-                    </div>
-                </form>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" block>
+                                {strings.login_signIn}
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Card>
             </div>);
-    };
+    }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ authCredentials }, dispatch)
 });
 
-export default connect<{}, DispatchProps>(null, mapDispatchToProps)(LoginForm);
+export default connect<Record<string, never>, DispatchProps>(null, mapDispatchToProps)(LoginForm);

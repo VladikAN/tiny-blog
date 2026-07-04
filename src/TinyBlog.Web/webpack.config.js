@@ -1,25 +1,28 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
     mode: 'development',
     devtool: 'cheap-module-source-map',
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json', 'css', 'scss'],
+        extensions: ['.ts', '.tsx', '.js', '.json'],
         modules: [
             path.resolve(__dirname, 'Content'),
             path.resolve(__dirname, 'Scripts'),
             'node_modules'
-        ]
+        ],
+        fallback: {
+            buffer: require.resolve('buffer/')
+        }
     },
     entry: {
         index: './Scripts/index.ts'
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'wwwroot/js')
+        path: path.resolve(__dirname, 'wwwroot/js'),
+        clean: true
     },
     optimization: {
         splitChunks: {
@@ -27,12 +30,12 @@ module.exports = {
             minChunks: 2,
             cacheGroups: {
                 vendor: {
-					test: /node_modules/,
-					chunks: 'initial',
-					name: 'vendor',
-					priority: 10,
-					enforce: true
-				}
+                    test: /[\\/]node_modules[\\/]/,
+                    chunks: 'initial',
+                    name: 'vendor',
+                    priority: 10,
+                    enforce: true
+                }
             }
         }
     },
@@ -41,31 +44,27 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    'style-loader',
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader'
                 ]
             },
-            { 
-                test: /\.tsx?$/, 
-                loader: 'awesome-typescript-loader'
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: [/node_modules/, /__tests__/]
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: '../fonts/'
-                    }
-                }]
+                type: 'asset/resource',
+                generator: {
+                    filename: '../fonts/[name][ext]'
+                }
             }
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({ filename: '../css/[name].css' }),
-        new BundleAnalyzerPlugin({ analyzerMode: 'disabled' /* 'static' */ })
+        new BundleAnalyzerPlugin({ analyzerMode: 'disabled' })
     ]
 };

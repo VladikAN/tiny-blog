@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Modal } from 'antd';
 import { togglePost } from '../../store/post/actions';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -28,9 +29,10 @@ export class ZonePostPublish extends React.Component<AllProps> {
             ? strings.post_zone_publish_confirm
             : strings.post_zone_unpublish_confirm;
 
-        if (confirm(message)) {
-            this.props.togglePost(this.props.id, publish);
-        }
+        Modal.confirm({
+            title: message,
+            onOk: () => this.props.togglePost(this.props.id, publish)
+        });
     };
 
     public render(): React.ReactNode {
@@ -45,11 +47,11 @@ export class ZonePostPublish extends React.Component<AllProps> {
                 text={publishZoneText}
                 buttonText={isPublished ? strings.post_zone_unpublish_button : strings.post_zone_publish_button}
                 onClick={this.handlePublish} />);
-    };
+    }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ togglePost }, dispatch)
 });
 
-export default connect<{}, DispatchProps, OwnProps>(null, mapDispatchToProps)(ZonePostPublish);
+export default connect<Record<string, never>, DispatchProps, OwnProps>(null, mapDispatchToProps)(ZonePostPublish);

@@ -22,7 +22,7 @@ test('Try invalid credentials and click submit. Should stay on page and see erro
 
     // Assert
     await loginPage.IsPageDisplayed();
-    await t.expect(Selector('div.toastr.rrt-error').exists).ok();
+    await t.expect(Selector('.ant-notification-notice-error').exists).ok();
 });
 
 test('User promted to change password', async () => {
@@ -51,7 +51,7 @@ test('User can\'t enter if typed invalid password to confirm', async t => {
 
     // Assert
     await loginPage.IsChangePasswordDisplayed();
-    await t.expect(Selector('div.toastr.rrt-error').exists).ok();
+    await t.expect(Selector('.ant-notification-notice-error').exists).ok();
 });
 
 test('User can login by using new password after completed password change', async t => {
@@ -95,7 +95,7 @@ test('User cannot login by using known credentials because user is inactive', as
 
     // Assert
     await loginPage.IsPageDisplayed();
-    await t.expect(Selector('div.toastr.rrt-error').exists).ok();
+    await t.expect(Selector('.ant-notification-notice-error').exists).ok();
 });
 
 test('User will quit to login screen after click on Logout button', async t => {

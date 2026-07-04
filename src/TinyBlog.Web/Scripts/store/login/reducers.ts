@@ -66,7 +66,7 @@ export function loginReducer(state = initialState, action: LoginActionTypes | Sh
             return { ...state, username: '', passwordToken: '', isAuthorized: false, isFetching: false };
 
         case AUTH_SUCCESS_MESSAGE:
-            var authorized = !action.passwordToken;
+            const authorized = !action.passwordToken;
             return { ...state, username: action.username, passwordToken: action.passwordToken, isAuthorized: authorized, isFetching: false };
 
         case AUTH_LOGOUT_MESSAGE:

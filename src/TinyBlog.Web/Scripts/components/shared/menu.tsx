@@ -1,9 +1,18 @@
 import * as React from 'react';
+import { Layout, Menu as AntMenu } from 'antd';
+import {
+    FileTextOutlined,
+    SettingOutlined,
+    UserOutlined,
+    LogoutOutlined
+} from '@ant-design/icons';
 import { strings } from '../../localization';
-import { NavLink } from 'react-router-dom';
 import { logout } from '../../store/login/actions';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+
+const { Sider } = Layout;
 
 interface DispatchProps {
     logout: typeof logout;
@@ -11,64 +20,40 @@ interface DispatchProps {
 
 type AllProps = DispatchProps;
 
-interface State {
-    isOpen: boolean;
-}
+const menuItems = [
+    { key: '/admin', icon: <FileTextOutlined />, label: strings.dashboard_link_posts },
+    { key: '/admin/layout', icon: <SettingOutlined />, label: strings.dashboard_link_layout },
+    { key: '/admin/user', icon: <UserOutlined />, label: strings.dashboard_link_user },
+    { key: 'logout', icon: <LogoutOutlined />, label: strings.dashboard_logout }
+];
 
-class Menu extends React.Component<AllProps, State> {
-    public constructor(props: AllProps) {
-        super(props);
+const MenuView: React.FC<AllProps> = ({ logout: onLogout }) => {
+    const history = useHistory();
+    const location = useLocation();
 
-        this.state = { isOpen: false };
+    const handleClick = ({ key }: { key: string }): void => {
+        if (key === 'logout') {
+            onLogout();
+            return;
+        }
+        history.push(key);
+    };
 
-        this.handleLogout = this.handleLogout.bind(this);
-        this.handleToggle = this.handleToggle.bind(this);
-    }
-
-    private handleLogout(): void {
-        this.props.logout();
-    }
-
-    private handleToggle(): void {
-        this.setState({ isOpen: !this.state.isOpen });
-    }
-
-    public render(): React.ReactNode {
-        return (
-            <div className="dashboard__menu">
-                <NavLink
-                    className={'dashboard__menu__link'}
-                    activeClassName="link-active"
-                    to="/admin"
-                    title={strings.dashboard_link_posts}>
-                    <span className="typcn typcn-document-text"/>{strings.dashboard_link_posts}
-                </NavLink>
-                <NavLink
-                    className={'dashboard__menu__link'}
-                    activeClassName="link-active"
-                    to="/admin/layout"
-                    title={strings.dashboard_link_layout}>
-                    <span className="typcn typcn-spanner"/>{strings.dashboard_link_layout}
-                </NavLink>
-                <NavLink
-                    className={'dashboard__menu__link'}
-                    activeClassName="link-active"
-                    to="/admin/user"
-                    title={strings.dashboard_link_user}>
-                    <span className="typcn typcn-user"/>{strings.dashboard_link_user}
-                </NavLink>
-                <a
-                    className={'dashboard__menu__link'}
-                    title={strings.dashboard_logout}
-                    onClick={this.handleLogout}>
-                    <span className="typcn typcn-key"/>{strings.dashboard_logout}
-                </a>
-            </div>);
-    }
-}
+    return (
+        <Sider width={220} theme="light" style={{ borderRight: '1px solid #f0f0f0' }}>
+            <AntMenu
+                mode="inline"
+                selectedKeys={[location.pathname]}
+                items={menuItems}
+                onClick={handleClick}
+                style={{ height: '100%', borderRight: 0 }}
+            />
+        </Sider>
+    );
+};
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     ...bindActionCreators({ logout }, dispatch)
 });
 
-export default connect<{}, DispatchProps>(null, mapDispatchToProps)(Menu);
+export default connect<Record<string, never>, DispatchProps>(null, mapDispatchToProps)(MenuView);

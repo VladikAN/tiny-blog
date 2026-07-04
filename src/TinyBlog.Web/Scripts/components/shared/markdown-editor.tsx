@@ -57,7 +57,7 @@ class MarkdownEditor extends React.Component<AllProps, State> {
                     <Markdown markup={newText || ''} />
                 </div>
             </div>);
-    };
+    }
 }
 
 export default MarkdownEditor;
